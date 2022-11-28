@@ -55,11 +55,10 @@ default:
     # can only cache local items. Same for poetry cache
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
     POETRY_CACHE_DIR: "$CI_PROJECT_DIR/.cache/poetry"
+  # We are only caching the pip/poetry caches, NOT THE VENV. Caches should be
+  # python version agnostic.
   cache:
-    key:
-      prefix: default
-      files:
-        - poetry.lock
+    key: py-package-cache
     paths:
       - $PIP_CACHE_DIR
       - $POETRY_CACHE_DIR
@@ -75,7 +74,7 @@ default:
     - poetry -V
     - poetry config --local virtualenvs.in-project true
     # Will make use of .cache/poetry
-    - poetry install
+    - poetry install --sync
 
 .test_defaults:
   extends:
@@ -87,41 +86,58 @@ default:
   tags:
     - docker
 
-test-lint:
+# Job to lint python code
+test-py-lint:
   extends: .test_defaults
   script:
     - poetry run flake8
 
-test-typecheck:
+# Job to typecheck python code
+test-py-typecheck:
   extends: .test_defaults
   script:
     - poetry run mypy
 
+# Job to run unittests via pytest
 test-pytest:
   extends: .test_defaults
   parallel:
     matrix:
       - PY_VERSION: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
   image: python:${PY_VERSION}
-  cache:
-    key:
-      prefix: py${PY_VERSION}
   script:
     - poetry run pytest
 
-#test-notebooks:
-#  extends: .test_defaults
-#  tags:
-#    - gpu
-#  parallel:
-#    matrix:
-#      # Sequences combinatorically combine within a list entry
-#      - NOTEBOOK_DIR: "examples/huggingface"
-#        NOTEBOOK_FILE: [ "xaitk-huggingface.ipynb" ]
-#  # Using default container image defined above
-#  script:
-#    - nvidia-smi
-#    - cd "$NOTEBOOK_DIR"
-#    - poetry run papermill \
-#        --progress-bar -k python3 --stdout-file - --stderr-file - \
-#        "$NOTEBOOK_FILE"
+# Job to test-run the example jupyter notebooks
+test-notebooks:
+  extends: .test_defaults
+  variables:
+    TORCH_HOME: "${CI_PROJECT_DIR}/.cache/torch"
+    HF_DATASETS_CACHE: "${CI_PROJECT_DIR}/.cache/huggingface/datasets"
+    TRANSFORMERS_CACHE: "${CI_PROJECT_DIR}/.cache/huggingface/hub"
+  tags:
+    - docker
+    # Add the GPU tag for notebooks to be able to be run faster.
+    - gpu
+  # Merge inherited caches
+  cache:
+    - !reference [.test_defaults, cache]
+    - key: huggingface-cache
+      paths:
+        - ${TORCH_HOME}
+        - ${HF_DATASETS_CACHE}
+        - ${TRANSFORMERS_CACHE}
+  # Specifying the various notebooks that we want to be tested. Each invocation
+  # of this job should try to execute only one notebook via papermill.
+  parallel:
+    matrix:
+      # Sequences combinatorically combine within a list entry
+      - NOTEBOOK_DIR: "examples/huggingface"
+        NOTEBOOK_FILE: [ "xaitk-huggingface.ipynb" ]
+  # Using default container image defined above
+  script:
+    - nvidia-smi
+    - cd "${NOTEBOOK_DIR}"
+    - poetry run papermill
+        --progress-bar -k python3 --stdout-file - --stderr-file -
+        "${NOTEBOOK_FILE}" /dev/null
