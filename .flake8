@@ -2,6 +2,7 @@
 exclude =
     __pycache__,
     .eggs,
+    .venv,
     docs
 
 # While a max length of 79 is encouraged, sometimes going over makes more sense
