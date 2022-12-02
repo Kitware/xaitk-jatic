@@ -1,7 +1,8 @@
 # XAITK CDAO Integrations
 
 ## Description
-...
+"Bucket" to house various examples and resources related to xaitk-saliency
+integration and scaling for CDAO use.
 
 ## Installation
 ...
@@ -10,4 +11,4 @@
 ...
 
 ## License
-This repository is under the Apache 2.0 license, see NOTICE and LICENSE file.
+...
