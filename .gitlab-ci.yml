@@ -26,7 +26,7 @@ default:
 # but can still be used for inheritance.
 
 # Run rules to activate at the major junction points: merge requests, tag
-# pipelines and branch pipelines for masters.
+# pipelines and branch pipelines for main.
 .run_automatically:
   rules:
     # If changes are make to an active merge request.
