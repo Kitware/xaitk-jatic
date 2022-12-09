@@ -98,6 +98,12 @@ test-py-typecheck:
   script:
     - poetry run mypy
 
+test-docs-build:
+  extends: .test_defaults
+  script:
+    - cd docs
+    - poetry run make html
+
 # Job to run unittests via pytest
 test-pytest:
   extends: .test_defaults
