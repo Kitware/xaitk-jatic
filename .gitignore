@@ -137,3 +137,11 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Lightning example notebook
+examples/lightning/MNIST/
+examples/lightning/cifar10.ckpt
+examples/lightning/cifar-10-batches-py/
+examples/lightning/cifar-10-python.tar.gz
+examples/lightning/lightning_logs/
+examples/lightning/submitit_logs/
