@@ -115,6 +115,27 @@ test-pytest:
     - poetry run pytest
 
 # Job to test-run the example jupyter notebooks
+#
+# This job has a parallel matrix to parameterize different working-directories
+# and notebooks within to run. Each parallel instance of this job should only
+# run a single notebook. Each notebook is basically assumed to make use of at
+# most 1 (one) GPU. Runners matching the tags "docker" and "gpu" should be
+# configured accordingly (e.g. a machine with a single GPU should be configured
+# to only be able to run one job at a time for GPU tag matching jobs).!reference:
+#
+# See GitLab docs for parallel-matrix functionality:
+#   https://docs.gitlab.com/ee/ci/yaml/#parallelmatrix
+#
+# The parallel-matrix entry should have a pair of keys: "NOTEBOOK_DIR" and
+# "NOTEBOOK_FILE".
+# * "NOTEBOOK_DIR" should be a single string that notes the directory in which
+#   notebook files should be run in (basically the working directory, generally
+#   the directory the notebook lives in). This path should be relative to the
+#   root of the repository.
+# * "NOTEBOOK_FILE" should be a list of strings that denote the notebook files
+#   to be run. These paths path should be relative to the "NOTEBOOK_DIR". Files
+#   in this list will be combinatorially combined with the path provided in
+#   the associated "NOTEBOOK_DIR" to create a job parameterization instance.
 test-notebooks:
   extends: .test_defaults
   variables:
