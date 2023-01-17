@@ -27,8 +27,13 @@ Examples
 
 * Added an example notebook for integrating the use of HuggingFace with
   xaitk-saliency.
+
 * Added an example notebook for integrating the use of MLFlow with
   xaitk-saliency.
+
+* Added an example notebook with strategies for integrating the use of
+  PyTorch Lightning with xaitk-saliency. An additional notebook which
+  benchmarks these strategies was also added.
 
 Scripts
 
