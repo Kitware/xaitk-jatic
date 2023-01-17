@@ -11,6 +11,7 @@ Welcome to xaitk-cdao's documentation!
    :caption: Contents:
 
    releasing
+   platform_reflections
    miscellaneous
 
 
