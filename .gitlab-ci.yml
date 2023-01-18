@@ -126,8 +126,10 @@ test-pytest:
 # See GitLab docs for parallel-matrix functionality:
 #   https://docs.gitlab.com/ee/ci/yaml/#parallelmatrix
 #
-# The parallel-matrix entry should have a pair of keys: "NOTEBOOK_DIR" and
-# "NOTEBOOK_FILE".
+# The parallel-matrix list may have multiple items, and each entry should have
+# a pair of keys: "NOTEBOOK_DIR" and "NOTEBOOK_FILE". (Given the documentation
+# for the parallel-matrix functionality, combinatorics are only applied within
+# an item, not across items.)
 # * "NOTEBOOK_DIR" should be a single string that notes the directory in which
 #   notebook files should be run in (basically the working directory, generally
 #   the directory the notebook lives in). This path should be relative to the

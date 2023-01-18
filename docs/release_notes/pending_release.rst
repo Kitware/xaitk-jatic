@@ -17,6 +17,9 @@ Docs
 * Added initial sphinx-based documentation infrastructure, including these
   release notes.
 
+* Added the beginning of documents to detail reflections and lessons learned
+  when working the use of xaitk-saliency with those platforms.
+
 Examples
 
 * Added an example notebook for integrating the use of HuggingFace with
