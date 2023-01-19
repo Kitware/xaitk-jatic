@@ -24,6 +24,8 @@ Docs
 
 * Added PyTorch Lightning reflections, especially concerning scalability.
 
+* Added MLFlow reflections.
+
 Examples
 
 * Added an example notebook for integrating the use of HuggingFace with
