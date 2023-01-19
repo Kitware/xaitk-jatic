@@ -5,12 +5,11 @@ documentation, examples and code related to integrating xaitk-saliency
 components with the CDAO needs and use-cases.
 
 This first release defines an xaitk-cdao package that is currently a
-placeholder for future functionality, as well as an initial example jupyter
-notebook that explains how to integrate HuggingFace datasets and models with
-the xaitk-saliency API to generate saliency maps. Furthermore, this release
-also includes an initial example jupyter notebook that explains how to
-integrate MLFlow tracking and logging capabilities with the xaitk-saliency
-API to generate saliency maps.
+placeholder for future functionality, as well as a few initial example jupyter
+notebooks. Each notebook explains how to integrate a particular platform
+(HuggingFace, MLFlow, or PyTorchLightning) with the xaitk-saliency API to
+generate saliency maps while utlizing the tools and functionality which that
+platform provides.
 
 Updates / New Features
 ----------------------
@@ -32,8 +31,8 @@ Examples
   xaitk-saliency.
 
 * Added an example notebook with strategies for integrating the use of
-  PyTorch Lightning with xaitk-saliency. An additional notebook which
-  benchmarks these strategies was also added.
+  PyTorch Lightning with xaitk-saliency. An additional notebook
+  benchmarking these strategies was also added.
 
 Scripts
 
