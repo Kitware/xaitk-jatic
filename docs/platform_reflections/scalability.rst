@@ -69,7 +69,7 @@ upon, with the idea that a condition-check could be included if desired.
 
 .. _Callbacks: https://pytorch-lightning.readthedocs.io/en/stable/extensions/callbacks.html
 .. _loop: https://pytorch-lightning.readthedocs.io/en/stable/extensions/loops.html
-.. _``predict step``: https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html#prediction-loop
+.. _predict step: https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html#prediction-loop
 
 Realistically, any strategy that generates many saliency maps likely needs to
 be integrated with an artifact tracking system which may pose further
