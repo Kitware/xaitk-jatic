@@ -44,11 +44,11 @@ level of parallelization is concerned. The question then becomes more platform
 specific: where is the ideal location for these API calls to go?
 
 A few different options were considered to integrate the low-level API calls
-into the PyTorch Lightning framework including callbacks, loops, and ``*_step``s.
-`Callbacks`_ were considered due to their isolated nature; they just need to be
-attached to the trainer to add on saliency map generation. Callbacks in
-Lightning have many entry points and are relatively flexible. However, it was
-found ill-advised to get new model outputs (for perturbed data) within a
+into the PyTorch Lightning framework including callbacks, loops, and ``*_step``
+methods. `Callbacks`_ were considered due to their isolated nature; they just
+need to be attached to the trainer to add on saliency map generation. Callbacks
+in Lightning have many entry points and are relatively flexible. However, it
+was found ill-advised to get new model outputs (for perturbed data) within a
 callback as that can again trigger other callbacks causing a cascading effect
 among other issues. The next option that was considered was overriding or
 writing a custom `loop`_. Loops are once again easy to add to a Lightning
@@ -57,7 +57,7 @@ some effort to maintain existing functionality within these loops
 (bookkeeping/hooks) and ensuring resources (e.g. perturbed data) end up on the
 correct device can be challenging. Ultimately, it was decided the best option,
 in the case of the example notebook, was overriding a ``*_step`` method,
-`predict_step`_ in particular. With this option, the model of interest is
+the `predict step`_ in particular. With this option, the model of interest is
 wrapped with another ``LightningModule`` overriding the relevant ``*_step``
 method(s). While this option is slightly more integrated with the
 ``LightningModule`` than the other options, it is very easy to get generated data
@@ -100,7 +100,7 @@ Other PyTorch Lightning specific "gotchas":
 * Benchmarking PyTorch Lightning code should be done with PyTorch's
   `benchmarking module`_.
 
-* Lightning operates mainly on ``DataLoader``s. An ``IterableDataset`` can be
+* Lightning operates mainly on ``DataLoaders``. An ``IterableDataset`` can be
   used with the generators ``xaitk-saliency`` yields to prevent loading everything
   into memory at once.
 
