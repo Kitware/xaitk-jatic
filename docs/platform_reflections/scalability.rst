@@ -79,6 +79,25 @@ While a certain strategy may be better in a particular situation, the results
 produced via each method should be consistent. We can see this is the case
 in our example notebook with the results comparison cell.
 
+Benchmarking data for each integration strategy is available in
+``examples/lightning/benchmarking.ipynb``. These results showcase that the
+high-level integration is better suited for scaling across number of masks,
+while the low-level integration strategy achieves some level of effective
+scaling across both number of masks and number of total images.
+
+Speaking more generally about scaling again, ``xaitk-saliency`` currently uses
+``numpy`` as its "universal" input format. Depending on the framework being
+used, there is overhead in the form of tensor conversions from GPU <-> CPU and
+also some data format (e.g. ``torch`` tensors) <-> ``numpy``, which may be
+suboptimal. There is potential that adding support to ``xaitk-saliency`` for
+specific data types could improve both performance and usability, however,
+care must be taken so that ``xaitk-saliency`` does not lose its
+interoperability between frameworks/platforms/etc. Furthermore, it may be worth
+exploring whether or not additional speedup can be gained from moving key
+operations, which are currently CPU only, to GPU processing. Again, any
+benefits this might provide should be weighed against the change in complexity
+and maintainability required to support this functionality.
+
 Other PyTorch Lightning specific "gotchas":
 
 * Scaling strategies are limited within interactive environments
@@ -106,6 +125,11 @@ Other PyTorch Lightning specific "gotchas":
 
 * The fill value used by the saliency generator depends on when perturbed data
   is generated (before or after pre-processing).
+
+* Ensure the model predictions given to the saliency generator are
+  probabilities/confidence values (such as after a softmax operation). Other
+  values may result in strange-looking saliency maps that are difficult (or
+  impossible) to interpret.
 
 .. _submitit: https://github.com/facebookincubator/submitit
 .. _benchmarking module: https://pytorch.org/tutorials/recipes/recipes/benchmark.html
