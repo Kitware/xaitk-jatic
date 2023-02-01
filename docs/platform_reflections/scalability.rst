@@ -114,22 +114,25 @@ Other PyTorch Lightning specific "gotchas":
   accelerators may also need to be reduced if results must be in a specific
   order.
 
-* Pay attention to the ordering of image axes.
-
 * Benchmarking PyTorch Lightning code should be done with PyTorch's
   `benchmarking module`_.
 
 * Lightning operates mainly on ``DataLoaders``. An ``IterableDataset`` can be
-  used with the generators ``xaitk-saliency`` yields to prevent loading everything
-  into memory at once.
+  used with the generators ``xaitk-saliency`` yields to prevent loading
+  everything into memory at once. Note that using ``num_workers > 1`` with an
+  ``IterableDataset`` may result in duplicating data. Care should be taken to
+  split data assignments across workers so that work is not also duplicated. In
+  the example notebook, worker ID is used to carry out this assignment process.
+  If data cannot be duplicated, ``num_workers`` should be limited.
 
 * The fill value used by the saliency generator depends on when perturbed data
   is generated (before or after pre-processing).
 
-* Ensure the model predictions given to the saliency generator are
-  probabilities/confidence values (such as after a softmax operation). Other
-  values may result in strange-looking saliency maps that are difficult (or
-  impossible) to interpret.
+* Ensure the model outputs given to the saliency generator correspond to what
+  the interface is asking for, such as the result of a softmax operation for
+  probabilities/confidence values. Providing other values may result in
+  strange-looking saliency maps that are difficult (or impossible) to
+  interpret.
 
 .. _submitit: https://github.com/facebookincubator/submitit
 .. _benchmarking module: https://pytorch.org/tutorials/recipes/recipes/benchmark.html
