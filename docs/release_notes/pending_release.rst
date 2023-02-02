@@ -22,6 +22,8 @@ Docs
 * Added the beginning of documents to detail reflections and lessons learned
   when working the use of xaitk-saliency with those platforms.
 
+* Added PyTorch Lightning reflections, especially concerning scalability.
+
 Examples
 
 * Added an example notebook for integrating the use of HuggingFace with
