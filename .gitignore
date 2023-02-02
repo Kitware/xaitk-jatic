@@ -146,3 +146,8 @@ examples/lightning/cifar-10-python.tar.gz
 examples/lightning/lightning_logs/
 examples/lightning/submitit_logs/
 examples/lightning/*.pkl
+
+# MLFlow example notebook
+examples/mlflow/data
+examples/mlflow/mlartifacts
+examples/mlflow/mlruns
