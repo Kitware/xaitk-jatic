@@ -45,7 +45,3 @@ Scripts
 
 Fixes
 -----
-
-* Added data, mlartifacts, mlruns subfolders under examples/mlflow to .gitignore
-* Removed Colab reference at the top of the MLFlow Jupyter notebook.
-* Removed logging XTrain numpy array as artifact from the Train experiment in the MLFlow Jupyter notebook.
