@@ -43,13 +43,13 @@ the python environment and dependencies.
 
 Under the ``Evaluation`` experiment, we create ``k`` MLFlow runs for ``k`` different
 image samples from a given input dataset. In this experiment, for each run, we store
-the ``top_class_confidence_score`` under ``metrics`` and ``Image_id``, ``Top_conf_class``
-name and list of ``Class_conf`` scores under ``tags``. By linking each image sample to an
-MLFlow run, it is possible to make use of MLFlow's run filter and query capabilities which
-helps to retrieve (both in the UI and at the backend using ``mlflow.search_runs()``) the
-image samples based on a given set of ``tags`` and ``metrics``. Note: A call to
-``mlflow.search_runs()`` with a specific filter string returns a pandas DataFrame with the
-necessary query results.
+the ``Predicted_class_conf`` and class-wise confidence scores under ``metrics`` and
+the ``Image_id``, ``GT_class`` and ``Predicted_class`` under ``tags``. By linking each
+image sample to an MLFlow run, it is possible to make use of MLFlow's run filter and
+query capabilities which helps to retrieve (both in the UI and at the backend using
+``mlflow.search_runs()``) the image samples based on a given set of ``tags`` and ``metrics``.
+Note: A call to ``mlflow.search_runs()`` with a specific filter string returns a pandas
+DataFrame with the necessary query results.
 
 **Saliency Map Generation**:
 
