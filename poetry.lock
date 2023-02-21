@@ -921,7 +921,7 @@ testing = ["pytest (>=6.0.0)"]
 [package.source]
 type = "git"
 url = "git@gitlab.kitware.com:xaitk/cdao/jatic-toolbox.git"
-reference = "HEAD"
+reference = "main"
 resolved_reference = "8c631d2270c5843d6db8ac0a36e142efddd32982"
 
 [[package]]
@@ -3359,4 +3359,4 @@ notebooks = ["jupyter"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7,<3.10"
-content-hash = "9578cc10cd4dde4caf51261249dc4a4a5d693fe7a7395e28e98faede233e2eae"
+content-hash = "d984b98260eef1f42b676663291aea1cdc18068a23a410a36855ba732109bab4"
