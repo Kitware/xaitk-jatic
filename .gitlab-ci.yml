@@ -74,8 +74,7 @@ default:
     - poetry -V
     - poetry config --local virtualenvs.in-project true
     # For internal git dependencies
-    - git config --global url."https://gitlab.kitware.com/".insteadOf "git@gitlab.kitware.com/"
-    - poetry config -- http-basic gitlab-ci-token $CI_JOB_TOKEN
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@kitware.gitlab.com/".insteadOf "git@gitlab.com:"
     # Will make use of .cache/poetry
     - poetry install --sync
 
