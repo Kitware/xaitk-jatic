@@ -164,7 +164,7 @@ test-notebooks:
       - NOTEBOOK_DIR: "examples/huggingface"
         NOTEBOOK_FILE: [ "xaitk-huggingface.ipynb" ]
       - NOTEBOOK_DIR: "examples/mlflow"
-        NOTEBOOK_FILE: [ "MNIST_scikit_saliency.ipynb" ]
+        NOTEBOOK_FILE: [ "MNIST_MLFlow_scikit_saliency.ipynb" ]
       - NOTEBOOK_DIR: "examples/lightning"
         NOTEBOOK_FILE: [ "xaitk-lightning.ipynb" ]
   # Using default container image defined above
