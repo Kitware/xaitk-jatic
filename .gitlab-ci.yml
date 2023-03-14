@@ -118,10 +118,7 @@ test-pytest:
 #
 # This job has a parallel matrix to parameterize different working-directories
 # and notebooks within to run. Each parallel instance of this job should only
-# run a single notebook. Each notebook is basically assumed to make use of at
-# most 1 (one) GPU. Runners matching the tags "docker" and "gpu" should be
-# configured accordingly (e.g. a machine with a single GPU should be configured
-# to only be able to run one job at a time for GPU tag matching jobs).!reference:
+# run a single notebook. !reference:
 #
 # See GitLab docs for parallel-matrix functionality:
 #   https://docs.gitlab.com/ee/ci/yaml/#parallelmatrix
@@ -146,8 +143,6 @@ test-notebooks:
     TRANSFORMERS_CACHE: "${CI_PROJECT_DIR}/.cache/huggingface/hub"
   tags:
     - docker
-    # Add the GPU tag for notebooks to be able to be run faster.
-    - gpu
   # Merge inherited caches
   cache:
     - !reference [.test_defaults, cache]
@@ -169,7 +164,6 @@ test-notebooks:
         NOTEBOOK_FILE: [ "xaitk-lightning.ipynb" ]
   # Using default container image defined above
   script:
-    - nvidia-smi
     - cd "${NOTEBOOK_DIR}"
     - poetry run papermill
         --progress-bar -k python3 --stdout-file - --stderr-file -
