@@ -30,6 +30,8 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.7,<3.10"
 xaitk-saliency = ">=0.6.1"
+jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", rev = "4109d7b9", extras = ["smqtk"] }
+setuptools = ">=65.6.3"
 # Notebook extras support (duplicated in dev group for "always on")
 jupyter = { version = ">=1.0.0", optional = true }
 

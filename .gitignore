@@ -151,3 +151,6 @@ examples/lightning/*.pkl
 examples/mlflow/data
 examples/mlflow/mlartifacts
 examples/mlflow/mlruns
+
+# Object detection protocol notebook
+examples/jatic_toolbox/data/

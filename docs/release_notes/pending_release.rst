@@ -26,6 +26,9 @@ Docs
 
 * Added MLFlow reflections.
 
+* Added reflections on applying the object detection protocol defined in
+  the jatic_toolbox to xaitk-saliency.
+
 Examples
 
 * Added an example notebook for integrating the use of HuggingFace with
@@ -37,6 +40,9 @@ Examples
 * Added an example notebook with strategies for integrating the use of
   PyTorch Lightning with xaitk-saliency. An additional notebook
   benchmarking these strategies was also added.
+
+* Added an example notebook demonstrating using a jatic_toolbox protocol-
+  based detector with xaitk-saliency.
 
 Scripts
 
