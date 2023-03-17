@@ -49,6 +49,11 @@ default:
 # REMINDER: The "." prefix causes the "job" to be hidden (does not get run),
 # but can still be used for inheritance.
 
+# For internal git dependencies
+.setup_ci_git: &setup_ci_git
+  - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.jatic.net".insteadof "ssh://git@gitlab.jatic.net"
+  - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.jatic.net/".insteadOf "git@gitlab.jatic.net:"
+
 .poetry_install:
   variables:
     # Change pip's cache directory to be inside the project directory since we
@@ -73,6 +78,7 @@ default:
     - command -v poetry
     - poetry -V
     - poetry config --local virtualenvs.in-project true
+    - *setup_ci_git
     # Will make use of .cache/poetry
     - poetry install --sync
 
@@ -162,6 +168,8 @@ test-notebooks:
         NOTEBOOK_FILE: [ "MNIST_MLFlow_scikit_saliency.ipynb" ]
       - NOTEBOOK_DIR: "examples/lightning"
         NOTEBOOK_FILE: [ "xaitk-lightning.ipynb" ]
+      - NOTEBOOK_DIR: "examples/jatic_toolbox"
+        NOTEBOOK_FILE: [ "jatic-object-detector-protocol.ipynb" ]
   # Using default container image defined above
   script:
     - cd "${NOTEBOOK_DIR}"
