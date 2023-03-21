@@ -44,6 +44,9 @@ Examples
 * Added an example notebook demonstrating using a jatic_toolbox protocol-
   based detector with xaitk-saliency.
 
+* Added an example notebook for integrating the use of Gradio with
+  xaitk-saliency.
+
 Scripts
 
 * Reuse a public helper script previously developed to assist in pending
