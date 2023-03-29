@@ -149,7 +149,6 @@ examples/lightning/*.pkl
 
 # MLFlow example notebook
 examples/mlflow/data
-examples/mlflow/mlartifacts
 examples/mlflow/mlruns
 examples/mlflow/saliency_map_np_arrays
 
