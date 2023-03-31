@@ -118,6 +118,8 @@ test-pytest:
       - PY_VERSION: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
   image: python:${PY_VERSION}
   script:
+    # Install extras for static notebook checking
+    - poetry install --all-extras --sync
     - poetry run pytest
 
 # Job to test-run the example jupyter notebooks
@@ -164,14 +166,23 @@ test-notebooks:
       # Sequences combinatorically combine within a list entry
       - NOTEBOOK_DIR: "examples/huggingface"
         NOTEBOOK_FILE: [ "xaitk-huggingface.ipynb" ]
+        EXTRAS: [ "huggingface" ]
       - NOTEBOOK_DIR: "examples/mlflow"
         NOTEBOOK_FILE: [ "MNIST_MLFlow_scikit_saliency.ipynb" ]
+        EXTRAS: [ "mlflow" ]
       - NOTEBOOK_DIR: "examples/lightning"
         NOTEBOOK_FILE: [ "xaitk-lightning.ipynb" ]
+        EXTRAS: [ "lightning" ]
       - NOTEBOOK_DIR: "examples/jatic_toolbox"
         NOTEBOOK_FILE: [ "jatic-object-detector-protocol.ipynb" ]
+        EXTRAS: [ "" ]
   # Using default container image defined above
   script:
+    - |
+      if [[ -n "${EXTRAS}" ]]
+      then
+        poetry install --extras "${EXTRAS}" --sync
+      fi
     - cd "${NOTEBOOK_DIR}"
     - poetry run papermill
         --progress-bar -k python3 --stdout-file - --stderr-file -

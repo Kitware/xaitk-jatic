@@ -34,9 +34,24 @@ jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", rev
 setuptools = ">=65.6.3"
 # Notebook extras support (duplicated in dev group for "always on")
 jupyter = { version = ">=1.0.0", optional = true }
+# Notebook specific dependencies
+datasets = { version = ">=2.0.0", optional = true }
+transformers = { version = ">=4.22.0", optional = true }
+timm = { version = ">=0.6.5", optional = true }
+mlflow = [
+  { version = "==2.1.1", python = ">=3.8", optional = true },
+  { version = "==1.30.0", python = "==3.7", optional = true }
+]
+pytorch-lightning = { version = ">=1.6,<2.0", optional = true }
+torch = { version = ">=1.7,!=1.12.0", optional = true }
+torchmetrics = { version = ">=0.7", optional = true }
+torchvision = { version = ">=0.11.1", optional = true }
 
 [tool.poetry.extras]
 notebooks = [ "jupyter" ]
+huggingface = [ "datasets", "transformers", "torch", "timm" ]
+lightning = [ "pytorch-lightning", "torch", "torchmetrics", "torchvision" ]
+mlflow = [ "mlflow" ]
 
 [tool.poetry.group.dev.dependencies]
 # Linting
@@ -55,7 +70,9 @@ pytest = ">=7.2.0"
 pytest-cov = ">=4.0.0"
 # Jupyter notebook testing
 jupyter = ">=1.0.0"
+jupytext = ">=1.14.0"
 papermill = ">=2.4.0"
+pyright = ">=1.1.280"
 # Docs
 Sphinx = [
     # Hinge because, while sphinx >=5.3 supports python <3.8.1, it requires an
