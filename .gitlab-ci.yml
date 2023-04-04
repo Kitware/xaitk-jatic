@@ -174,8 +174,11 @@ test-notebooks:
         NOTEBOOK_FILE: [ "xaitk-lightning.ipynb" ]
         EXTRAS: [ "lightning" ]
       - NOTEBOOK_DIR: "examples/jatic_toolbox"
-        NOTEBOOK_FILE: [ "jatic-object-detector-protocol.ipynb" ]
-        EXTRAS: [ "" ]
+        NOTEBOOK_FILE: [
+          "jatic-object-detector-protocol.ipynb",
+          "jatic-image-classifier-protocol.ipynb"
+        ]
+        EXTRAS: [ "huggingface jatic" ]
   # Using default container image defined above
   script:
     - |
