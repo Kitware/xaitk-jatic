@@ -41,8 +41,11 @@ Examples
   PyTorch Lightning with xaitk-saliency. An additional notebook
   benchmarking these strategies was also added.
 
-* Added an example notebook demonstrating using a jatic_toolbox protocol-
+* Added an example notebook demonstrating using a JATIC Toolbox protocol-
   based detector with xaitk-saliency.
+
+* Added an example notebook demonstrating using a JATIC Toolbox protocol-
+  based image classifier with xaitk-saliency.
 
 * Added an example notebook for integrating the use of Gradio with
   xaitk-saliency.
