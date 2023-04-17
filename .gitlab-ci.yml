@@ -179,6 +179,9 @@ test-notebooks:
           "jatic-image-classifier-protocol.ipynb"
         ]
         EXTRAS: [ "huggingface jatic" ]
+      - NOTEBOOK_DIR: "demos"
+        NOTEBOOK_FILE: [ "increment0-demo.ipynb" ]
+        EXTRAS: [ "jatic" ]
   # Using default container image defined above
   script:
     - |

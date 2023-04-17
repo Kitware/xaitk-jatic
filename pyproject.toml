@@ -53,7 +53,7 @@ notebooks = [ "jupyter" ]
 huggingface = [ "datasets", "transformers", "torch", "timm" ]
 lightning = [ "pytorch-lightning", "torch", "torchmetrics", "torchvision" ]
 mlflow = [ "mlflow" ]
-jatic = [ "scipy" ]
+jatic = [ "scipy", "torch", "torchvision" ]
 
 [tool.poetry.group.dev.dependencies]
 # Linting
