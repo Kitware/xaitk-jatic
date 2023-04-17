@@ -154,3 +154,6 @@ examples/mlflow/saliency_map_np_arrays
 
 # Object detection protocol notebook
 examples/jatic_toolbox/data/
+
+# Demo notebooks
+demos/data/

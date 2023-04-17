@@ -50,6 +50,9 @@ Examples
 * Added an example notebook for integrating the use of Gradio with
   xaitk-saliency.
 
+* Added a demo notebook for increment 0 work exploring the JATIC object
+  detector protocol, trame GUI, and other increment 0 progress.
+
 Scripts
 
 * Reuse a public helper script previously developed to assist in pending
