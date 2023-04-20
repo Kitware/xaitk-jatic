@@ -5534,7 +5534,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 
 [extras]
 huggingface = ["datasets", "timm", "torch", "transformers"]
-jatic = ["scipy", "torch", "torchvision"]
+jatic = ["torch", "torchvision"]
 lightning = ["pytorch-lightning", "torch", "torchmetrics", "torchvision"]
 mlflow = ["mlflow", "mlflow"]
 notebooks = ["jupyter"]
@@ -5542,4 +5542,4 @@ notebooks = ["jupyter"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7,<3.10"
-content-hash = "827ff656f27c0b747d245003c5ab3744c1dd47bcc247fb073faa0d4932478f01"
+content-hash = "e3432ad59a7ef6604004f8d2adaa85b06fea8de85f3126dbeeb874c34a28e371"
