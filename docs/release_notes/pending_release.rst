@@ -53,6 +53,16 @@ Examples
 * Added a demo notebook for increment 0 work exploring the JATIC object
   detector protocol, trame GUI, and other increment 0 progress.
 
+Interopability
+
+* Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow
+  for interopability with object detectors following the ``ObjectDetector``
+  protocol from the JATIC Toolbox.
+
+* Added ``ClassifyImage`` implementation, ``JATICImageClassifier``, to allow
+  for interopability with image classifiers following the ``Classifier``
+  protocol from the JATIC Toolbox.
+
 Scripts
 
 * Reuse a public helper script previously developed to assist in pending
