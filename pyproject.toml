@@ -47,6 +47,7 @@ pytorch-lightning = { version = ">=1.6,<2.0", optional = true }
 torch = { version = ">=1.7,!=1.12.0", optional = true }
 torchmetrics = { version = ">=0.7", optional = true }
 torchvision = { version = ">=0.11.1", optional = true }
+gradio = { version = "==3.21.0", python = ">=3.7", optional = true }
 
 [tool.poetry.extras]
 notebooks = [ "jupyter" ]
@@ -54,6 +55,7 @@ huggingface = [ "datasets", "transformers", "torch", "timm" ]
 lightning = [ "pytorch-lightning", "torch", "torchmetrics", "torchvision" ]
 mlflow = [ "mlflow" ]
 jatic = [ "torch", "torchvision" ]
+gradio = [ "gradio" ]
 
 [tool.poetry.group.dev.dependencies]
 # Linting

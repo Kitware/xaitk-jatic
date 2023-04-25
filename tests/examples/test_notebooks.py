@@ -11,7 +11,9 @@ from jatic_toolbox.testing.pyright import list_error_messages, pyright_analyze
     ("examples/jatic_toolbox/jatic-object-detector-protocol.ipynb", 0),
     ("examples/jatic_toolbox/jatic-image-classifier-protocol.ipynb", 0),
     ("demos/increment0-demo.ipynb", 0),
-    ("demos/demo_utils.py", 0)
+    ("demos/demo_utils.py", 0),
+    ("examples/gradio/xaitk-gradio.ipynb", 0),
+    ("examples/gradio/gr_component_state.py", 0)
 ])
 def test_pyright_nb(filepath: str, expected_num_errors: int) -> None:
     results = pyright_analyze(filepath)
