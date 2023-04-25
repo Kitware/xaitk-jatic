@@ -182,6 +182,9 @@ test-notebooks:
       - NOTEBOOK_DIR: "demos"
         NOTEBOOK_FILE: [ "increment0-demo.ipynb" ]
         EXTRAS: [ "jatic" ]
+      - NOTEBOOK_DIR: "examples/gradio"
+        NOTEBOOK_FILE: [ "xaitk-gradio.ipynb" ]
+        EXTRAS: [ "gradio" ]
   # Using default container image defined above
   script:
     - |
