@@ -42,6 +42,7 @@ def select_img_cls_model(model_choice):
     img_cls_model_name.append(model_choice)
     return model_choice
 
+
 def select_obj_det_model(model_choice):
     obj_det_model_name.append(model_choice)
     return model_choice
