@@ -1,14 +1,14 @@
 # Choice of image classification model
-img_cls_model_name = []
+img_cls_model_name = ['ResNet-50']
 
 # Choice of object detection model
-obj_det_model_name = []
+obj_det_model_name = ['Faster-RCNN']
 
 # Choice of image classification saliency algorithm
-img_cls_saliency_algo_name = []
+img_cls_saliency_algo_name = ['RISE']
 
 # Choice of object detection saliency algorithm
-obj_det_saliency_algo_name = []
+obj_det_saliency_algo_name = ['DRISE']
 
 # Number of threads to utilize when generating masks
 threads_state = [4]
@@ -20,10 +20,10 @@ window_size_state = ['(50,50)']
 stride_state = ['(20,20)']
 
 # Number of random masks for RISEStack/DRISEStack algorithm
-num_masks_state = ['200']
+num_masks_state = [200]
 
 # Spatial resolution of masking grid for RISEStack/DRISEStack algorithm
-spatial_res_state = ['8']
+spatial_res_state = [8]
 
 # Probability of the grid cell being set to 1 (otherwise 0)
 p1_state = [0.5]
@@ -32,7 +32,7 @@ p1_state = [0.5]
 seed_state = [0]
 
 # Debiased option for RISEStack/DRISEStack saliency algorithm
-debiased_state = [False]
+debiased_state = [True]
 
 # Occlusion grid cell size in pixels for RandomGridStack algorithm
 occlusion_grid_state = ['(128,128)']
