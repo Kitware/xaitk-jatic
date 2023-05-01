@@ -157,3 +157,6 @@ examples/jatic_toolbox/data/
 
 # Demo notebooks
 demos/data/
+
+# Gradio example notebook
+examples/gradio/data
