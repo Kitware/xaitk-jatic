@@ -124,7 +124,7 @@ test-pytest:
 test-release-notes-check:
   extends: .test_defaults
   script:
-    - git diff --name-only ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}...${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | grep -P 'docs/release_notes')
+    - git diff --name-only ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}...${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | grep -P 'docs/release_notes'
     - |
       if [[ -z "$(git diff --name-only ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}...${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | grep -P 'docs/release_notes')" ]]
       then
