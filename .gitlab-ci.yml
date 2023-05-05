@@ -120,6 +120,19 @@ test-pytest:
   script:
     - poetry run pytest
 
+# Job to check the release notes folder
+test-release-notes-check:
+  extends: .test_defaults
+  script:
+    - |
+      if [[ -z "$(git diff --name-only ${CI_MERGE_REQUEST_TARGET_BRANCH_SHA}...${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA} | grep -P 'docs/release_notes')" ]]
+      then
+        echo "docs/release_notes not updated"
+        exit 1
+      else
+        echo "docs/release_notes updated"
+      fi
+
 # Job to test-run the example jupyter notebooks
 #
 # This job has a parallel matrix to parameterize different working-directories
