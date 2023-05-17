@@ -56,6 +56,9 @@ Examples
 * Added a demo notebook for increment 0 work exploring the JATIC object
   detector protocol, trame GUI, and other increment 0 progress.
 
+* Added an example notebook demonstrating model comparison with Gradio and
+  xaitk-saliency.
+
 Interopability
 
 * Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow
