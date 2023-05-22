@@ -124,14 +124,19 @@ test-pytest:
 test-release-notes-check:
   extends: .test_defaults
   script:
-    - git diff --name-only ${CI_MERGE_REQUEST_TARGET_BRANCH_SHA}...${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA} | grep -P 'docs/release_notes'
+    - git fetch
     - |
-      if [[ -z "$(git diff --name-only ${CI_MERGE_REQUEST_TARGET_BRANCH_SHA}...${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA} | grep -P 'docs/release_notes')" ]]
+      if [[ "$(git diff --name-only --diff-filter=A origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}...origin/${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | grep -E '(.rst|.i?py)')" ]]
       then
-        echo "docs/release_notes not updated"
-        exit 1
+        if [[ -z "$(git diff --name-only origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}...origin/${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | grep -P 'docs/release_notes')" ]]
+        then
+          echo "docs/release_notes not updated"
+          exit 1
+        else
+          echo "docs/release_notes updated"
+        fi
       else
-        echo "docs/release_notes updated"
+        echo "Update to release notes not required"
       fi
 
 # Job to test-run the example jupyter notebooks
