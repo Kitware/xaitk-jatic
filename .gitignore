@@ -160,3 +160,7 @@ demos/data/
 
 # Gradio example notebook
 examples/gradio/data
+
+# Hugging Face Accelerate notebook
+examples/huggingface/*.pkl
+examples/huggingface/submitit_logs/

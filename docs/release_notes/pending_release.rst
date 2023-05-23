@@ -59,6 +59,10 @@ Examples
 * Added an example notebook demonstrating model comparison with Gradio and
   xaitk-saliency.
 
+* Added an example notebook for integrating the use of HuggingFace Accelerate
+  with xaitk-saliency. An additional notebook benchmarking this strategy was
+  also added.
+
 Interopability
 
 * Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow

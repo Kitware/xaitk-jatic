@@ -165,7 +165,10 @@ test-notebooks:
     matrix:
       # Sequences combinatorically combine within a list entry
       - NOTEBOOK_DIR: "examples/huggingface"
-        NOTEBOOK_FILE: [ "xaitk-huggingface.ipynb" ]
+        NOTEBOOK_FILE: [
+          "xaitk-accelerate.ipynb",
+          "xaitk-huggingface.ipynb"
+        ]
         EXTRAS: [ "huggingface" ]
       - NOTEBOOK_DIR: "examples/mlflow"
         NOTEBOOK_FILE: [ "MNIST_MLFlow_scikit_saliency.ipynb" ]
