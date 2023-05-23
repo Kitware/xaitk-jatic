@@ -136,3 +136,64 @@ Other PyTorch Lightning specific "gotchas":
 
 .. _submitit: https://github.com/facebookincubator/submitit
 .. _benchmarking module: https://pytorch.org/tutorials/recipes/recipes/benchmark.html
+
+
+Hugging Face Accelerate
+=======================
+
+Hugging Face Accelerate enables PyTorch code to be run across any distributed
+configuration, just by utilizing the ``Accelerator`` class. At a high-level,
+at least in the multi-GPU use case, Accelerate acts as a ``multiprocessing``
+adapter, which lends itself very well to parallelization across many images.
+This capability bypasses the single-threaded limitation that
+``xaitk-saliency``'s high-level API has, without requiring the user to fully
+implement a parallelization technique themselves.
+
+Overall, Hugging Face Accelerate provides a fairly low-barrier way to run
+across various distributed configurations with regards to code changes. Due to
+this, the example notebook created for exploring this integration largely
+follows the "typical" integration strategy used when implementing the
+``ClassifyImage`` interface, with the biggest difference in integration being
+the need to gather results as an artifact of the truly multiprocessing nature
+of Accelerate. It should also be noted that this gethering of results may
+result in some data transfer overhead. To gather results across processes,
+results must be PyTorch Tensors and on the appropriate device (i.e. GPU not
+CPU if GPU is being utilized). However, as ``xaitk-saliency`` works with
+``numpy`` as its universal format, these results must be converted back into
+Tensors on GPU to be gathered across processes. It is possible, especially with
+artifact tracking in place, that this gathering of results could be unnecessary
+depending on the application.
+
+Benchmarking data for the integration strategy is available in
+``examples/huggingface/benchmarking.ipynb``. These results showcase that the
+integration effectively reduces computation time with an increase in the
+number of GPUs used. The improvement is not quite linear due to the overhead
+in managing data across multiple processes. As this integration does not
+specifically consider parallelizing computation within the computation of
+saliency maps for a singular image, we see limited improvement as the number
+of masks increases, as expected.
+
+It was noted during this exploration that an incongruence between
+``xaitk-saliency`` and these scalability platforms may exist. ``xaitk-saliency``
+uses a channel-last format while both Lightning and Accelerate used channel-
+first formats for the given integration use cases. This difference incurs
+potentially significant overhead cost to get the data in the appropriate
+format.
+
+Other Hugging Face Accelerate specific "gotchas":
+
+* Use caution when selecting batch size. Using a batch size larger than the
+  number of image samples (potentially relative to the number of processes,
+  based on the ``Accelerator`` settings) can result ``None``, nonsense, or
+  duplicate data.
+
+* Masked data needs to be moved to the appropriate device.
+
+* Avoid initializing ``cuda`` before the ``Accelerator``. Initialize the
+  ``Accelerator`` as soon as possible. The easiest way to do this is wrap
+  all relevant code in a function that the ``notebook_launcher`` calls.
+
+  * Like Lightning, `submitit`_ can be used as a workaround to enable
+    multiple launches.
+
+.. _submitit: https://github.com/facebookincubator/submitit
