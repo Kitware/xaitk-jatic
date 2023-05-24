@@ -8,6 +8,7 @@ from jatic_toolbox.testing.pyright import list_error_messages, pyright_analyze
     ("demos/demo_utils.py", 0),
     ("demos/increment0-demo.ipynb", 0),
     ("examples/gradio/gr_component_state.py", 0),
+    ("examples/gradio/model-comparison.ipynb", 0),
     ("examples/gradio/xaitk-gradio.ipynb", 0),
     ("examples/huggingface/xaitk-accelerate.ipynb", 0),
     ("examples/huggingface/xaitk-huggingface.ipynb", 0),
