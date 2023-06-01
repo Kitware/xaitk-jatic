@@ -79,5 +79,8 @@ Scripts
 * Reuse a public helper script previously developed to assist in pending
   release notes transition upon a release.
 
+* Added a script that performs a CI check for changes to the release notes 
+  folder in a Merge Request.
+
 Fixes
 -----

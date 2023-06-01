@@ -125,19 +125,7 @@ test-release-notes-check:
   extends: .test_defaults
   script:
     - git fetch
-    - |
-      if [[ "$(git diff --name-only --diff-filter=A origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}...origin/${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | grep -E '(.rst|.i?py)')" ]]
-      then
-        if [[ -z "$(git diff --name-only origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}...origin/${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | grep -P 'docs/release_notes')" ]]
-        then
-          echo "docs/release_notes not updated"
-          exit 1
-        else
-          echo "docs/release_notes updated"
-        fi
-      else
-        echo "Update to release notes not required"
-      fi
+    - scripts/check_for_release_notes.sh origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
 
 # Job to test-run the example jupyter notebooks
 #
