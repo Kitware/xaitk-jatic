@@ -30,33 +30,14 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.7,<3.10"
 xaitk-saliency = ">=0.6.1"
-jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", rev = "4109d7b91359544b2f4152073369c09413446438", extras = ["smqtk"] }
+jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", rev = "4109d7b91359544b2f4152073369c09413446438", extras = ["smqtk", "torch"] }
 setuptools = ">=65.6.3"
 scipy = ">=1.7.3"
 # Notebook extras support (duplicated in dev group for "always on")
 jupyter = { version = ">=1.0.0", optional = true }
-# Notebook specific dependencies
-accelerate = { version = ">=0.18.0", optional = true }
-datasets = { version = ">=2.0.0", optional = true }
-transformers = { version = ">=4.22.0", optional = true }
-timm = { version = ">=0.6.5", optional = true }
-mlflow = [
-  { version = "==2.1.1", python = ">=3.8", optional = true },
-  { version = "==1.30.0", python = "==3.7", optional = true }
-]
-pytorch-lightning = { version = ">=1.6,<2.0", optional = true }
-torch = { version = ">=1.7,!=1.12.0", optional = true }
-torchmetrics = { version = ">=0.7", optional = true }
-torchvision = { version = ">=0.11.1", optional = true }
-gradio = { version = "==3.27.0", python = ">=3.7", optional = true }
 
 [tool.poetry.extras]
 notebooks = [ "jupyter" ]
-huggingface = [ "accelerate", "datasets", "transformers", "torch", "torchvision", "timm" ]
-lightning = [ "pytorch-lightning", "torch", "torchmetrics", "torchvision" ]
-mlflow = [ "mlflow" ]
-jatic = [ "torch", "torchvision" ]
-gradio = [ "gradio" ]
 
 [tool.poetry.group.dev.dependencies]
 # Linting
