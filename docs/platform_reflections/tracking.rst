@@ -55,13 +55,16 @@ DataFrame with the necessary query results.
 
 Under the ``Saliency Map Generation`` experiment, we create a single MLFlow run based on the
 ``Image_id`` and related information obtained through the query result from the ``Evaluation``
-experiment. In this run, we store the saliency map numpy array and saliency map visualizations
-(image) under ``artifacts`` for the queried ``Image_id``. In addition, images stored under
-``artifacts`` can be previewed in the MLFlow UI. Furthermore, based on the design choice for
-output generation, images and numpy arrays can be stored as separate files for each class or a
-single file containing information from all classes. Most importantly, it is possible to edit
-an existing run to store and preview saliency maps for a different ``Image_id`` based on an
-updated backend query.
+experiment. In this run, we store the saliency map numpy array, saliency map visualizations
+(image) under ``artifacts`` for the queried ``Image_id`` and the saliency algorithm parameters
+under the ``parameters`` tab. In addition, images stored under ``artifacts`` can be previewed
+in the MLFlow UI. Furthermore, based on the design choice for output generation, images and
+numpy arrays can be stored as separate files for each class or a single file containing
+information from all classes. Most importantly, as part of a test for reproducibility, it is
+possible to query the saliency algorithm parameters from an existing saliency generation run
+and regenerate the same results as part of a new run. Finally, it is also possible to modify
+the values an existing run to store and preview saliency maps for a different ``Image_id``
+based on an updated backend query.
 
 **MLFlow UI**:
 
