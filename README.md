@@ -17,8 +17,17 @@ notebooks associated with each increment can be found in `./demos/`.
 Reflections on integrating `xaitk-saliency` with these tools can be
 found in `./docs/platform_reflections/`.
 
+## Contributing
+
+- We follow the general guidelines outlined in the
+[JATIC Software Development Plan](https://gitlab.jatic.net/jatic/docs/sdp/-/blob/main/Branch,%20Merge,%20Release%20Strategy.md).
+- The Git Flow branching strategy is used with an additional `release` branch
+  for versioned releases.
+- See `docs/releasing/release_process.rst` for detailed release information.
+- See `CONTRIBUTING.md` for additional contributing information.
+
 ## License
 ...
 
-**POC**: Brian Hu @brian.hu  
+**POC**: Brian Hu @brian.hu
 **DPOC**: Paul Tunison @paul.tunison
