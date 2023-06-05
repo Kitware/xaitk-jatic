@@ -120,6 +120,13 @@ test-pytest:
   script:
     - poetry run pytest
 
+# Job to check the release notes folder
+test-release-notes-check:
+  extends: .test_defaults
+  script:
+    - git fetch
+    - scripts/check_for_release_notes.sh origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+
 # Job to test-run the example jupyter notebooks
 #
 # This job has a parallel matrix to parameterize different working-directories
