@@ -20,7 +20,8 @@ Docs
   release notes.
 
 * Updated the README with more detailed description and usage of the package
-  as well as listing points of contact (POCs).
+  including branch/merge/release strategy as well as listing points of contact
+  (POCs).
 
 * Added the beginning of documents to detail reflections and lessons learned
   when working the use of xaitk-saliency with those platforms.

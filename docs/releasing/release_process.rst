@@ -160,29 +160,28 @@ current package version.
    $ git tag -a "$VERSION" -F docs/release_notes/"$VERSION".rst
    $ git push UPSTREAM "$VERSION"
 
-Draft a new release on Github
+Draft a new release on GitLab
 -----------------------------
-After creating and pushing a new version tag, a GitHub "release" should be
+After creating and pushing a new version tag, a GitLab "release" should be
 made.
 
-a. Navigate to the GitHub `Releases page`_ for the xaitk-cdao repository.
+a. Navigate to the GitLab `Releases page`_ for the xaitk-cdao repository.
 
-b. Click the "Draft a new release" button (or go `here
-   <https://github.com/XAITK/xaitk-cdao/releases/new>`_).
+b. Click the "Create a new release" button (or go `here
+   <https://gitlab.jatic.net/jatic/kitware/xaitk-cdao/-/releases/new>`_).
 
-c. Select from the "Choose a tag" drop down the tag version just created and
+c. Select from the "Tag name" dropdown the tag version just created and
    pushed
 
 d. Enter the version number as the title, e.g. "v1.2.3".
 
-e. Copy and paste the release notes for this version into the description
+e. Select the release date.
+
+f. Copy and paste the release notes for this version into the release notes
    field.
 
-f. Select the "This is a pre-release" check-box if applicable.
-
-g. Click the "Publish Release" button to create the GitHub release!
+g. Click the "Create Release" button to create the GitLab release!
 
 
 .. _Poetry's version command: https://python-poetry.org/docs/cli/#version
-.. _Releases page: https://github.com/XAITK/xaitk-cdao/releases
-.. _XAITK/xaitk.github.io home page: https://github.com/XAITK/xaitk.github.io/edit/master/_pages/home.md#L12
+.. _Releases page: https://gitlab.jatic.net/jatic/kitware/xaitk-cdao/-/releases
