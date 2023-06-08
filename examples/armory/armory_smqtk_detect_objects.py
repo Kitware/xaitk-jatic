@@ -261,7 +261,7 @@ try:
 
     # Labels for this pretrained model are detailed here
     # https://pytorch.org/vision/stable/models.html#object-detection-instance-segmentation-and-person-keypoint-detection
-    COCO_INSTANCE_CATEGORY_NAMES = ('__background__','person', 'bicycle', 'car','motorcycle')
+    COCO_INSTANCE_CATEGORY_NAMES = ('__background__','person', 'vehicle', 'traffic light')
     COCO_INSTANCE_CATEGORY_NAMES_NA = "N/A"
 except NameError:
     pass
