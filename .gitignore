@@ -157,6 +157,8 @@ examples/jatic_toolbox/data/
 
 # Demo notebooks
 demos/data/
+demos/mlruns
+demos/saliency_map_np_arrays
 
 # Gradio example notebook
 examples/gradio/data
