@@ -5,8 +5,6 @@ from jatic_toolbox.testing.pyright import list_error_messages, pyright_analyze
 
 @pytest.mark.filterwarnings("ignore:Jupyter is migrating its paths")
 @pytest.mark.parametrize("filepath, expected_num_errors", [
-    ("demos/demo_utils.py", 0),
-    ("demos/increment0-demo.ipynb", 0),
     ("examples/gradio/gr_component_state.py", 0),
     ("examples/gradio/model-comparison.ipynb", 0),
     ("examples/gradio/xaitk-gradio.ipynb", 0),

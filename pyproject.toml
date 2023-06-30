@@ -28,9 +28,9 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7,<3.10"
-xaitk-saliency = ">=0.6.1"
-jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", rev = "4109d7b91359544b2f4152073369c09413446438", extras = ["smqtk", "torch"] }
+python = "^3.8"
+xaitk-saliency = ">=0.7.0"
+jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", rev = "4109d7b91359544b2f4152073369c09413446438", extras = ["test", "torch"] }
 setuptools = ">=65.6.3"
 scipy = ">=1.7.3"
 # Notebook extras support (duplicated in dev group for "always on")
@@ -40,6 +40,13 @@ jupyter = { version = ">=1.0.0", optional = true }
 notebooks = [ "jupyter" ]
 
 [tool.poetry.group.dev.dependencies]
+# A "duplicate" requirement on `xaitk-saliency`, but this time with an extra that
+# pulls in specific transitive requirements that benefit development and CI.
+# This is in dev because we don't want this extra generally required when our
+# package is built/distributed.
+# TODO: Remove once torch 2.0.1 can safely be avoided as the most recent,
+#       compatible version.
+xaitk-saliency = { version = ">=0.7.0", extras = ["example-deps"] }
 # Linting
 flake8 = [
     # Hinge because 6.0 minimum supported python version is 3.8.1
@@ -56,9 +63,7 @@ pytest = ">=7.2.0"
 pytest-cov = ">=4.0.0"
 # Jupyter notebook testing
 jupyter = ">=1.0.0"
-jupytext = ">=1.14.0"
 papermill = ">=2.4.0"
-pyright = ">=1.1.280"
 # Docs
 Sphinx = [
     # Hinge because, while sphinx >=5.3 supports python <3.8.1, it requires an
