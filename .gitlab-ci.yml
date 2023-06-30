@@ -82,15 +82,20 @@ default:
     # Will make use of .cache/poetry
     - poetry install --sync
 
-.test_defaults:
+.test_preamble:
   extends:
     - .run_automatically
-    - .poetry_install
   stage: test
   image: python:3.8
   interruptible: true
   tags:
-    - docker
+    - kitware
+
+.test_defaults:
+  extends:
+    - .test_preamble
+    - .poetry_install
+
 
 # Job to lint python code
 test-py-lint:
@@ -115,17 +120,23 @@ test-pytest:
   extends: .test_defaults
   parallel:
     matrix:
-      - PY_VERSION: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+      - PY_VERSION: [ "3.8", "3.9", "3.10", "3.11" ]
   image: python:${PY_VERSION}
   script:
     - poetry run pytest
 
 # Job to check the release notes folder
 test-release-notes-check:
-  extends: .test_defaults
+  extends: .test_preamble
   script:
     - git fetch
     - scripts/check_for_release_notes.sh origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_TITLE =~ /Merge branch.*/
+      when: never
+    - if: $CI_COMMIT_BRANCH == "release" && $CI_COMMIT_TITLE =~ /Merge branch.*/
+      when: never
+    - !reference [.run_automatically, rules] # Don't overwrite normal rules
 
 # Job to test-run the example jupyter notebooks
 #
@@ -155,7 +166,7 @@ test-notebooks:
     HF_DATASETS_CACHE: "${CI_PROJECT_DIR}/.cache/huggingface/datasets"
     TRANSFORMERS_CACHE: "${CI_PROJECT_DIR}/.cache/huggingface/hub"
   tags:
-    - docker
+    - kitware
   # Merge inherited caches
   cache:
     - !reference [.test_defaults, cache]
@@ -183,8 +194,6 @@ test-notebooks:
           "jatic-object-detector-protocol.ipynb",
           "jatic-image-classifier-protocol.ipynb"
         ]
-      - NOTEBOOK_DIR: "demos"
-        NOTEBOOK_FILE: [ "increment0-demo.ipynb" ]
       - NOTEBOOK_DIR: "examples/gradio"
         NOTEBOOK_FILE: [
           "xaitk-gradio.ipynb",
