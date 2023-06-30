@@ -64,6 +64,9 @@ Examples
   with xaitk-saliency. An additional notebook benchmarking this strategy was
   also added.
 
+* Added a demo notebook for increment 1 work exploring the tracking of model,
+  dataset and saliency map parameters using MLFlow.
+
 Interopability
 
 * Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow
