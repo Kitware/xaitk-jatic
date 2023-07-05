@@ -67,7 +67,10 @@ Examples
 * Added a demo notebook for increment 1 work exploring the tracking of model,
   dataset and saliency map parameters using MLFlow.
 
-Interopability
+* Added an example notebook exploring image perturbations and the effect on
+  saliency maps using the JATIC Toolbox augmentation protocol.
+
+Interoperability
 
 * Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow
   for interopability with object detectors following the ``ObjectDetector``
@@ -82,7 +85,7 @@ Scripts
 * Reuse a public helper script previously developed to assist in pending
   release notes transition upon a release.
 
-* Added a script that performs a CI check for changes to the release notes 
+* Added a script that performs a CI check for changes to the release notes
   folder in a Merge Request.
 
 Fixes
