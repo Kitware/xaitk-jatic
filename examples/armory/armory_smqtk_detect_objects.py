@@ -4,7 +4,7 @@ from typing import Tuple, Iterable, Dict, Hashable, List, Union
 from types import MethodType
 
 import numpy as np
-from smqtk_image_io import AxisAlignedBoundingBox
+from smqtk_image_io.bbox import AxisAlignedBoundingBox
 
 try:
     import torch  # type: ignore
@@ -190,12 +190,12 @@ class ResNetFRCNN(DetectImageObjects):
 
 try:
     def _postprocess_detections(
-        self: RoIHeads,
-        class_logits: torch.Tensor,
-        box_regression: torch.Tensor,
-        proposals: List[torch.Tensor],
-        image_shapes: List[Tuple[int, int]]
-    ) -> Tuple[List[torch.Tensor], List[torch.Tensor], List[torch.Tensor]]:
+        self: RoIHeads,  # type: ignore
+        class_logits: torch.Tensor,  # type: ignore
+        box_regression: torch.Tensor,  # type: ignore
+        proposals: List[torch.Tensor],  # type: ignore
+        image_shapes: List[Tuple[int, int]]  # type: ignore
+    ) -> Tuple[List[torch.Tensor], List[torch.Tensor], List[torch.Tensor]]:  # type: ignore
         """
         Modified bounding box postprocessing function that returns class
         probabilites instead of just a confidence score. Taken from
@@ -206,7 +206,7 @@ try:
         num_classes = class_logits.shape[-1]
 
         boxes_per_image = [boxes_in_image.shape[0] for boxes_in_image in proposals]
-        pred_boxes = self.box_coder.decode(box_regression, proposals)
+        pred_boxes = self.box_coder.decode(box_regression, proposals)  # type: ignore
 
         pred_scores = F.softmax(class_logits, -1)
 
@@ -220,7 +220,7 @@ try:
             boxes = box_ops.clip_boxes_to_image(boxes, image_shape)
 
             # create labels for each prediction
-            labels = torch.arange(num_classes, device=device)
+            labels = torch.arange(num_classes, device=device)  # type: ignore
             labels = labels.view(1, -1).expand_as(scores)
 
             # remove predictions with the background label
@@ -235,7 +235,7 @@ try:
             labels = labels.reshape(-1)
 
             # remove low scoring boxes
-            inds = torch.where(scores > self.score_thresh)[0]
+            inds = torch.where(scores > self.score_thresh)[0]  # type: ignore
             boxes, scores, labels = boxes[inds], scores[inds], labels[inds]
 
             # remove empty boxes
@@ -244,9 +244,9 @@ try:
             boxes, scores, labels = boxes[keep], scores[keep], labels[keep]
 
             # non-maximum suppression, independently done per class
-            keep = box_ops.batched_nms(boxes, scores, labels, self.nms_thresh)
+            keep = box_ops.batched_nms(boxes, scores, labels, self.nms_thresh)  # type: ignore
             # keep only topk scoring predictions
-            keep = keep[:self.detections_per_img]
+            keep = keep[:self.detections_per_img]  # type: ignore
             inds = inds[keep]
             boxes, scores, labels = boxes[keep], scores[keep], labels[keep]
 
