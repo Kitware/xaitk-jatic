@@ -76,7 +76,7 @@ class ResNetFRCNN(DetectImageObjects):
                 box_detections_per_img=self.num_dets,
                 box_score_thresh=self.box_thresh
             )
-            
+
             model_device = torch.device('cpu')
             if self.use_cuda:
                 if torch.cuda.is_available():
@@ -86,11 +86,11 @@ class ResNetFRCNN(DetectImageObjects):
                     raise RuntimeError(
                         "Use of CUDA requested, but not available."
                     )
-            
+
             ckpt = torch.load(self.checkpoint, map_location=model_device)
             model.load_state_dict(ckpt)
             model = model.eval()
-            
+
             model.roi_heads.postprocess_detections = (
                 MethodType(_postprocess_detections, model.roi_heads)
             )
@@ -261,7 +261,7 @@ try:
 
     # Labels for this pretrained model are detailed here
     # https://pytorch.org/vision/stable/models.html#object-detection-instance-segmentation-and-person-keypoint-detection
-    COCO_INSTANCE_CATEGORY_NAMES = ('__background__','person', 'vehicle', 'traffic light')
+    COCO_INSTANCE_CATEGORY_NAMES = ('__background__', 'person', 'vehicle', 'traffic light')
     COCO_INSTANCE_CATEGORY_NAMES_NA = "N/A"
 except NameError:
     pass
