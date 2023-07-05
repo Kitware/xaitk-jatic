@@ -70,7 +70,10 @@ Examples
 * Added an example notebook exploring image perturbations and the effect on
   saliency maps using the JATIC Toolbox augmentation protocol.
 
-Interoperability
+* Added an example notebook for testing the interopability of xaitk-saliency
+  with TwoSix's armory tool.
+
+Interopability
 
 * Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow
   for interopability with object detectors following the ``ObjectDetector``
