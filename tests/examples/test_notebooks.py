@@ -12,6 +12,7 @@ from jatic_toolbox.testing.pyright import list_error_messages, pyright_analyze
     ("examples/huggingface/xaitk-huggingface.ipynb", 0),
     ("examples/jatic_toolbox/jatic-object-detector-protocol.ipynb", 0),
     ("examples/jatic_toolbox/jatic-image-classifier-protocol.ipynb", 0),
+    ("examples/jatic_toolbox/jatic-perturbations.ipynb", 0),
     ("examples/lightning/xaitk-lightning.ipynb", 1),
     ("examples/mlflow/MNIST_MLFlow_scikit_saliency.ipynb", 0),
 ])
