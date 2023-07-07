@@ -200,6 +200,8 @@ test-notebooks:
           "xaitk-gradio.ipynb",
           "model-comparison.ipynb"
         ]
+      - NOTEBOOK_DIR: "examples/armory"
+        NOTEBOOK_FILE: [ "xaitk-armory.ipynb" ]
   # Using default container image defined above
   script:
     - cd "${NOTEBOOK_DIR}"
