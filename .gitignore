@@ -166,3 +166,7 @@ examples/gradio/data
 # Hugging Face Accelerate notebook
 examples/huggingface/*.pkl
 examples/huggingface/submitit_logs/
+
+# Shared Interest example notebook
+examples/shared_interest/data/imagenet_classes.txt
+examples/shared_interest/shared-interest/
