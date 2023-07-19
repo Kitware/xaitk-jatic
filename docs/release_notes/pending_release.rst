@@ -73,6 +73,9 @@ Examples
 * Added an example notebook for testing the interoperability of xaitk-saliency
   with TwoSix's armory tool.
 
+* Added an example notebook for integrating the use of Shared Interest with
+  xaitk-saliency.
+
 Interoperability
 
 * Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow

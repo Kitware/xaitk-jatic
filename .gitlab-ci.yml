@@ -202,6 +202,8 @@ test-notebooks:
         ]
       - NOTEBOOK_DIR: "examples/armory"
         NOTEBOOK_FILE: [ "xaitk-armory.ipynb" ]
+      - NOTEBOOK_DIR: "examples/shared_interest"
+        NOTEBOOK_FILE: [ "xaitk-shared_interest.ipynb" ]
   # Using default container image defined above
   script:
     - cd "${NOTEBOOK_DIR}"
