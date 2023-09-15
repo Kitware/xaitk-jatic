@@ -22,15 +22,16 @@ classifiers = [
     'Operating System :: MacOS :: MacOS X',
     'Operating System :: Unix',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8.1"
 xaitk-saliency = ">=0.7.0"
-jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", rev = "4109d7b91359544b2f4152073369c09413446438", extras = ["test", "torch"] }
+jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", tag = "v0.2.2", extras = ["torch"] }
 setuptools = ">=65.6.3"
 scipy = ">=1.7.3"
 # Notebook extras support (duplicated in dev group for "always on")
@@ -47,12 +48,9 @@ notebooks = [ "jupyter" ]
 # TODO: Remove once torch 2.0.1 can safely be avoided as the most recent,
 #       compatible version.
 xaitk-saliency = { version = ">=0.7.0", extras = ["example-deps"] }
+jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", tag = "v0.2.2", extras = ["test"] }
 # Linting
-flake8 = [
-    # Hinge because 6.0 minimum supported python version is 3.8.1
-    { version = ">=5", python = "<3.8.1" },
-    { version = ">=6", python = ">=3.8.1" }
-]
+flake8 = ">=6"
 flake8-mutable = ">=1.2.0"
 # Type checking
 mypy = ">=0.991"
@@ -65,21 +63,12 @@ pytest-cov = ">=4.0.0"
 jupyter = ">=1.0.0"
 papermill = ">=2.4.0"
 # Docs
-Sphinx = [
-    # Hinge because, while sphinx >=5.3 supports python <3.8.1, it requires an
-    # importlib-metadata version higher than what flake8 ^5 supports, which is
-    # the version of flake8 required for python version <3.8.1.
-    { version = ">=4.3.2", python = "<3.8.1" },
-    { version = ">=5.3.0", python = ">=3.8.1"}
-]
+Sphinx = ">=5.3.0"
 sphinx-rtd-theme = ">=1.1.1"
 sphinx-prompt = ">=1.5.0"
 livereload = ">=2.6.3"
 # Utility
-ipython = [
-    { version = ">=7.34.0", python = "<3.8" },
-    { version = ">=8.6.0", python = ">=3.8" }
-]
+ipython = ">=8.6.0"
 
 [tool.poetry.scripts]
 

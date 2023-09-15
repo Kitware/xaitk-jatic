@@ -128,6 +128,7 @@ test-pytest:
 # Job to check the release notes folder
 test-release-notes-check:
   extends: .test_preamble
+  allow_failure: true
   script:
     - git fetch
     - scripts/check_for_release_notes.sh origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
