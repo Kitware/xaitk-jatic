@@ -20,7 +20,7 @@ from jatic_toolbox.testing.pyright import list_error_messages, pyright_analyze
     ("examples/shared_interest/xaitk-shared_interest.ipynb", 0)
 ])
 def test_pyright_nb(filepath: str, expected_num_errors: int) -> None:
-    results = pyright_analyze(filepath)
+    results = pyright_analyze(filepath)[0]
     assert results["summary"]["errorCount"] <= expected_num_errors, list_error_messages(
         results
     )
