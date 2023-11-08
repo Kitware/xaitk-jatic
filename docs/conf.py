@@ -27,6 +27,9 @@ copyright = '2022, Kitware, Inc.'
 author = 'Kitware, Inc.'
 release = xaitk_cdao.__version__
 
+site_url = "https://jatic.pages.jatic.net/kitware/xaitk-cdao/"
+repo_url = "https://gitlab.jatic.net/jatic/kitware/xaitk-cdao"
+repo_name = "xaitk-cdao"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
