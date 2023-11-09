@@ -33,6 +33,13 @@ Docs
 * Added reflections on applying the object detection protocol defined in
   the jatic_toolbox to xaitk-saliency.
 
+* Added reference to original XAITK documentation.
+
+* Added ability to render documentation on Gitlab Pages.
+
+* Added sphinx auto documentation for object detection and image
+  classification.
+
 Examples
 
 * Added an example notebook for integrating the use of HuggingFace with
