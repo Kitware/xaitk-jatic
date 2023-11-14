@@ -115,6 +115,9 @@ test-docs-build:
   script:
     - cd docs
     - poetry run make html
+  artifacts:
+    paths:
+    - docs/_build/html/
 
 # Job to run unittests via pytest
 test-pytest:
