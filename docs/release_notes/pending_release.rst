@@ -37,8 +37,8 @@ Docs
 
 * Added ability to render documentation on Gitlab Pages.
 
-* Added sphinx auto documentation for object detection and image
-  classification.
+* Added sphinx auto documentation for JATIC object detection and image
+  classification protocol adapters.
 
 Examples
 
