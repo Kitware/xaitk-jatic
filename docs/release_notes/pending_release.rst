@@ -83,6 +83,8 @@ Examples
 * Added an example notebook for integrating the use of Shared Interest with
   xaitk-saliency.
 
+* Update README.md
+
 Interoperability
 
 * Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow
@@ -92,6 +94,10 @@ Interoperability
 * Added ``ClassifyImage`` implementation, ``JATICImageClassifier``, to allow
   for interoperability with image classifiers following the ``Classifier``
   protocol from the JATIC Toolbox.
+
+License
+
+* Add Apache 2.0 license
 
 Scripts
 
