@@ -33,6 +33,13 @@ Docs
 * Added reflections on applying the object detection protocol defined in
   the jatic_toolbox to xaitk-saliency.
 
+* Added reference to original XAITK documentation.
+
+* Added ability to render documentation on Gitlab Pages.
+
+* Added sphinx auto documentation for JATIC object detection and image
+  classification protocol adapters.
+
 Examples
 
 * Added an example notebook for integrating the use of HuggingFace with
@@ -76,6 +83,8 @@ Examples
 * Added an example notebook for integrating the use of Shared Interest with
   xaitk-saliency.
 
+* Update README.md
+
 Interoperability
 
 * Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow
@@ -85,6 +94,10 @@ Interoperability
 * Added ``ClassifyImage`` implementation, ``JATICImageClassifier``, to allow
   for interoperability with image classifiers following the ``Classifier``
   protocol from the JATIC Toolbox.
+
+License
+
+* Add Apache 2.0 license
 
 Scripts
 

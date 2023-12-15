@@ -63,7 +63,7 @@ and functionalities.
       $ git merge --log --no-ff upstream/release
       $ git push upstream master
 
-8. `Draft a new release on GitHub`_ for the new version.
+8. `Draft a new release on GitLab`_ for the new version.
 
 Patch Release
 ^^^^^^^^^^^^^
@@ -119,7 +119,7 @@ If a patch release for an older release version is being created, see the
       $ git merge --log --no-ff upstream/release
       $ git push upstream master
 
-8. `Draft a new release on GitHub`_ for the new version.
+8. `Draft a new release on GitLab`_ for the new version.
 
 Patching an Older Release
 """""""""""""""""""""""""
