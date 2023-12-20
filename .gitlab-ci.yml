@@ -194,7 +194,7 @@ test-notebooks:
         NOTEBOOK_FILE: [ "MNIST_MLFlow_scikit_saliency.ipynb" ]
       - NOTEBOOK_DIR: "examples/lightning"
         NOTEBOOK_FILE: [ "xaitk-lightning.ipynb" ]
-      - NOTEBOOK_DIR: "examples/jatic_toolbox"
+      - NOTEBOOK_DIR: "examples"
         NOTEBOOK_FILE: [
           "jatic-object-detector-protocol.ipynb",
           "jatic-image-classifier-protocol.ipynb",

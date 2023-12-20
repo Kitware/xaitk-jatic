@@ -1,6 +1,6 @@
 import pytest
 
-from jatic_toolbox.testing.pyright import list_error_messages, pyright_analyze
+from maite.testing.pyright import list_error_messages, pyright_analyze
 
 
 @pytest.mark.filterwarnings("ignore:Jupyter is migrating its paths")
@@ -12,9 +12,9 @@ from jatic_toolbox.testing.pyright import list_error_messages, pyright_analyze
     ("examples/gradio/xaitk-gradio.ipynb", 0),
     ("examples/huggingface/xaitk-accelerate.ipynb", 0),
     ("examples/huggingface/xaitk-huggingface.ipynb", 0),
-    ("examples/jatic_toolbox/jatic-object-detector-protocol.ipynb", 0),
-    ("examples/jatic_toolbox/jatic-image-classifier-protocol.ipynb", 0),
-    ("examples/jatic_toolbox/jatic-perturbations.ipynb", 0),
+    ("examples/jatic-object-detector-protocol.ipynb", 0),
+    ("examples/jatic-image-classifier-protocol.ipynb", 0),
+    ("examples/jatic-perturbations.ipynb", 0),
     ("examples/lightning/xaitk-lightning.ipynb", 1),
     ("examples/mlflow/MNIST_MLFlow_scikit_saliency.ipynb", 0),
     ("examples/shared_interest/xaitk-shared_interest.ipynb", 0)

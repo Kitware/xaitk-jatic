@@ -12,7 +12,7 @@ This is an extension of the Explainable AI Toolkit (XAITK) for CDAO. This docume
    :caption: Contents:
 
    releasing
-   jatic_toolbox
+   jatic
    platform_reflections
    miscellaneous
 

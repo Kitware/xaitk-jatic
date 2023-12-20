@@ -10,8 +10,8 @@ from scipy.special import softmax  # type:ignore
 from smqtk_core.configuration import configuration_test_helper
 from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 
-from xaitk_cdao.interop.jatic_toolbox.image_classification import JATICImageClassifier
-from jatic_toolbox.protocols import (
+from xaitk_cdao.interop.image_classification import JATICImageClassifier
+from maite.protocols import (
     ImageClassifier, HasLogits, HasProbs, HasScores, SupportsArray
 )
 

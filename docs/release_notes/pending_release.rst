@@ -30,8 +30,8 @@ Docs
 
 * Added MLFlow reflections.
 
-* Added reflections on applying the object detection protocol defined in
-  the jatic_toolbox to xaitk-saliency.
+* Added reflections on applying the JATIC object detection protocol to
+  xaitk-saliency.
 
 * Added reference to original XAITK documentation.
 
@@ -52,11 +52,11 @@ Examples
   PyTorch Lightning with xaitk-saliency. An additional notebook
   benchmarking these strategies was also added.
 
-* Added an example notebook demonstrating using a JATIC Toolbox protocol-
-  based detector with xaitk-saliency.
+* Added an example notebook demonstrating using the JATIC protocol-based
+  detector with xaitk-saliency.
 
-* Added an example notebook demonstrating using a JATIC Toolbox protocol-
-  based image classifier with xaitk-saliency.
+* Added an example notebook demonstrating using the JATIC protocol-based
+  image classifier with xaitk-saliency.
 
 * Added an example notebook for integrating the use of Gradio with
   xaitk-saliency.
@@ -75,7 +75,7 @@ Examples
   dataset and saliency map parameters using MLFlow.
 
 * Added an example notebook exploring image perturbations and the effect on
-  saliency maps using the JATIC Toolbox augmentation protocol.
+  saliency maps using JATIC's augmentation protocol.
 
 * Added an example notebook for testing the interoperability of xaitk-saliency
   with TwoSix's armory tool.
@@ -89,11 +89,11 @@ Interoperability
 
 * Added ``DetectImageObjects`` implementation, ``JATICDetector``, to allow
   for interoperability with object detectors following the ``ObjectDetector``
-  protocol from the JATIC Toolbox.
+  protocol from JATIC.
 
 * Added ``ClassifyImage`` implementation, ``JATICImageClassifier``, to allow
   for interoperability with image classifiers following the ``Classifier``
-  protocol from the JATIC Toolbox.
+  protocol from JATIC.
 
 License
 
