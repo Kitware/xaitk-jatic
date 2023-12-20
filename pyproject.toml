@@ -31,7 +31,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.8.1"
 xaitk-saliency = ">=0.7.0"
-jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", tag = "v0.2.2", extras = ["torch"] }
+maite = { git = "git@gitlab.jatic.net:jatic/cdao/maite.git", tag = "v0.3.0", extras = ["torch"] }
 setuptools = ">=65.6.3"
 scipy = ">=1.7.3"
 # Notebook extras support (duplicated in dev group for "always on")
@@ -48,7 +48,7 @@ notebooks = [ "jupyter" ]
 # TODO: Remove once torch 2.0.1 can safely be avoided as the most recent,
 #       compatible version.
 xaitk-saliency = { version = ">=0.7.0", extras = ["example-deps"] }
-jatic-toolbox = { git = "git@gitlab.jatic.net:jatic/cdao/jatic-toolbox.git", tag = "v0.2.2", extras = ["test"] }
+maite = { git = "git@gitlab.jatic.net:jatic/cdao/maite.git", tag = "v0.3.0", extras = ["test"] }
 # Linting
 flake8 = ">=6"
 flake8-mutable = ">=1.2.0"

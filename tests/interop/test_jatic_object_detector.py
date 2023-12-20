@@ -11,8 +11,8 @@ from typing import (
 from smqtk_core.configuration import configuration_test_helper
 from smqtk_image_io import AxisAlignedBoundingBox
 
-from xaitk_cdao.interop.jatic_toolbox.object_detection import JATICDetector
-from jatic_toolbox.protocols import (
+from xaitk_cdao.interop.object_detection import JATICDetector
+from maite.protocols import (
     ObjectDetector, HasDetectionLogits, HasDetectionProbs,
     HasDetectionPredictions, SupportsArray
 )

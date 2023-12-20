@@ -1,18 +1,18 @@
-#############
-JATIC Toolbox
-#############
+#####
+JATIC
+#####
 
 
 Protocols
 =========
 
 To allow for easy interoperability between ``xaitk-saliency`` and other JATIC
-tools, it is necessary to ensure that the protocols defined within the
-``jatic-toolbox`` are taken into consideration within ``xaitk-saliency``. As
-``xaitk-saliency`` is already highly type-hinted, protocols must be used
-somewhat directly for the relationship to be detected by static type checkers.
-This constraint also means that including ``jatic-toolbox`` as a dependency for
-``xaitk-saliency`` is preferred.
+tools, it is necessary to ensure that JATIC protocols defined in the ``MAITE``
+(Modular AI Trustworthy Engineering) toolbox are taken into consideration
+within ``xaitk-saliency``. As ``xaitk-saliency`` is already highly type-hinted,
+protocols must be used somewhat directly for the relationship to be detected by
+static type checkers. This constraint also means that including ``maite`` as a
+dependency for ``xaitk-saliency`` is preferred.
 
 
 Object Detection
@@ -46,7 +46,7 @@ necessary and existing applications of ``xaitk-saliency`` remain functional. To
 use a protocol-based detector with ``xaitk-saliency``, the user simply wraps
 the instance and then the detector may be used as if it is a "first-class"
 ``xaitk-saliency`` detector; a near seamless user experience. This process
-is demonstrated in our example notebook in ``examples/jatic_toolbox``.
+is demonstrated in our example notebook under the ``examples`` folder.
 
 
 Image Classification
@@ -63,21 +63,20 @@ appropriately transform logits into probabilities.
 
 The largest difficulty discovered when creating this wrapper is the need to
 appropriately transform between data types. For example, the notebook in
-``examples/jatic_toolbox`` demonstrates wrapping a (protocol-based) Hugging
-Face classifier. In this case, the JATIC Toolbox seems to appropriately
-transform the given input type (``numpy`` arrays) to tensors, however the
-classifier outputs are not similarly transformed back to the original input
-type (from tensors back to ``numpy`` arrays). This presents as ambiguity
-of return type as different models following the image classification protocol
-have potentially differing return types. Due to this ambiguity, tools such as
-``xaitk-saliency`` need to account for several different return type
-possibilities. If the responsibility of defining transformations between
-the various data types falls on each individual tool, it is likely that
-interoperability of these tools will be reduced. The maintainability of
-tranformations defined in a single location is much greater than that of many
-definitions across organizations. The JATIC Toolbox seems to act as this
-bridge in one direction: a bi-directional bridge would greatly increase
-usability/adoptability. Additionally, a singular definition of these
+``examples`` folder demonstrates wrapping a (protocol-based) Hugging Face
+classifier. In this case, ``MAITE`` seems to appropriately transform the given
+input type (``numpy`` arrays) to tensors, however the classifier outputs are
+not similarly transformed back to the original input type (from tensors back
+to ``numpy`` arrays). This presents as ambiguity of return type as different
+models following the image classification protocol have potentially differing
+return types. Due to this ambiguity, tools such as ``xaitk-saliency`` need to
+account for several different return type possibilities. If the responsibility
+of defining transformations between the various data types falls on each
+individual tool, it is likely that interoperability of these tools will be
+reduced. The maintainability of tranformations defined in a single location is
+much greater than that of many definitions across organizations. ``MAITE`` seems
+to act as this bridge in one direction: a bi-directional bridge would greatly
+increase usability/adoptability. Additionally, a singular definition of these
 transformations ensures that there are no inconsistencies across definitions.
 It is less clear, however, whether or not this transformation should occur
 automatically. There could be a desire to remain in the implementation specific

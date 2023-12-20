@@ -1,8 +1,8 @@
 import numpy as np
 from typing import List, Sequence, Union
 
-from jatic_toolbox.errors import InvalidArgument
-from jatic_toolbox.protocols import ArrayLike
+from maite.errors import InvalidArgument
+from maite.protocols import ArrayLike
 
 try:
     import torch  # type: ignore
@@ -15,7 +15,7 @@ def to_numpy_array(data: Union[ArrayLike, Sequence[ArrayLike]]) -> np.ndarray:
     """
     Attempts to convert provided data to an np.ndarray.
 
-    Ideally, this eventually gets replaced with a utility from jatic_toolbox
+    Ideally, this eventually gets replaced with a utility from maite
     """
 
     if find_spec('torch') is not None and isinstance(data, torch.Tensor):

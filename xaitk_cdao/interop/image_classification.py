@@ -4,7 +4,7 @@ import numpy as np
 from smqtk_classifier.interfaces.classify_image import ClassifyImage
 from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 
-from jatic_toolbox.protocols import (
+from maite.protocols import (
     ImageClassifier, HasLogits, HasProbs, HasScores, SupportsArray
 )
 

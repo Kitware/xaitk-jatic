@@ -7,7 +7,7 @@ import numpy as np
 from smqtk_detection import DetectImageObjects
 from smqtk_image_io import AxisAlignedBoundingBox
 
-from jatic_toolbox.protocols import (
+from maite.protocols import (
     ObjectDetector, HasDetectionLogits, HasDetectionProbs,
     HasDetectionPredictions, SupportsArray
 )
