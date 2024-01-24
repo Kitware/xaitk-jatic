@@ -109,3 +109,5 @@ Scripts
 
 Fixes
 -----
+
+* `torch` is now an optional requirement.
