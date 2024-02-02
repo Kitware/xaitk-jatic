@@ -91,7 +91,7 @@ class ResNetFRCNN(DetectImageObjects):
             model.load_state_dict(ckpt)
             model = model.eval()
 
-            model.roi_heads.postprocess_detections = (
+            model.roi_heads.postprocess_detections = ( # type: ignore
                 MethodType(_postprocess_detections, model.roi_heads)
             )
             # store the loaded model for later return.
