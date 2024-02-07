@@ -111,4 +111,5 @@ Fixes
 -----
 
 * `torch` is now an optional requirement.
+
 * Fix typing errors for newer `pyright` versions.
