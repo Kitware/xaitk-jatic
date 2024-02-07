@@ -36,7 +36,6 @@ setuptools = ">=65.6.3"
 scipy = ">=1.7.3"
 # Notebook extras support (duplicated in dev group for "always on")
 jupyter = { version = ">=1.0.0", optional = true }
-pyright = "1.1.349"
 
 [tool.poetry.extras]
 notebooks = [ "jupyter" ]
