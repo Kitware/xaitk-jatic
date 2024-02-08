@@ -14,7 +14,7 @@ try:
     import torch.nn.functional as F  # type: ignore
     from torchvision.models.detection.roi_heads import RoIHeads  # type: ignore
 except ModuleNotFoundError:
-    pass
+    raise SystemExit("One or more module(s) not found. Exiting...")
 
 from smqtk_detection.interfaces.detect_image_objects import DetectImageObjects
 
@@ -91,7 +91,7 @@ class ResNetFRCNN(DetectImageObjects):
             model.load_state_dict(ckpt)
             model = model.eval()
 
-            model.roi_heads.postprocess_detections = (
+            model.roi_heads.postprocess_detections = (  # type: ignore
                 MethodType(_postprocess_detections, model.roi_heads)
             )
             # store the loaded model for later return.
