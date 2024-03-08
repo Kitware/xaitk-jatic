@@ -107,6 +107,11 @@ Scripts
 * Added a script that performs a CI check for changes to the release notes
   folder in a Merge Request.
 
+Utils
+
+* Added a CLI script as to generate saliency maps on COCO detections. This
+  includes the functionality for operating on MAITE object detectors.
+
 Fixes
 -----
 
