@@ -1,4 +1,4 @@
-from typing import Callable, Hashable, Iterable, Iterator, Sequence, Union, Optional
+from typing import Hashable, Iterable, Iterator, Sequence, Union, Optional
 import numpy as np
 
 from smqtk_classifier.interfaces.classify_image import ClassifyImage
@@ -8,6 +8,7 @@ from maite.protocols import (
     ImageClassifier, HasLogits, HasProbs, HasScores, SupportsArray
 )
 
+from xaitk_cdao.interop.preprocessor import Preprocessor
 from xaitk_cdao.utils.data_typing import to_numpy_array
 
 from scipy.special import softmax  # type:ignore
@@ -18,15 +19,15 @@ class JATICImageClassifier(ClassifyImage):
     Adapter for JATIC classifier protocol.
 
     :param classifier: The JATIC protocol-based classifier.
-    :param preprocessor: Callable that takes a batch of data and returns a batch of data
-        for any preprocessing before model inference.
+    :param preprocessor: Preprocessor implementation that takes a batch of data and
+        returns a batch of data for any preprocessing before model inference.
     :param img_batch_size: Image batch size for inference.
     """
 
     def __init__(
         self,
         classifier: ImageClassifier,
-        preprocessor: Optional[Callable[[SupportsArray], SupportsArray]] = None,
+        preprocessor: Optional[Preprocessor] = None,
         img_batch_size: int = 1
     ):
         self._classifier = classifier

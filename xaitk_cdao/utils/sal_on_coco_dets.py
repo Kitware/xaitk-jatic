@@ -2,12 +2,9 @@ import logging
 import numpy as np
 import os
 from PIL import Image  # type: ignore
-from typing import Callable, Iterable, Literal, Optional, Union
-
-from maite.protocols import ObjectDetector, SupportsArray
+from typing import Any
 
 from smqtk_detection.interfaces.detect_image_objects import DetectImageObjects
-from smqtk_image_io import AxisAlignedBoundingBox
 
 from xaitk_cdao.interop.object_detection import JATICDetector
 
@@ -132,12 +129,10 @@ def maite_sal_on_coco_dets(
     coco_file: str,
     output_dir: str,
     sal_generator: GenerateObjectDetectorBlackboxSaliency,
-    maite_detector: ObjectDetector,
-    bbox_transform: Union[Literal["XYXY"], Callable[[np.ndarray], Iterable[Iterable[AxisAlignedBoundingBox]]]],
-    preprocessor: Optional[Callable[[SupportsArray], SupportsArray]] = None,
-    img_batch_size: int = 1,
     overlay_image: bool = False,
-    verbose: bool = False
+    verbose: bool = False,
+    *args: Any,
+    **kwargs: Any,
 ) -> None:
     """
     Generate saliency maps for detections in a COCO format file and write them
@@ -154,28 +149,21 @@ def maite_sal_on_coco_dets(
         saliency for.
     :param output_dir: Directory to write the saliency maps to.
     :param sal_generator: ``GenerateObjectDetectorBlackboxSaliency`` generator
-    :param maite_detector: Detector the implements MAITE's ObjectDetector protocol
-    :param bbox_transform: Predefined bounding box format literal or callable to transform
-        the JATIC detector's bboxes to AxisAlignedBoundingBoxes.
-    :param preprocessor: Callable that takes a batch of data and returns a batch of data
-        for any preprocessing before model inference.
-    :param img_batch_size: Image batch size for inference.
     :param overlay_image: Overlay saliency maps on images with bounding boxes.
         RGB images are converted to grayscale. Default is to write out saliency
         maps by themselves.
     :param verbose: Display progress messages. Default is false.
+    :param *args: Arguments forwarded to the interop JATICDetector adapter
+        implementation constructor
+    :param **kwargs:: Arguments forwarded to the interop JATICDetector adapter
+        implementation constructor
     """
 
     sal_on_coco_dets(
         coco_file=coco_file,
         output_dir=output_dir,
         sal_generator=sal_generator,
-        blackbox_detector=JATICDetector(
-            detector=maite_detector,
-            bbox_transform=bbox_transform,
-            preprocessor=preprocessor,
-            img_batch_size=img_batch_size
-        ),
+        blackbox_detector=JATICDetector(*args, **kwargs),
         overlay_image=overlay_image,
         verbose=verbose
     )
