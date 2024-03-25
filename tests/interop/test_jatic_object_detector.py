@@ -4,13 +4,14 @@ from contextlib import nullcontext as does_not_raise
 from unittest.mock import MagicMock
 from scipy.special import softmax  # type:ignore
 from typing import (
-    Any, Callable, ContextManager, Dict, Hashable, Iterable, Literal,
-    Optional, Protocol, Sequence, Tuple, Union
+    Any, ContextManager, Dict, Hashable, Iterable, Optional, Protocol, Sequence, Tuple
 )
 
 from smqtk_core.configuration import configuration_test_helper
 from smqtk_image_io import AxisAlignedBoundingBox
 
+from xaitk_cdao.interop.bbox_transformer import BBoxTransformer, XYXYBBoxTransformer
+from xaitk_cdao.interop.preprocessor import Preprocessor
 from xaitk_cdao.interop.object_detection import JATICDetector
 from maite.protocols import (
     ObjectDetector, HasDetectionLogits, HasDetectionProbs,
@@ -24,18 +25,6 @@ class TestJATICObjectDetector:
 
     dummy_boxes1 = np.asarray([[[1, 2, 3, 4], [1, 2, 3, 4], [5, 6, 7, 8]]])
     dummy_boxes2 = np.asarray([[[9, 10, 11, 12], [9, 10, 11, 12], [9, 10, 11, 12]]])
-
-    @staticmethod
-    def _transform_bboxes(all_boxes: np.ndarray) -> Iterable[Iterable[AxisAlignedBoundingBox]]:
-        """
-        Dummy transform bboxes function.
-        """
-        out_boxes = list()
-        for boxes in all_boxes:
-            out_boxes.append([
-                AxisAlignedBoundingBox(box[0:2], box[2:4]) for box in boxes
-            ])
-        return out_boxes
 
     # HasDetectionProbs
     dummy_probs = np.asarray([[0.15, 0.35, 0.5]])
@@ -99,14 +88,14 @@ class TestJATICObjectDetector:
     @pytest.mark.parametrize("detector, bbox_transform, preprocessor, img_batch_size, expectation", [
         (MagicMock(spec=ObjectDetector), lambda x: x, lambda x: x, 2,
             pytest.raises(NotImplementedError, match=r"Constructor arg")),
-        (MagicMock(spec=ObjectDetector), "XYXY", None, 4,
+        (MagicMock(spec=ObjectDetector), XYXYBBoxTransformer(), None, 4,
             pytest.raises(NotImplementedError, match=r"Constructor arg")),
     ])
     def test_configuration(
         self,
         detector: ObjectDetector,
-        bbox_transform: Union[Literal["XYXY"], Callable[[np.ndarray], Iterable[Iterable[AxisAlignedBoundingBox]]]],
-        preprocessor: Optional[Callable[[SupportsArray], SupportsArray]],
+        bbox_transform: BBoxTransformer,
+        preprocessor: Optional[Preprocessor],
         img_batch_size: int,
         expectation: ContextManager
     ) -> None:
@@ -143,26 +132,24 @@ class TestJATICObjectDetector:
     @pytest.mark.parametrize(
         "detector_side_effect, labels, bbox_transform, preprocessor, img_batch_size, expected_return, expectation",
         [
-            ([dummy_probs_out], dummy_labels2, "XYXY", None, 1, dummy_probs_expected, does_not_raise()),
-            ([dummy_logits_out], dummy_labels1, None, None, 2, dummy_logits_expected, does_not_raise()),
-            ([dummy_scores_out], dummy_labels1, "XYXY", lambda x: x, 1, dummy_scores_expected, does_not_raise()),
-            ([dummy_probs_out], dummy_labels2, "ZZZZ", None, 1, dummy_probs_expected,
-                pytest.raises(ValueError, match=r"Cannot transform bounding boxes. Unknown format.")),
-            ([dummy_unknown_out], dummy_labels1, "XYXY", None, 2, dummy_logits_expected,
+            ([dummy_probs_out], dummy_labels2, XYXYBBoxTransformer(), None, 1, dummy_probs_expected, does_not_raise()),
+            ([dummy_logits_out], dummy_labels1, XYXYBBoxTransformer(), None, 2, dummy_logits_expected,
+                does_not_raise()),
+            ([dummy_scores_out], dummy_labels1, XYXYBBoxTransformer(), lambda x: x, 1, dummy_scores_expected,
+                does_not_raise()),
+            ([dummy_unknown_out], dummy_labels1, XYXYBBoxTransformer(), None, 2, dummy_logits_expected,
                 pytest.raises(ValueError, match=r"Unknown detector output type"))
         ],
         ids=[
-            "HasDetectionProbs", "HasDetectionLogits", "HasDetectionPredictions", "UnknownBboxFmt",
-            "UnknownOutput"
+            "HasDetectionProbs", "HasDetectionLogits", "HasDetectionPredictions", "UnknownOutput"
         ]
     )
     def test_smoketest(
         self,
         detector_side_effect: Any,
         labels: Sequence[str],
-        bbox_transform: Optional[Union[Literal["XYXY"],
-                                 Callable[[np.ndarray], Iterable[Iterable[AxisAlignedBoundingBox]]]]],
-        preprocessor: Optional[Callable[[SupportsArray], SupportsArray]],
+        bbox_transform: BBoxTransformer,
+        preprocessor: Optional[Preprocessor],
         img_batch_size: int,
         expected_return: Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]],
         expectation: ContextManager
@@ -170,9 +157,6 @@ class TestJATICObjectDetector:
         """
         Ensure we can handle the various expected output types for a JATIC protocol-based classifier.
         """
-        if bbox_transform is None:
-            bbox_transform = TestJATICObjectDetector._transform_bboxes
-
         mock_detector = TestJATICObjectDetector._generate_mock_detector(
             side_effect=detector_side_effect,
             labels=labels

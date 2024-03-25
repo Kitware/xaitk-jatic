@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from contextlib import nullcontext as does_not_raise
 from typing import (
-    Any, Callable, ContextManager, Iterator, Optional, Protocol, Sequence
+    Any, ContextManager, Iterator, Optional, Protocol, Sequence
 )
 from unittest.mock import MagicMock
 from scipy.special import softmax  # type:ignore
@@ -10,6 +10,7 @@ from scipy.special import softmax  # type:ignore
 from smqtk_core.configuration import configuration_test_helper
 from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 
+from xaitk_cdao.interop.preprocessor import Preprocessor
 from xaitk_cdao.interop.image_classification import JATICImageClassifier
 from maite.protocols import (
     ImageClassifier, HasLogits, HasProbs, HasScores, SupportsArray
@@ -63,7 +64,7 @@ class TestJATICImageClassifier:
     def test_configuration(
         self,
         classifier: ImageClassifier,
-        preprocessor: Optional[Callable[[SupportsArray], SupportsArray]],
+        preprocessor: Optional[Preprocessor],
         img_batch_size: int,
         expectation: ContextManager
     ) -> None:
@@ -114,7 +115,7 @@ class TestJATICImageClassifier:
         self,
         classifier_side_effect: Any,
         labels: Sequence[str],
-        preprocessor: Optional[Callable[[SupportsArray], SupportsArray]],
+        preprocessor: Optional[Preprocessor],
         img_batch_size: int,
         expected_return: Iterator[CLASSIFICATION_DICT_T],
         expectation: ContextManager

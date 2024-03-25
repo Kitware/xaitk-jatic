@@ -1,7 +1,4 @@
-from typing import (
-    Callable, Dict, Hashable, Iterable, Literal,
-    Optional, Tuple, Union
-)
+from typing import Dict, Hashable, Iterable, Optional, Tuple
 import numpy as np
 
 from smqtk_detection import DetectImageObjects
@@ -12,6 +9,8 @@ from maite.protocols import (
     HasDetectionPredictions, SupportsArray
 )
 
+from xaitk_cdao.interop.bbox_transformer import BBoxTransformer
+from xaitk_cdao.interop.preprocessor import Preprocessor
 from xaitk_cdao.utils.data_typing import to_numpy_array
 
 from scipy.special import softmax  # type:ignore
@@ -22,18 +21,18 @@ class JATICDetector(DetectImageObjects):
     Adapter for JATIC object detection protocol.
 
     :param detector: The JATIC protocol-based detector.
-    :param bbox_transform: Predefined bounding box format literal or callable to transform
-        the JATIC detector's bboxes to AxisAlignedBoundingBoxes.
-    :param preprocessor: Callable that takes a batch of data and returns a batch of data
-        for any preprocessing before model inference.
+    :param bbox_transform: BBoxTransformer implemntation to transform model outputs
+        to AxisAlignedBoundingBoxes.
+    :param preprocessor: Preprocessor implementation that takes a batch of data and
+        returns a batch of data for any preprocessing before model inference.
     :param img_batch_size: Image batch size for inference.
     """
 
     def __init__(
         self,
         detector: ObjectDetector,
-        bbox_transform: Union[Literal["XYXY"], Callable[[np.ndarray], Iterable[Iterable[AxisAlignedBoundingBox]]]],
-        preprocessor: Optional[Callable[[SupportsArray], SupportsArray]] = None,
+        bbox_transform: BBoxTransformer,
+        preprocessor: Optional[Preprocessor] = None,
         img_batch_size: int = 1
     ):
         self._detector = detector
@@ -72,19 +71,7 @@ class JATICDetector(DetectImageObjects):
             detector_output = self._detector(batch)
 
             # Transform bboxes into correct format
-            detector_boxes = to_numpy_array(detector_output.boxes)
-            # TODO: Other bounding box formats
-            if self._bbox_transform == "XYXY":
-                smqtk_boxes = list()
-                for boxes in detector_boxes:
-                    smqtk_boxes.append([
-                        AxisAlignedBoundingBox(box[0:2], box[2:4]) for box in boxes
-                    ])
-                all_boxes = smqtk_boxes  # type: Iterable[Iterable[AxisAlignedBoundingBox]]
-            elif callable(self._bbox_transform):
-                all_boxes = self._bbox_transform(detector_boxes)
-            else:
-                raise ValueError("Cannot transform bounding boxes. Unknown format.")
+            all_boxes = self._bbox_transform(detector_output.boxes)
 
             # Get probabilities and transform to required output format
             if isinstance(detector_output, HasDetectionLogits):
