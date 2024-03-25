@@ -127,7 +127,9 @@ def sal_on_coco_dets_cli(
             )
 
             bbox_transform = from_config_dict(obj_detector["BBoxTransformer"], BBoxTransformer.get_impls())
-            preprocessor = from_config_dict(obj_detector["Preprocessor"], Preprocessor.get_impls())
+            preprocessor = None
+            if "Preprocessor" in obj_detector:
+                preprocessor = from_config_dict(obj_detector["Preprocessor"], Preprocessor.get_impls())
 
             maite_sal_on_coco_dets(
                 coco_file=coco_file,

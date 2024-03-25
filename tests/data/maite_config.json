@@ -16,11 +16,7 @@
             "type": "xaitk_cdao.interop.bbox_transformer.XYXYBBoxTransformer",
             "xaitk_cdao.interop.bbox_transformer.XYXYBBoxTransformer": {}
         },
-        "Preprocessor": {
-            "type": "xaitk_cdao.interop.preprocessor.PILPreprocessor",
-            "xaitk_cdao.interop.preprocessor.PILPreprocessor": {}
-        },
-        "img_batch_size": 1,
+        "img_batch_size": 2,
         "kwargs": {
           "use_cuda": true
         }

@@ -11,6 +11,7 @@ from maite.protocols import ObjectDetector
 from smqtk_detection.impls.detect_image_objects.random_detector import RandomDetector
 
 from xaitk_cdao.interop.bbox_transformer import XYXYBBoxTransformer
+from xaitk_cdao.interop.object_detection import JATICDetector
 from xaitk_cdao.utils.sal_on_coco_dets import maite_sal_on_coco_dets, sal_on_coco_dets
 
 from xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise import DRISEStack
@@ -125,10 +126,25 @@ class TestMAITESalOnCocoDets:
         """
         output_dir = tmpdir.join('out')
 
+        sal_generator = DRISEStack(n=1, s=3, p1=0.5)
+        maite_detector = MagicMock(spec=ObjectDetector)
+        bbox_xform = XYXYBBoxTransformer()
+
         maite_sal_on_coco_dets(
             coco_file=str(dets_file),
             output_dir=str(output_dir),
-            sal_generator=DRISEStack(n=1, s=3, p1=0.5),
-            detector=MagicMock(spec=ObjectDetector),
-            bbox_transform=XYXYBBoxTransformer()
+            sal_generator=sal_generator,
+            detector=maite_detector,
+            bbox_transform=bbox_xform
         )
+
+        # Confirm sal_on_coco_dets arguments are as expected
+        kwargs = patch.call_args.kwargs
+        assert kwargs["coco_file"] == str(dets_file)
+        assert kwargs["output_dir"] == str(output_dir)
+        assert kwargs["sal_generator"] == sal_generator
+        assert isinstance(kwargs["blackbox_detector"], JATICDetector)
+        assert kwargs["blackbox_detector"]._detector == maite_detector
+        assert kwargs["blackbox_detector"]._bbox_transform == bbox_xform
+        assert not kwargs["overlay_image"]
+        assert not kwargs["verbose"]

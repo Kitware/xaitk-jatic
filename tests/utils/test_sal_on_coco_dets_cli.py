@@ -6,12 +6,15 @@ import pytest
 import unittest.mock as mock
 from unittest.mock import MagicMock
 from maite.protocols import ObjectDetector
+from xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise import DRISEStack
 
 from tests import DATA_DIR
 
+from xaitk_cdao.interop.bbox_transformer import XYXYBBoxTransformer
 from xaitk_cdao.utils.bin.sal_on_coco_dets_cli import sal_on_coco_dets_cli
 
 from importlib.util import find_spec
+
 
 deps = ['kwcoco']
 specs = [find_spec(dep) for dep in deps]
@@ -179,12 +182,12 @@ class TestSalOnCocoDets:
         # check that no output was generated
         assert not output_dir.check(dir=1)
 
+    @mock.patch('xaitk_cdao.utils.bin.sal_on_coco_dets_cli.maite_sal_on_coco_dets', return_value=None)
     @mock.patch('xaitk_cdao.utils.bin.sal_on_coco_dets_cli.load_model', return_value=MagicMock(spec=ObjectDetector))
-    @mock.patch('xaitk_cdao.utils.sal_on_coco_dets.sal_on_coco_dets', return_value=None)
     def test_maite_coco_sal_gen(
         self,
         load_model_patch: MagicMock,
-        coco_patch: MagicMock,
+        maite_sal_patch: MagicMock,
         tmpdir: py.path.local
     ) -> None:
         """
@@ -202,3 +205,22 @@ class TestSalOnCocoDets:
                 "-v"
             ]
         )
+
+        # Confirm maite_sal_on_coco_dets arguments are as expected
+        kwargs = maite_sal_patch.call_args.kwargs
+        assert kwargs["coco_file"] == str(dets_file)
+        assert kwargs["output_dir"] == str(output_dir)
+        assert isinstance(kwargs["sal_generator"], DRISEStack)
+        assert not kwargs["overlay_image"]
+        assert kwargs["verbose"]
+        assert isinstance(kwargs["detector"], ObjectDetector)
+        assert isinstance(kwargs["bbox_transform"], XYXYBBoxTransformer)
+        assert kwargs["preprocessor"] is None
+        assert kwargs["img_batch_size"] == 2
+
+        # Confirm load_model arguments are as expected
+        kwargs = load_model_patch.call_args.kwargs
+        assert kwargs["model_name"] == "model_name"
+        assert kwargs["provider"] == "provider"
+        assert kwargs["task"] == "object-detection"
+        assert kwargs["use_cuda"]
