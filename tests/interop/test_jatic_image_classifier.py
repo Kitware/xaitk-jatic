@@ -1,69 +1,31 @@
 import numpy as np
 import pytest
-from contextlib import nullcontext as does_not_raise
-from typing import (
-    Any, Callable, ContextManager, Iterator, Optional, Protocol, Sequence
-)
+from typing import ContextManager, Dict, Hashable, Iterator, Sequence, Union
 from unittest.mock import MagicMock
-from scipy.special import softmax  # type:ignore
 
 from smqtk_core.configuration import configuration_test_helper
 from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 
 from xaitk_cdao.interop.image_classification import JATICImageClassifier
-from maite.protocols import (
-    ImageClassifier, HasLogits, HasProbs, HasScores, SupportsArray
-)
+import maite.protocols.image_classification as ic
 
 
 class TestJATICImageClassifier:
-    # HasProbs
-    dummy_probs = np.asarray([[0.25, 0.15, 0.6]])
-    dummy_prob_out = MagicMock(
-        spec=HasProbs,
-        probs=dummy_probs
-    )
+    dummy_id2name1 = {0: "A", 1: "B", 2: "C"}
+    expected_labels1 = ["A", "B", "C"]
+    dummy_id2name2 = {0: "D", 2: "F", 1: "E"}
+    expected_labels2 = ["D", "E", "F"]
 
-    # HasLogits
-    dummy_logits = np.asarray([[1.3, 0.2, -0.4]])
-    dummy_logit_probs = softmax(dummy_logits[0])
-    dummy_logits_out = MagicMock(
-        spec=HasLogits,
-        logits=dummy_logits
-    )
+    dummy_out = np.asarray([0, 0.15, 0.8])
 
-    # HasScores
-    dummy_scores = np.asarray([[0.8, 0.15]])
-    dummy_score_labels = np.asarray([[2, 1]])
-    dummy_score_probs = [0, 0.15, 0.8]
-    dummy_scores_out = MagicMock(
-        spec=HasScores,
-        scores=dummy_scores,
-        labels=dummy_score_labels
-    )
-
-    # Unknown output
-    class _FakeOutput(Protocol):
-        fake_output: SupportsArray
-    dummy_fake_output = np.asarray([[0.3, 0.2]])
-    dummy_unknown_out = MagicMock(
-        spec=_FakeOutput,
-        fake_output=dummy_fake_output
-    )
-
-    dummy_labels1 = ["A", "B", "C"]
-    dummy_labels2 = ["D", "E", "F"]
-
-    @pytest.mark.parametrize("classifier, preprocessor, img_batch_size, expectation", [
-        (MagicMock(spec=ImageClassifier), lambda x: x, 3,
-            pytest.raises(NotImplementedError, match=r"Constructor arg")),
-        (MagicMock(spec=ImageClassifier), None, 1,
-            pytest.raises(NotImplementedError, match=r"Constructor arg")),
+    @pytest.mark.parametrize("classifier, id2name, img_batch_size, expectation", [
+        (MagicMock(spec=ic.Model), dummy_id2name1, 3,
+            pytest.raises(NotImplementedError, match=r"Constructor arg"))
     ])
     def test_configuration(
         self,
-        classifier: ImageClassifier,
-        preprocessor: Optional[Callable[[SupportsArray], SupportsArray]],
+        classifier: ic.Model,
+        id2name: Dict[int, Hashable],
         img_batch_size: int,
         expectation: ContextManager
     ) -> None:
@@ -71,7 +33,7 @@ class TestJATICImageClassifier:
 
         inst = JATICImageClassifier(
             classifier=classifier,
-            preprocessor=preprocessor,
+            id2name=id2name,
             img_batch_size=img_batch_size
         )
         with expectation:
@@ -79,82 +41,66 @@ class TestJATICImageClassifier:
                 # TODO: Update assertions appropriately once get_config/from_config are implemented
                 """
                 assert i._classifier == classifier
-                assert i._preprocessor == preprocessor
+                assert i._id2name == id2name
                 assert i._img_batch_size == img_batch_size
                 """
 
-    @staticmethod
-    def _generate_mock_classifier(side_effect: Any, labels: Sequence[str]) -> ImageClassifier:
-        """
-        Generate a mock classifier with the given side effect(s) and get_labels return.
-        """
-        mock_classifier = MagicMock(
-            spec=ImageClassifier,
-        )
-        mock_classifier.side_effect = side_effect
-        mock_classifier.get_labels = MagicMock(return_value=labels)
-        return mock_classifier
-
     @pytest.mark.parametrize(
-        "classifier_side_effect, labels, preprocessor, img_batch_size, expected_return, expectation",
+        "classifier_output, id2name, img_batch_size, imgs, expected_return",
         [
-            ([dummy_prob_out], dummy_labels1, lambda x: x, 1,
-                [{la: prob for la, prob in zip(dummy_labels1, dummy_probs[0])}], does_not_raise()),
-            ([dummy_logits_out], dummy_labels2, lambda x: x, 3,
-                [{la: prob for la, prob in zip(dummy_labels2, dummy_logit_probs)}], does_not_raise()),
-            ([dummy_scores_out], dummy_labels1, None, 2,
-                [{la: prob for la, prob in zip(dummy_labels1, dummy_score_probs)}], does_not_raise()),
-            ([dummy_unknown_out], dummy_labels2, None, 1,
-                [{la: prob for la, prob in zip(dummy_labels2, dummy_fake_output)}],
-                pytest.raises(ValueError, match=r"Unknown classifier output type")),
+            ([dummy_out], dummy_id2name1, 2,
+                [np.random.randint(0, 255, (256, 256, 3), dtype=np.uint8)],
+                [{la: prob for la, prob in zip(expected_labels1, dummy_out)}]),
+            ([dummy_out], dummy_id2name1, 1,
+                [np.random.randint(0, 255, (256, 256), dtype=np.uint8)],
+                [{la: prob for la, prob in zip(expected_labels1, dummy_out)}]),
+            ([dummy_out] * 2, dummy_id2name1, 2,
+                np.random.randint(0, 255, (2, 256, 256), dtype=np.uint8),
+                [{la: prob for la, prob in zip(expected_labels1, dummy_out)}] * 2)
         ],
-        ids=["HasProbs", "HasLogits", "HasScores", "UnknownOutput"]
+        ids=["single 3 channel", "single greyscale", "multiple images"]
     )
     def test_smoketest(
         self,
-        classifier_side_effect: Any,
-        labels: Sequence[str],
-        preprocessor: Optional[Callable[[SupportsArray], SupportsArray]],
+        classifier_output: ic.TargetBatchType,
+        id2name: Dict[int, Hashable],
         img_batch_size: int,
+        imgs: Union[np.ndarray, Sequence[np.ndarray]],
         expected_return: Iterator[CLASSIFICATION_DICT_T],
-        expectation: ContextManager
     ) -> None:
         """
-        Ensure we can handle the various expected output types for a JATIC protocol-based classifier.
+        Test that MAITE classifier output is transformed appropriately.
         """
-        mock_classifier = TestJATICImageClassifier._generate_mock_classifier(
-            side_effect=classifier_side_effect,
-            labels=labels
+        mock_classifier = MagicMock(
+            spec=ic.Model,
+            return_value=classifier_output
         )
 
-        dummy_image = np.random.randint(0, 255, (256, 256, 3), dtype=np.uint8)
+        inst = JATICImageClassifier(
+            classifier=mock_classifier,
+            id2name=id2name,
+            img_batch_size=img_batch_size
+        )
 
-        with expectation:
-            inst = JATICImageClassifier(
-                classifier=mock_classifier,
-                preprocessor=preprocessor,
-                img_batch_size=img_batch_size
-            )
+        res = list(inst.classify_images(imgs))
+        assert res == expected_return
 
-            res = list(inst.classify_images([dummy_image]))
-            assert res == expected_return
-
-    @pytest.mark.parametrize("labels", [
-        (dummy_labels1, ),
-        (dummy_labels2, ),
+    @pytest.mark.parametrize("id2name, expected_labels", [
+        (dummy_id2name1, expected_labels1),
+        (dummy_id2name2, expected_labels2),
     ])
     def test_labels(
         self,
-        labels: Sequence[str]
+        id2name: Dict[int, Hashable],
+        expected_labels: Sequence[Hashable]
     ) -> None:
         """
-        Test that get_labels() properly returns the labels from the original JATIC protocol-based classifier.
+        Test that get_labels() returns the correct labels.
         """
-        mock_classifier = TestJATICImageClassifier._generate_mock_classifier(
-            side_effect=[self.dummy_prob_out],
-            labels=labels
+
+        inst = JATICImageClassifier(
+            classifier=MagicMock(spec=ic.Model),
+            id2name=id2name
         )
 
-        inst = JATICImageClassifier(classifier=mock_classifier)
-
-        assert inst.get_labels() == labels
+        assert inst.get_labels() == expected_labels

@@ -31,9 +31,8 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.8.1"
 xaitk-saliency = ">=0.7.0"
-maite = { version = ">=0.3.4" }
+maite = "^0.5.0"
 setuptools = ">=65.6.3"
-scipy = ">=1.7.3"
 # Notebook extras support (duplicated in dev group for "always on")
 jupyter = { version = ">=1.0.0", optional = true }
 
@@ -41,7 +40,7 @@ jupyter = { version = ">=1.0.0", optional = true }
 notebooks = [ "jupyter" ]
 
 [tool.poetry.group.dev.dependencies]
-maite = { version = ">=0.3.4", extras = ["torch", "torchvision", "test"] }
+maite = { version = "^0.5.0", extras = ["test"] }
 # Linting
 flake8 = ">=6"
 flake8-mutable = ">=1.2.0"
