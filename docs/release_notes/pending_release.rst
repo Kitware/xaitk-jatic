@@ -107,6 +107,9 @@ Scripts
 * Added a script that performs a CI check for changes to the release notes
   folder in a Merge Request.
 
+* Added Sphinx document rendering for MRs. The docs pages can be accessed by clicking the "View App"
+  button located in the merge request page under the test pipeline section.
+
 Fixes
 -----
 
