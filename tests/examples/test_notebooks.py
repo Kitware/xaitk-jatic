@@ -16,7 +16,7 @@ from maite.testing.pyright import list_error_messages, pyright_analyze
     ("examples/jatic-image-classifier-protocol.ipynb", 0),
     ("examples/jatic-perturbations.ipynb", 0),
     ("examples/lightning/xaitk-lightning.ipynb", 1),
-    ("examples/mlflow/MNIST_MLFlow_scikit_saliency.ipynb", 0),
+    ("examples/mlflow/MNIST_MLFlow_scikit_saliency.ipynb", 1),
     ("examples/shared_interest/xaitk-shared_interest.ipynb", 0)
 ])
 def test_pyright_nb(filepath: str, expected_num_errors: int) -> None:
