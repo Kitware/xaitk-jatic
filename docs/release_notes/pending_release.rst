@@ -14,6 +14,10 @@ platform provides.
 Updates / New Features
 ----------------------
 
+CI/CD
+
+* Add python3.12 to test matrix
+
 Docs
 
 * Added initial sphinx-based documentation infrastructure, including these
