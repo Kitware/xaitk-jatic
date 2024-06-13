@@ -120,3 +120,5 @@ Fixes
 * `torch` is now an optional requirement.
 
 * Fix typing errors for newer `pyright` versions.
+
+* Updated git lfs to properly track large files in any directory.
