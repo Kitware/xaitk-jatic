@@ -37,7 +37,7 @@ watch_dirs: List[Path] = [
 watch_globs = ["*.rst", "*.ipynb"]
 
 # Code source directory. We want to watch all python files under here.
-watch_source_dir = Path("../xaitk_cdao")
+watch_source_dir = Path("../xaitk_jatic")
 
 server = Server()
 server.watch("conf.py", rebuild_cmd)

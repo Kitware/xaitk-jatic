@@ -70,5 +70,5 @@ appropriate value to match tag to archive:
    YYYYMMDD="20221202"
    git archive \
        --format tar.gz \
-       -o "xaitk-cdao-${YYYYMMDD}-$(git rev-parse HEAD).tar.gz" \
+       -o "xaitk-jatic-${YYYYMMDD}-$(git rev-parse HEAD).tar.gz" \
        public-release-request-${YYYYMMDD}

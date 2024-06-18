@@ -2,9 +2,9 @@ Pending Release Notes
 =====================
 This is the initial release of this repository which hosts integration
 documentation, examples and code related to integrating xaitk-saliency
-components with the CDAO needs and use-cases.
+components with the JATIC needs and use-cases.
 
-This first release defines an xaitk-cdao package that is currently a
+This first release defines an xaitk-jatic package that is currently a
 placeholder for future functionality, as well as a few initial example jupyter
 notebooks. Each notebook explains how to integrate a particular platform
 (HuggingFace, MLFlow, or PyTorchLightning) with the xaitk-saliency API to

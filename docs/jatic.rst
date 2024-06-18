@@ -8,7 +8,7 @@ Object Detection
 
 JATICDetector
 -------------
-.. autoclass:: xaitk_cdao.interop.object_detection.JATICDetector
+.. autoclass:: xaitk_jatic.interop.object_detection.JATICDetector
    :members:
 
 --------------------
@@ -17,6 +17,6 @@ Image Classification
 
 JATICImageClassifier
 --------------------
-.. autoclass:: xaitk_cdao.interop.image_classification.JATICImageClassifier
+.. autoclass:: xaitk_jatic.interop.image_classification.JATICImageClassifier
    :members:
 
