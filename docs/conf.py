@@ -16,20 +16,20 @@ import sys
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, str(Path(__file__).parent.parent.absolute()))
-import xaitk_cdao  # noqa: E402
+import xaitk_jatic  # noqa: E402
 
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'xaitk-cdao'
+project = 'xaitk-jatic'
 copyright = '2022, Kitware, Inc.'
 author = 'Kitware, Inc.'
-release = xaitk_cdao.__version__
+release = xaitk_jatic.__version__
 
-site_url = "https://jatic.pages.jatic.net/kitware/xaitk-cdao/"
-repo_url = "https://gitlab.jatic.net/jatic/kitware/xaitk-cdao"
-repo_name = "xaitk-cdao"
+site_url = "https://jatic.pages.jatic.net/kitware/xaitk-jatic/"
+repo_url = "https://gitlab.jatic.net/jatic/kitware/xaitk-jatic"
+repo_name = "xaitk-jatic"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

@@ -1,9 +1,9 @@
-# XAITK CDAO Integrations
+# XAITK JATIC Integrations
 
 ## Description
 "Bucket" to house various examples and resources related to
 [`xaitk-saliency`](https://github.com/xaitk/xaitk-saliency)
-integration and scaling for CDAO use as part of the JATIC program.
+integration and scaling for JATIC use as part of the JATIC program.
 
 ## Installation
 The following steps assumes the source tree has been acquired locally.

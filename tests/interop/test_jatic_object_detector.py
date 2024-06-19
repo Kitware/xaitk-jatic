@@ -9,7 +9,7 @@ from typing import (
 from smqtk_core.configuration import configuration_test_helper
 from smqtk_image_io import AxisAlignedBoundingBox
 
-from xaitk_cdao.interop.object_detection import JATICDetector
+from xaitk_jatic.interop.object_detection import JATICDetector
 import maite.protocols.object_detection as od
 
 

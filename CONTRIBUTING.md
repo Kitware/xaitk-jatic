@@ -1,13 +1,13 @@
-# Contributing to `xaitk-cdao`
+# Contributing to `xaitk-jatic`
 
 ## Making a Contribution
-Here we describe at a high level how to contribute to `xaitk-cdao`.
-See the [`xaitk-cdao` README](README.md) file for additional information.
+Here we describe at a high level how to contribute to `xaitk-jatic`.
+See the [`xaitk-jatic` README](README.md) file for additional information.
 
-1.  Navigate to the official `xaitk-cdao` repository maintained [on JATIC GitLab](
-    https://gitlab.jatic.net/jatic/kitware/xaitk-cdao).
+1.  Navigate to the official `xaitk-jatic` repository maintained [on JATIC GitLab](
+    https://gitlab.jatic.net/jatic/kitware/xaitk-jatic).
 
-2.  Fork `xaitk-cdao` into your GitLab user namespace and clone that onto
+2.  Fork `xaitk-jatic` into your GitLab user namespace and clone that onto
     your system.
 
 3.  Create a topic branch, edit files and create commits:
@@ -31,11 +31,11 @@ See the [`xaitk-cdao` README](README.md) file for additional information.
 5. On GitLab, visit your forked project page then go the "Merge Requests" tab
    and click on the "New merge request" button. In the source branch dropdown,
    select the relevant branch in your forked repository. In the target branch
-   dropdown, select the relevant branch from the `xaitk-cdao` repository. Next,
+   dropdown, select the relevant branch from the `xaitk-jatic` repository. Next,
    click "Compare branches and continue". Finally, click the "Create merge
    request" button to create the request.
 
-`xaitk-cdao` uses GitLab for code review and GitLab CI/CD for continuous
+`xaitk-jatic` uses GitLab for code review and GitLab CI/CD for continuous
 testing.
 New merge requests trigger Continuous Integration workflows (CI) when the merge
 target is the `master` or `release`-variant branch.
@@ -51,7 +51,7 @@ following:
   in that environment in a timely manner.
 * Notebooks should also be runnable when executed in CI.
   This often requires a cell that performs ``pip install ...`` commands to bring
-  in the appropriate dependencies (including `xaitk-cdao` itself) into the
+  in the appropriate dependencies (including `xaitk-jatic` itself) into the
   at-first empty environment.
 
 #### Notebook CI

@@ -1,4 +1,4 @@
-Steps of the xaitk-cdao Release Process
+Steps of the xaitk-jatic Release Process
 =======================================
 Three types of releases are expected to occur:
   - major
@@ -165,10 +165,10 @@ Draft a new release on GitLab
 After creating and pushing a new version tag, a GitLab "release" should be
 made.
 
-a. Navigate to the GitLab `Releases page`_ for the xaitk-cdao repository.
+a. Navigate to the GitLab `Releases page`_ for the xaitk-jatic repository.
 
 b. Click the "Create a new release" button (or go `here
-   <https://gitlab.jatic.net/jatic/kitware/xaitk-cdao/-/releases/new>`_).
+   <https://gitlab.jatic.net/jatic/kitware/xaitk-jatic/-/releases/new>`_).
 
 c. Select from the "Tag name" dropdown the tag version just created and
    pushed
@@ -184,4 +184,4 @@ g. Click the "Create Release" button to create the GitLab release!
 
 
 .. _Poetry's version command: https://python-poetry.org/docs/cli/#version
-.. _Releases page: https://gitlab.jatic.net/jatic/kitware/xaitk-cdao/-/releases
+.. _Releases page: https://gitlab.jatic.net/jatic/kitware/xaitk-jatic/-/releases

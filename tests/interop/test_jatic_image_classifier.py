@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 from smqtk_core.configuration import configuration_test_helper
 from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 
-from xaitk_cdao.interop.image_classification import JATICImageClassifier
+from xaitk_jatic.interop.image_classification import JATICImageClassifier
 import maite.protocols.image_classification as ic
 
 
