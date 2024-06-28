@@ -47,9 +47,14 @@ numpy = [
 ]
 # Notebook extras support (duplicated in dev group for "always on")
 jupyter = { version = ">=1.0.0", optional = true }
+click = ">=8.0.3"
+# Optionals for "tools" extra"
+kwcoco = { version = ">=0.2.18", optional = true}
+matplotlib = { version=">=3.4.1", optional = true }
 
 [tool.poetry.extras]
 notebooks = [ "jupyter" ]
+tools = [ "kwcoco", "matplotlib" ]
 
 [tool.poetry.group.dev.dependencies]
 maite = { version = "^0.5.0", extras = ["test"] }
@@ -75,6 +80,7 @@ livereload = ">=2.6.3"
 ipython = ">=8.6.0"
 
 [tool.poetry.scripts]
+sal-on-coco-dets = "xaitk_jatic.utils.bin.sal_on_coco_dets:sal_on_coco_dets"
 
 [tool.poetry.plugins."smqtk_plugins"]
 
