@@ -61,7 +61,7 @@ class JATICDetector(DetectImageObjects):
 
         # Convert protocol-based detector output into DetectImageObject format
         def _generate_outputs(batch: Sequence[np.ndarray]) -> None:
-            predictions = self._detector(np.asarray(batch))
+            predictions = self._detector(batch)
 
             for pred in predictions:
                 boxes = [_xform_bbox(box) for box in np.asarray(pred.boxes)]
