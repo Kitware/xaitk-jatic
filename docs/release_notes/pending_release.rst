@@ -126,3 +126,5 @@ Fixes
 * Fix typing errors for newer `pyright` versions.
 
 * Updated git lfs to properly track large files in any directory.
+
+* Updated `scipy` hinge to be explicit for all supported Python versions

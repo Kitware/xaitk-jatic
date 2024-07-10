@@ -36,7 +36,7 @@ maite = "^0.5.0"
 setuptools = ">=65.6.3"
 scipy = [
     {version = "<1.11.1", python = "~3.8.1"}, # Can't satisfy CVE-2023-25399 because it is too restrictive
-    {version = ">=1.9", python = "^3.11"}
+    {version = ">=1.10.0", python = ">=3.9"}
 ]
 # Python capped to <3.13 because of:
 # https://stackoverflow.com/questions/77431252/why-doesnt-poetry-select-the-good-version-of-my-dependency
