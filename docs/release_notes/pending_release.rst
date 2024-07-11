@@ -125,6 +125,8 @@ Other
 
 * Changed all instances of "cdao/CDAO" to "jatic/JATIC"
 
+* Updated maite to v0.6.0
+
 Fixes
 -----
 

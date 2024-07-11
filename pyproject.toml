@@ -32,7 +32,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.8.1"
 xaitk-saliency = ">=0.8.2"
-maite = "^0.5.0"
+maite = "^0.6.0"
 setuptools = ">=65.6.3"
 scipy = [
     {version = "<1.11.1", python = "~3.8.1"}, # Can't satisfy CVE-2023-25399 because it is too restrictive
@@ -57,7 +57,7 @@ notebooks = [ "jupyter" ]
 tools = [ "kwcoco", "matplotlib" ]
 
 [tool.poetry.group.dev.dependencies]
-maite = { version = "^0.5.0", extras = ["test"] }
+maite = { version = "^0.6.0", extras = ["test"] }
 # Linting
 flake8 = ">=6"
 flake8-mutable = ">=1.2.0"

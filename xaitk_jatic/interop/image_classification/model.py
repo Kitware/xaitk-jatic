@@ -45,7 +45,7 @@ class JATICImageClassifier(ClassifyImage):
 
         # Transform outputs of a single batch
         def _generate_outputs(batch: Sequence[np.ndarray]) -> None:
-            predictions = np.asarray(self._classifier(np.asarray(batch)))
+            predictions = np.asarray(self._classifier(batch))
 
             for pred in predictions:
                 all_out.append({self._id2name[id]: score for id, score in enumerate(pred)})
