@@ -121,6 +121,10 @@ Utils
   
 * Added a CLI script as to generate saliency maps on COCO detections.
 
+* Added a Dockerfile and script to run a self terminating XAITK container. This
+  container takes a sample image, model weights, and a config file to generate
+  saliency maps.
+
 Other 
 
 * Changed all instances of "cdao/CDAO" to "jatic/JATIC"
