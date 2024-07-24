@@ -18,6 +18,10 @@ CI/CD
 
 * Add python3.12 to test matrix
 
+* Major overhaul of pipeline to improve efficiency and `yml` readability.
+
+* A second major overhaul to match `nrtk` caching.
+
 Docs
 
 * Added initial sphinx-based documentation infrastructure, including these
