@@ -16,7 +16,7 @@ from xaitk_jatic.utils.bin.sal_on_coco_dets import sal_on_coco_dets
 from importlib.util import find_spec
 
 
-deps = ['kwcoco']
+deps = ['kwcoco', 'matplotlib']
 specs = [find_spec(dep) for dep in deps]
 is_usable = all([spec is not None for spec in specs])
 
