@@ -22,6 +22,8 @@ CI/CD
 
 * A second major overhaul to match `nrtk` caching.
 
+* Create MR-specific environments for documentation preview.
+
 Docs
 
 * Added initial sphinx-based documentation infrastructure, including these
