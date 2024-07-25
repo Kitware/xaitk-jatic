@@ -11,15 +11,12 @@ include:
 
 sast:
   stage: security
-  needs: [pytest] # if unit tests don't pass, don't run
   dependencies: []
 
 dependency_scanning:
   stage: security
   needs:
     - job: build:cache # pulls in cached dependencies for scanning
-      artifacts: false
-    - job: pytest  # if unit tests don't pass, don't run
       artifacts: false
   before_script:
     - !reference [.shared-setup, before_script]
@@ -32,5 +29,3 @@ dependency_scanning:
 
 secret_detection:
   stage: security
-  needs: [pytest] # if unit tests don't pass, don't run
-  dependencies: []
