@@ -1,5 +1,6 @@
 Pending Release Notes
 =====================
+
 This is the initial release of this repository which hosts integration
 documentation, examples and code related to integrating xaitk-saliency
 components with the JATIC needs and use-cases.
@@ -23,6 +24,8 @@ CI/CD
 * A second major overhaul to match `nrtk` caching.
 
 * Create MR-specific environments for documentation preview.
+
+* Refactored package into `src/xaitk_jatic` instead of `xaitk_jatic`.
 
 Docs
 
@@ -49,6 +52,8 @@ Docs
 
 * Added sphinx auto documentation for JATIC object detection and image
   classification protocol adapters.
+
+* Updated documents to reflect new refactor.
 
 Examples
 
@@ -136,6 +141,10 @@ Other
 * Changed all instances of "cdao/CDAO" to "jatic/JATIC"
 
 * Updated maite to v0.6.0
+
+Dependencies
+
+* Added new linting `black` and `ruff`.
 
 Fixes
 -----
