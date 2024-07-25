@@ -44,6 +44,24 @@ poetry run make html
 firefox _build/html/index.html
 ```
 
+# Developer tools
+
+**pre-commit hooks**  
+pre-commit hooks are used to ensure that any code meets all linting and formatting guidelines required.  
+After installing, this will always run before committing to ensure that any commits are following the standards, 
+but you can also manually run the check without committing. If you want to commit despite there being errors, you 
+can add `--no-verify` to your commit command.  
+Installing pre-commit hooks:  
+```bash
+# Ensure that all dependencies are installed  
+poetry install --sync --with dev-linting,dev-testing,dev-docs  
+# Initialize pre-commit for the repository  
+poetry run pre-commit install  
+# Run pre-commit check on all files  
+poetry run pre-commit run --all-files  
+```
+
+
 ## Contributing
 
 - We follow the general guidelines outlined in the
