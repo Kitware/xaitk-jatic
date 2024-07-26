@@ -2,8 +2,6 @@
 # Stage -- Security Scanning
 ###############################################################################
 
-# These includes are pulling from public template files directly embedded in the gitlab source code.
-# https://gitlab.com/gitlab-org/gitlab/-/tree/master/lib/gitlab/ci/templates
 include:
 - template: Jobs/SAST.latest.gitlab-ci.yml
 - template: Jobs/Dependency-Scanning.latest.gitlab-ci.yml

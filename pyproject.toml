@@ -122,7 +122,7 @@ addopts = [
 ]
 testpaths = [
     "tests",
-    "xaitk_jatic",
+    "src/xaitk_jatic",
 ]
 doctest_optionflags = [
     "NORMALIZE_WHITESPACE",

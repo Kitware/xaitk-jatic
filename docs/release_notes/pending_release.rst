@@ -55,6 +55,8 @@ Docs
 
 * Updated documents to reflect new refactor.
 
+* Added a section to the README about using the pre-commit hooks.
+
 Examples
 
 * Added an example notebook for integrating the use of HuggingFace with
