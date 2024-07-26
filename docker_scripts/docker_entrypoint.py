@@ -1,26 +1,28 @@
-import os
-import numpy as np
-import logging
-import click  # type: ignore
 import json
-from pathlib import Path
-from PIL import Image  # type: ignore
-from typing import TextIO, Dict, Hashable
-
+import logging
+import os
 from dataclasses import dataclass
-from smqtk_core.configuration import from_config_dict
+from pathlib import Path
+from typing import Dict, Hashable, TextIO
 
-from xaitk_saliency import GenerateObjectDetectorBlackboxSaliency
+import click  # type: ignore
 import maite.protocols.object_detection as od
+import numpy as np
+import torch  # type: ignore
+from PIL import Image  # type: ignore
+from smqtk_core.configuration import from_config_dict
+from xaitk_saliency import GenerateObjectDetectorBlackboxSaliency
 
 from xaitk_jatic.interop.object_detection.model import JATICDetector
-import torch  # type: ignore
 
 try:
     import matplotlib.pyplot as plt  # type: ignore
-    from transformers import AutoModelForObjectDetection  # type: ignore
-    from transformers import AutoImageProcessor  # type: ignore
     from torchvision.transforms.functional import get_image_size  # type: ignore
+    from transformers import (
+        AutoImageProcessor,  # type: ignore
+        AutoModelForObjectDetection,  # type: ignore
+    )
+
     is_usable = True
 except ImportError:
     is_usable = False
@@ -64,9 +66,7 @@ class HuggingFaceDetector:
         with torch.no_grad():
             hf_predictions = self.model(**hf_inputs)
         hf_results = self.image_processor.post_process_object_detection(
-            hf_predictions,
-            threshold=self.threshold,
-            target_sizes=target_sizes
+            hf_predictions, threshold=self.threshold, target_sizes=target_sizes
         )
 
         predictions: od.TargetBatchType = list()
@@ -75,7 +75,7 @@ class HuggingFaceDetector:
                 DetectionTarget(
                     result["boxes"].detach().cpu(),
                     result["labels"].detach().cpu(),
-                    result["scores"].detach().cpu()
+                    result["scores"].detach().cpu(),
                 )
             )
 
@@ -83,46 +83,52 @@ class HuggingFaceDetector:
 
 
 def dets_to_mats(dets, jatic_detector):
-    labels = [jatic_detector.id2label()[id] for id in sorted(jatic_detector.id2label().keys())]  # type: ignore
+    labels = [jatic_detector.id2label()[id_] for id_ in sorted(jatic_detector.id2label().keys())]  # type: ignore
 
     bboxes = np.empty((0, 4))
     scores = np.empty((0, len(labels)))
     for det in dets:
         bbox = det[0]
 
-        bboxes = np.vstack((
-            bboxes,
-            [*bbox.min_vertex, *bbox.max_vertex,]
-        ))
+        bboxes = np.vstack(
+            (
+                bboxes,
+                [
+                    *bbox.min_vertex,
+                    *bbox.max_vertex,
+                ],
+            )
+        )
 
         score_dict = det[1]
         score_array = []
         for label in labels:
             score_array.append(score_dict[label])
 
-        scores = np.vstack((
-            scores,
-            score_array,
-        ))
+        scores = np.vstack(
+            (
+                scores,
+                score_array,
+            )
+        )
 
     return bboxes, scores
 
 
-@click.command(context_settings={"help_option_names": ['-h', '--help']})
-@click.argument('image_file', type=str)
-@click.argument('output_dir', type=click.Path(exists=False))
-@click.argument('config_file', type=click.File(mode='r'))
-@click.argument('hugging_face_model_name', type=str)
-@click.option('--verbose', '-v', count=True, help='print progress messages')
+@click.command(context_settings={"help_option_names": ["-h", "--help"]})
+@click.argument("image_file", type=str)
+@click.argument("output_dir", type=click.Path(exists=False))
+@click.argument("config_file", type=click.File(mode="r"))
+@click.argument("hugging_face_model_name", type=str)
+@click.option("--verbose", "-v", count=True, help="print progress messages")
 def generate_saliency_maps(
     image_file: str,
     output_dir: str,
     config_file: TextIO,
     hugging_face_model_name: str,
-    verbose: bool
+    verbose: bool,
 ) -> None:
-    """
-    Generate saliency maps for detections and write them to disk.
+    r"""Generate saliency maps for detections and write them to disk.
 
     \f
     :param image_file: Input image.
@@ -132,12 +138,13 @@ def generate_saliency_maps(
     :param hugging_face_model_name: Name of model to load from HuggingFace.
     :param verbose: Display progress messages. Default is false.
     """
-
     if verbose:
         logging.basicConfig(level=logging.INFO)
 
     if not is_usable:
-        print("This tool requires additional dependencies, please install `xaitk-jatic[docker]'")
+        print(
+            "This tool requires additional dependencies, please install `xaitk-jatic[docker]'"
+        )
         exit(-1)
 
     # Load config
@@ -146,7 +153,7 @@ def generate_saliency_maps(
     # Instantiate objects from config
     sal_generator = from_config_dict(
         config["GenerateObjectDetectorBlackboxSaliency"],
-        GenerateObjectDetectorBlackboxSaliency.get_impls()
+        GenerateObjectDetectorBlackboxSaliency.get_impls(),
     )
 
     fill = [95, 96, 93]
@@ -154,15 +161,11 @@ def generate_saliency_maps(
 
     logging.info("Building detection model...")
     jatic_detector = HuggingFaceDetector(
-        model_name=hugging_face_model_name,
-        threshold=0.5,
-        device='cpu'
+        model_name=hugging_face_model_name, threshold=0.5, device="cpu"
     )
 
     blackbox_detector = JATICDetector(
-        detector=jatic_detector,
-        id2name=jatic_detector.id2label(),
-        img_batch_size=5
+        detector=jatic_detector, id_to_name=jatic_detector.id2label(), img_batch_size=5
     )
 
     img_path = Path(image_file)
@@ -179,19 +182,18 @@ def generate_saliency_maps(
 
     logging.info("Generating saliency maps...")
     img_sal_maps = sal_generator(
-        ref_img,
-        detector_bboxes,
-        detector_scores,
-        blackbox_detector
+        ref_img, detector_bboxes, detector_scores, blackbox_detector
     )
 
     logging.info("Saving saliency maps...")
     for img_idx, sal_map in enumerate(img_sal_maps):
         fig = plt.figure()
-        plt.axis('off')
-        plt.imshow(sal_map, cmap='jet')
+        plt.axis("off")
+        plt.imshow(sal_map, cmap="jet")
         plt.colorbar()
-        plt.savefig(os.path.join(output_dir, f"det_{img_idx}.jpeg"), bbox_inches='tight')
+        plt.savefig(
+            os.path.join(output_dir, f"det_{img_idx}.jpeg"), bbox_inches="tight"
+        )
         plt.close(fig)
 
     logging.info("Saliency maps saved. Exiting...")

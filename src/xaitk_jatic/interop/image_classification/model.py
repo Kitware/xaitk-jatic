@@ -1,37 +1,36 @@
 from typing import Dict, Hashable, Iterator, Sequence
-import numpy as np
-
-from smqtk_classifier.interfaces.classify_image import ClassifyImage, IMAGE_ITER_T
-from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 
 import maite.protocols.image_classification as ic
+import numpy as np
+from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
+from smqtk_classifier.interfaces.classify_image import IMAGE_ITER_T, ClassifyImage
 
 
 class JATICImageClassifier(ClassifyImage):
-    """
-    Adapter for JATIC classifier protocol.
+    """Adapter for JATIC classifier protocol.
 
     :param classifier: The JATIC protocol-based classifier.
-    :param id2name: Mapping from label IDs to names.
+    :param id_to_name: Mapping from label IDs to names.
     :param img_batch_size: Image batch size for inference.
     """
 
     def __init__(
         self,
         classifier: ic.Model,
-        id2name: Dict[int, Hashable],
-        img_batch_size: int = 1
+        id_to_name: Dict[int, Hashable],
+        img_batch_size: int = 1,
     ):
         self._classifier = classifier
-        self._id2name = dict(sorted(id2name.items()))
+        self._id_to_name = dict(sorted(id_to_name.items()))
         self._img_batch_size = img_batch_size
 
     def get_labels(self) -> Sequence[Hashable]:
-        return [self._id2name[id] for id in sorted(self._id2name.keys())]
+        return [
+            self._id_to_name[id] for id in sorted(self._id_to_name.keys())  # noqa: A001
+        ]
 
     def classify_images(
-      self,
-      img_iter: IMAGE_ITER_T
+        self, img_iter: IMAGE_ITER_T
     ) -> Iterator[CLASSIFICATION_DICT_T]:
         all_out = list()
         batch = list()
@@ -48,7 +47,12 @@ class JATICImageClassifier(ClassifyImage):
             predictions = np.asarray(self._classifier(batch))
 
             for pred in predictions:
-                all_out.append({self._id2name[id]: score for id, score in enumerate(pred)})
+                all_out.append(
+                    {
+                        self._id_to_name[id]: score
+                        for id, score in enumerate(pred)  # noqa: A001
+                    }
+                )
 
         # Batch model passes
         for img in img_iter:
@@ -66,6 +70,5 @@ class JATICImageClassifier(ClassifyImage):
 
     def get_config(self) -> dict:
         raise NotImplementedError(
-            "Constructor arguments are not serializable as is and require"
-            "further implementation to do so."
+            "Constructor arguments are not serializable as is and require further implementation to do so."
         )
