@@ -4,7 +4,9 @@ exclude =
     .eggs,
     .venv,
     docs,
-    .cache
+    .cache,
+    docker_scripts,
+    demos
 
 # While a max length of 79 is encouraged, sometimes going over makes more sense
 # for overall clarity.

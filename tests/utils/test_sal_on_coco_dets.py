@@ -1,63 +1,61 @@
 import logging
-import numpy as np
 import os
+import unittest.mock as mock
+from importlib.util import find_spec
+from unittest.mock import MagicMock
+
+import numpy as np
 import py  # type: ignore
 import pytest
-import unittest.mock as mock
 from click.testing import CliRunner
-from unittest.mock import MagicMock
 from smqtk_detection.impls.detect_image_objects.random_detector import RandomDetector
 from xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise import DRISEStack
 
 from tests import DATA_DIR
-
 from xaitk_jatic.utils.bin.sal_on_coco_dets import sal_on_coco_dets
 
-from importlib.util import find_spec
-
-
-deps = ['kwcoco', 'matplotlib']
+deps = ["kwcoco", "matplotlib"]
 specs = [find_spec(dep) for dep in deps]
-is_usable = all([spec is not None for spec in specs])
+is_usable = all(spec is not None for spec in specs)
 
-dset_dir = DATA_DIR
-config_file = os.path.join(DATA_DIR, 'config.json')
+dataset_dir = DATA_DIR
+config_file = os.path.join(DATA_DIR, "config.json")
 
 
 class TestSalOnCocoDetsNotUsable:
-    """
-    These tests make use of the `tmpdir` fixture from `pytest`. Find more
-    information here: https://docs.pytest.org/en/6.2.x/tmpdir.html
+    """These tests make use of the `tmpdir` fixture from `pytest`.
+
+    Find more information here: https://docs.pytest.org/en/6.2.x/tmpdir.html
     """
 
     @mock.patch("xaitk_jatic.utils.bin.sal_on_coco_dets.is_usable", False)
     def test_warning(self, tmpdir: py.path.local) -> None:
-        """
-        Test that proper warning is displayed when required dependencies are
-        not installed.
-        """
-        output_dir = tmpdir.join('out')
+        """Test that proper warning is displayed when required dependencies are not installed."""
+        output_dir = tmpdir.join("out")
 
         runner = CliRunner()
 
-        result = runner.invoke(sal_on_coco_dets, [str(dset_dir), str(output_dir), str(config_file)])
+        result = runner.invoke(
+            sal_on_coco_dets, [str(dataset_dir), str(output_dir), str(config_file)]
+        )
 
         assert result.output.startswith(
-            "This tool requires additional dependencies, please install 'xaitk-jatic[tools]'"
+            "This tool requires additional dependencies, please install 'xaitk-jatic[tools]'."
         )
         assert not output_dir.check(dir=1)
 
 
 @pytest.mark.skipif(not is_usable, reason="Extra 'xaitk-jatic[tools]' not installed.")
 class TestSalOnCocoDets:
+    """These tests make use of the `tmpdir` fixture from `pytest`.
+
+    Find more information here: https://docs.pytest.org/en/6.2.x/tmpdir.html
     """
-    These tests make use of the `tmpdir` fixture from `pytest`. Find more
-    information here: https://docs.pytest.org/en/6.2.x/tmpdir.html
-    """
+
     mock_return_value = (
         [
             np.random.randint(0, 255, (3, 256, 256), dtype=np.uint8),
-            np.random.randint(0, 255, (3, 256, 256), dtype=np.uint8)
+            np.random.randint(0, 255, (3, 256, 256), dtype=np.uint8),
         ],
         {
             "type": "xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise.DRISEStack",
@@ -66,23 +64,28 @@ class TestSalOnCocoDets:
                 "s": 8,
                 "p1": 0.5,
                 "seed": 0,
-                "threads": 4
-            }
-        }
+                "threads": 4,
+            },
+        },
     )
 
     def test_config_gen(self, tmpdir: py.path.local) -> None:
-        """
-        Test the generate configuration file option.
-        """
-        output_dir = tmpdir.join('out')
+        """Test the generate configuration file option."""
+        output_dir = tmpdir.join("out")
 
-        output_config = tmpdir.join('gen_conf.json')
+        output_config = tmpdir.join("gen_conf.json")
 
         runner = CliRunner()
-        runner.invoke(sal_on_coco_dets,
-                      [str(dset_dir), str(output_dir), str(config_file),
-                       "-g", str(output_config)])
+        runner.invoke(
+            sal_on_coco_dets,
+            [
+                str(dataset_dir),
+                str(output_dir),
+                str(config_file),
+                "-g",
+                str(output_config),
+            ],
+        )
 
         # check that config file was created
         assert output_config.check(file=1)
@@ -91,34 +94,23 @@ class TestSalOnCocoDets:
 
     @pytest.mark.parametrize("overlay_image", [False, True])
     @mock.patch(
-        'xaitk_jatic.utils.bin.sal_on_coco_dets.compute_sal_maps',
-        return_value=mock_return_value
+        "xaitk_jatic.utils.bin.sal_on_coco_dets.compute_sal_maps",
+        return_value=mock_return_value,
     )
     def test_compute_sal_maps(
         self,
         compute_sal_maps_patch: MagicMock,
         overlay_image: bool,
-        tmpdir: py.path.local
+        tmpdir: py.path.local,
     ) -> None:
-        """
-        Test that compute_sal_maps is called appropriately and the images are saved correctly.
-        """
-        output_dir = tmpdir.join('out')
+        """Test that compute_sal_maps is called appropriately and the images are saved correctly."""
+        output_dir = tmpdir.join("out")
 
         runner = CliRunner()
-        runner_args = [
-            str(dset_dir),
-            str(output_dir),
-            str(config_file),
-            "-v"
-        ]
+        runner_args = [str(dataset_dir), str(output_dir), str(config_file), "-v"]
         if overlay_image:
             runner_args.append("--overlay-image")
-        result = runner.invoke(
-            sal_on_coco_dets,
-            runner_args,
-            catch_exceptions=False
-        )
+        result = runner.invoke(sal_on_coco_dets, runner_args, catch_exceptions=False)
 
         # Confirm compute_sal_maps arguments are as expected
         kwargs = compute_sal_maps_patch.call_args.kwargs
@@ -138,52 +130,44 @@ class TestSalOnCocoDets:
             map_files = [img_dir.join(f"det_{det_id}.jpeg") for det_id in det_ids]
             assert sorted(img_dir.listdir()) == sorted(map_files)
 
-    @mock.patch('pathlib.Path.is_file', return_value=False)
-    def test_missing_annotations(self, is_file_patch: MagicMock, tmpdir: py.path.local) -> None:
-        """
-        Check that an exception is appropriately raised if the annotations file is missing.
-        """
-        output_dir = tmpdir.join('out')
+    @mock.patch("pathlib.Path.is_file", return_value=False)
+    def test_missing_annotations(
+        self, is_file_patch: MagicMock, tmpdir: py.path.local
+    ) -> None:
+        """Check that an exception is appropriately raised if the annotations file is missing."""
+        output_dir = tmpdir.join("out")
 
         with pytest.raises(ValueError, match=r"Could not identify annotations file."):
-            runner = CliRunner()
-            _ = runner.invoke(
+            CliRunner().invoke(
                 sal_on_coco_dets,
-                [
-                    str(dset_dir),
-                    str(output_dir),
-                    str(config_file),
-                    "-v"
-                ],
-                catch_exceptions=False
+                [str(dataset_dir), str(output_dir), str(config_file), "-v"],
+                catch_exceptions=False,
             )
 
-    @mock.patch('pathlib.Path.is_file', side_effect=[True, False])
-    @mock.patch('xaitk_jatic.utils.bin.sal_on_coco_dets.compute_sal_maps', return_value=mock_return_value)
+    @mock.patch("pathlib.Path.is_file", side_effect=[True, False])
+    @mock.patch(
+        "xaitk_jatic.utils.bin.sal_on_coco_dets.compute_sal_maps",
+        return_value=mock_return_value,
+    )
     def test_missing_metadata(
         self,
-        _: MagicMock,
+        _: MagicMock,  # noqa: PT019
         is_file_patch: MagicMock,
         caplog: pytest.LogCaptureFixture,
-        tmpdir: py.path.local
+        tmpdir: py.path.local,
     ) -> None:
+        """Check that the entrypoint is able to continue when a metadata file is not present.
+
+        This will only run as as long as it's not required by the perturber.
         """
-        Check that the entrypoint is able to continue when a metadata file is not present (as
-        long as it's not required by the perturber).
-        """
-        output_dir = tmpdir.join('out')
+        output_dir = tmpdir.join("out")
 
         with caplog.at_level(logging.INFO):
             runner = CliRunner()
             result = runner.invoke(
                 sal_on_coco_dets,
-                [
-                    str(dset_dir),
-                    str(output_dir),
-                    str(config_file),
-                    "-v"
-                ],
-                catch_exceptions=False
+                [str(dataset_dir), str(output_dir), str(config_file), "-v"],
+                catch_exceptions=False,
             )
 
             assert result.exit_code == 0

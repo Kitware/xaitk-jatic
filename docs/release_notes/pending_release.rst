@@ -27,6 +27,8 @@ CI/CD
 
 * Refactored package into `src/xaitk_jatic` instead of `xaitk_jatic`.
 
+* Linted the code base to pass pre-commit hooks.
+
 Docs
 
 * Added initial sphinx-based documentation infrastructure, including these

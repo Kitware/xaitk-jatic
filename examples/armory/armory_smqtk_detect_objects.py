@@ -1,20 +1,20 @@
 import importlib.util
 import logging
-from typing import Tuple, Iterable, Dict, Hashable, List, Union
 from types import MethodType
+from typing import Dict, Hashable, Iterable, List, Tuple, Union
 
 import numpy as np
 from smqtk_image_io.bbox import AxisAlignedBoundingBox
 
 try:
     import torch  # type: ignore
+    import torch.nn.functional as F  # type: ignore  # noqa: N812
     import torchvision.models as models  # type: ignore
     from torchvision import transforms  # type: ignore
-    from torchvision.ops import boxes as box_ops  # type: ignore
-    import torch.nn.functional as F  # type: ignore
     from torchvision.models.detection.roi_heads import RoIHeads  # type: ignore
-except ModuleNotFoundError:
-    raise SystemExit("One or more module(s) not found. Exiting...")
+    from torchvision.ops import boxes as box_ops  # type: ignore
+except ModuleNotFoundError as err:
+    raise SystemExit("One or more module(s) not found. Exiting...") from err
 
 from smqtk_detection.interfaces.detect_image_objects import DetectImageObjects
 
@@ -22,9 +22,9 @@ LOG = logging.getLogger(__name__)
 
 
 class ResNetFRCNN(DetectImageObjects):
-    """
-    ``DetectImageObjects`` implementation using ``torchvision``'s Faster R-CNN
-    with a ResNet-50-FPN backbone, pretrained on COCO train2017.
+    """DetectImageObjects implementation using torchvision's Faster R-CNN with a ResNet-50-FPN backbone.
+
+    Pretrained on COCO train2017.
 
     :param box_thresh: Confidence threshold for detections.
     :param num_dets: Maximum number of detections per image.
@@ -49,7 +49,7 @@ class ResNetFRCNN(DetectImageObjects):
         self.img_batch_size = img_batch_size
         self.use_cuda = use_cuda
         self.cuda_device = cuda_device
-        self.checkpoint = './data/saved_models/carla_rgb_weights_eval5.pt'
+        self.checkpoint = "./data/saved_models/carla_rgb_weights_eval5.pt"
 
         # Set to None for lazy loading later.
         self.model: torch.nn.Module = None  # type: ignore
@@ -57,13 +57,14 @@ class ResNetFRCNN(DetectImageObjects):
 
         # The model already has normalization and resizing baked into the
         # layers.
-        self.model_loader = transforms.Compose([
-            transforms.ToTensor(),
-        ])
+        self.model_loader = transforms.Compose(
+            [
+                transforms.ToTensor(),
+            ]
+        )
 
     def get_model(self) -> "torch.nn.Module":
-        """
-        Lazy load the torch model in an idempotent manner.
+        """Lazy load the torch model in an idempotent manner.
 
         :raises RuntimeError: Use of CUDA was requested but is not available.
         """
@@ -74,18 +75,16 @@ class ResNetFRCNN(DetectImageObjects):
                 num_classes=4,
                 progress=False,
                 box_detections_per_img=self.num_dets,
-                box_score_thresh=self.box_thresh
+                box_score_thresh=self.box_thresh,
             )
 
-            model_device = torch.device('cpu')
+            model_device = torch.device("cpu")
             if self.use_cuda:
                 if torch.cuda.is_available():
                     model_device = torch.device(device=self.cuda_device)
                     model = model.to(device=model_device)
                 else:
-                    raise RuntimeError(
-                        "Use of CUDA requested, but not available."
-                    )
+                    raise RuntimeError("Use of CUDA requested, but not available.")
 
             ckpt = torch.load(self.checkpoint, map_location=model_device)
             model.load_state_dict(ckpt)
@@ -100,8 +99,7 @@ class ResNetFRCNN(DetectImageObjects):
         return model
 
     def detect_objects(
-        self,
-        img_iter: Iterable[np.ndarray]
+        self, img_iter: Iterable[np.ndarray]
     ) -> Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]]:
 
         model = self.get_model()
@@ -114,14 +112,17 @@ class ResNetFRCNN(DetectImageObjects):
             batch.append(img)
 
             if len(batch) is self.img_batch_size:
-                batch_tensors = [self.model_loader(batch_img).to(device=self.model_device) for batch_img in batch]
+                batch_tensors = [
+                    self.model_loader(batch_img).to(device=self.model_device)
+                    for batch_img in batch
+                ]
 
                 with torch.no_grad():
                     img_dets = model(batch_tensors)
 
                 for det in img_dets:
-                    det['boxes'] = det['boxes'].cpu().numpy()
-                    det['scores'] = det['scores'].cpu().numpy()
+                    det["boxes"] = det["boxes"].cpu().numpy()
+                    det["scores"] = det["scores"].cpu().numpy()
                     all_img_dets.append(det)
 
                 batch = []
@@ -131,14 +132,17 @@ class ResNetFRCNN(DetectImageObjects):
 
         # compute leftover batch
         if len(batch) > 0:
-            batch_tensors = [self.model_loader(batch_img).to(device=self.model_device) for batch_img in batch]
+            batch_tensors = [
+                self.model_loader(batch_img).to(device=self.model_device)
+                for batch_img in batch
+            ]
 
             with torch.no_grad():
                 img_dets = model(batch_tensors)
 
             for det in img_dets:
-                det['boxes'] = det['boxes'].cpu().numpy()
-                det['scores'] = det['scores'].cpu().numpy()
+                det["boxes"] = det["boxes"].cpu().numpy()
+                det["scores"] = det["scores"].cpu().numpy()
                 all_img_dets.append(det)
 
             batch_idx += 1
@@ -146,12 +150,13 @@ class ResNetFRCNN(DetectImageObjects):
 
         formatted_dets = []  # AxisAlignedBoundingBox detections to return
         for img_dets in all_img_dets:
-            bboxes = img_dets['boxes']
-            scores = img_dets['scores']
+            bboxes = img_dets["boxes"]
+            scores = img_dets["scores"]
 
-            a_bboxes = [AxisAlignedBoundingBox(
-                [box[0], box[1]], [box[2], box[3]]
-            ) for box in bboxes]
+            a_bboxes = [
+                AxisAlignedBoundingBox([box[0], box[1]], [box[2], box[3]])
+                for box in bboxes
+            ]
 
             score_dicts = []
 
@@ -180,8 +185,8 @@ class ResNetFRCNN(DetectImageObjects):
     @classmethod
     def is_usable(cls) -> bool:
         # check for optional dependencies
-        torch_spec = importlib.util.find_spec('torch')
-        torchvision_spec = importlib.util.find_spec('torchvision')
+        torch_spec = importlib.util.find_spec("torch")
+        torchvision_spec = importlib.util.find_spec("torchvision")
         if torch_spec is not None and torchvision_spec is not None:
             return True
         else:
@@ -189,19 +194,18 @@ class ResNetFRCNN(DetectImageObjects):
 
 
 try:
+
     def _postprocess_detections(
         self: RoIHeads,  # type: ignore
         class_logits: torch.Tensor,  # type: ignore
         box_regression: torch.Tensor,  # type: ignore
         proposals: List[torch.Tensor],  # type: ignore
-        image_shapes: List[Tuple[int, int]]  # type: ignore
+        image_shapes: List[Tuple[int, int]],  # type: ignore
     ) -> Tuple[List[torch.Tensor], List[torch.Tensor], List[torch.Tensor]]:  # type: ignore
-        """
-        Modified bounding box postprocessing function that returns class
-        probabilites instead of just a confidence score. Taken from
-        https://github.com/XAITK/xaitk-saliency/blob/master/examples/DRISE.ipynb
-        """
+        """Modified bounding box postprocessing fcn that returns class probabilites instead of just a confidence score.
 
+        Taken from https://github.com/XAITK/xaitk-saliency/blob/master/examples/DRISE.ipynb
+        """
         device = class_logits.device
         num_classes = class_logits.shape[-1]
 
@@ -216,7 +220,9 @@ try:
         all_boxes = []
         all_scores = []
         all_labels = []
-        for boxes, scores, image_shape in zip(pred_boxes_list, pred_scores_list, image_shapes):
+        for boxes, scores, image_shape in zip(
+            pred_boxes_list, pred_scores_list, image_shapes
+        ):
             boxes = box_ops.clip_boxes_to_image(boxes, image_shape)
 
             # create labels for each prediction
@@ -246,7 +252,7 @@ try:
             # non-maximum suppression, independently done per class
             keep = box_ops.batched_nms(boxes, scores, labels, self.nms_thresh)  # type: ignore
             # keep only topk scoring predictions
-            keep = keep[:self.detections_per_img]  # type: ignore
+            keep = keep[: self.detections_per_img]  # type: ignore
             inds = inds[keep]
             boxes, scores, labels = boxes[keep], scores[keep], labels[keep]
 
@@ -261,7 +267,12 @@ try:
 
     # Labels for this pretrained model are detailed here
     # https://pytorch.org/vision/stable/models.html#object-detection-instance-segmentation-and-person-keypoint-detection
-    COCO_INSTANCE_CATEGORY_NAMES = ('__background__', 'person', 'vehicle', 'traffic light')
+    COCO_INSTANCE_CATEGORY_NAMES = (
+        "__background__",
+        "person",
+        "vehicle",
+        "traffic light",
+    )
     COCO_INSTANCE_CATEGORY_NAMES_NA = "N/A"
 except NameError:
     pass
