@@ -1,5 +1,5 @@
-Pending Release Notes
-=====================
+v0.2.0
+======
 
 This is the initial release of this repository which hosts integration
 documentation, examples and code related to integrating xaitk-saliency
