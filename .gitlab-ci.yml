@@ -1,143 +1,16 @@
-# Use stages to define stages that contain groups of jobs. Use stage in a job
-# to configure the job to run in a specific stage.
 stages:
+  - build
+  - quality
   - test
+  - security
+  - docs
+  - publish
 
-# Global default environment variables set for all jobs unless overridden by
-# job-specific configuration.
-variables:
-  # Make sure output supports UTF-8
-  LC_ALL: "C.UTF-8"
-  LANG: "C.UTF-8"
-
-# Global default parameters set for all jobs unless overridden by job-specific
-# configuration.
-default:
-  image: python:3.8
-  interruptible: true
-
-###############################################################################
-# Run Conditions
-#
-# In the future, this could be broken out into a separate file that we
-# `include` here.
-#
-# REMINDER: The "." prefix causes the "job" to be hidden (does not get run),
-# but can still be used for inheritance.
-
-# Run rules to activate at the major junction points: merge requests, tag
-# pipelines and branch pipelines for masters.
-.run_automatically:
-  rules:
-    # If changes are make to an active merge request.
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: on_success
-    # If changes are pushed for a tag.
-    - if: $CI_COMMIT_TAG
-      when: on_success
-    # If changes are pushed to the default branch.
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: on_success
-    - when: never  # explicit fail-exclude terminal condition.
-
-###############################################################################
-# Jobs -- Testing
-#
-# In the future, `.`-prefixed templates could be broken out into a separate
-# file that we `include` here.
-#
-# REMINDER: The "." prefix causes the "job" to be hidden (does not get run),
-# but can still be used for inheritance.
-
-.poetry_install:
-  variables:
-    # Change pip's cache directory to be inside the project directory since we
-    # can only cache local items. Same for poetry cache
-    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-    POETRY_CACHE_DIR: "$CI_PROJECT_DIR/.cache/poetry"
-  # We are only caching the pip/poetry caches, NOT THE VENV. Caches should be
-  # python version agnostic.
-  cache:
-    key: py-package-cache
-    paths:
-      - $PIP_CACHE_DIR
-      - $POETRY_CACHE_DIR
-  before_script:
-    - export PATH=${HOME}/.local/bin:${PATH}
-    # Will make use of .cache/pip
-    - pip install --user -U poetry
-    - command -v python
-    - python --version
-    - command -v pip
-    - pip --version
-    - command -v poetry
-    - poetry -V
-    - poetry config --local virtualenvs.in-project true
-    # Will make use of .cache/poetry
-    - poetry install --sync
-
-.test_defaults:
-  extends:
-    - .run_automatically
-    - .poetry_install
-  stage: test
-  image: python:3.8
-  interruptible: true
-  tags:
-    - docker
-
-# Job to lint python code
-test-py-lint:
-  extends: .test_defaults
-  script:
-    - poetry run flake8
-
-# Job to typecheck python code
-test-py-typecheck:
-  extends: .test_defaults
-  script:
-    - poetry run mypy
-
-# Job to run unittests via pytest
-test-pytest:
-  extends: .test_defaults
-  parallel:
-    matrix:
-      - PY_VERSION: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
-  image: python:${PY_VERSION}
-  script:
-    - poetry run pytest
-
-# Job to test-run the example jupyter notebooks
-test-notebooks:
-  extends: .test_defaults
-  variables:
-    TORCH_HOME: "${CI_PROJECT_DIR}/.cache/torch"
-    HF_DATASETS_CACHE: "${CI_PROJECT_DIR}/.cache/huggingface/datasets"
-    TRANSFORMERS_CACHE: "${CI_PROJECT_DIR}/.cache/huggingface/hub"
-  tags:
-    - docker
-    # Add the GPU tag for notebooks to be able to be run faster.
-    - gpu
-  # Merge inherited caches
-  cache:
-    - !reference [.test_defaults, cache]
-    - key: huggingface-cache
-      paths:
-        - ${TORCH_HOME}
-        - ${HF_DATASETS_CACHE}
-        - ${TRANSFORMERS_CACHE}
-  # Specifying the various notebooks that we want to be tested. Each invocation
-  # of this job should try to execute only one notebook via papermill.
-  parallel:
-    matrix:
-      # Sequences combinatorically combine within a list entry
-      - NOTEBOOK_DIR: "examples/huggingface"
-        NOTEBOOK_FILE: [ "xaitk-huggingface.ipynb" ]
-  # Using default container image defined above
-  script:
-    - nvidia-smi
-    - cd "${NOTEBOOK_DIR}"
-    - poetry run papermill
-        --progress-bar -k python3 --stdout-file - --stderr-file -
-        "${NOTEBOOK_FILE}" /dev/null
+include:
+  - local: .gitlab-ci/.gitlab-shared.yml
+  - local: .gitlab-ci/.gitlab-build.yml
+  - local: .gitlab-ci/.gitlab-quality.yml
+  - local: .gitlab-ci/.gitlab-test.yml
+  - local: .gitlab-ci/.gitlab-security.yml
+  - local: .gitlab-ci/.gitlab-docs.yml
+  - local: .gitlab-ci/.gitlab-publish.yml
