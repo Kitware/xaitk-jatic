@@ -1,29 +1,14 @@
 ###############################################################################
 # Stage -- Security Scanning
 ###############################################################################
-
-include:
-- template: Jobs/SAST.latest.gitlab-ci.yml
-- template: Jobs/Dependency-Scanning.latest.gitlab-ci.yml
-- template: Jobs/Secret-Detection.latest.gitlab-ci.yml
-
-sast:
-  stage: security
-  dependencies: []
+# 
+# Overrides:
+# 
+# 1) Installed "tools" extras
+#
+###############################################################################
 
 dependency_scanning:
-  stage: security
-  needs:
-    - job: build:cache # pulls in cached dependencies for scanning
-      artifacts: false
   before_script:
     - !reference [.shared-setup, before_script]
-    - poetry install --sync --only main,dev-linting,dev-testing,dev-docs --all-extras
-  cache:
-    key: $CI_COMMIT_REF_SLUG
-    paths:
-    - .cache
-    policy: pull
-
-secret_detection:
-  stage: security
+    - poetry install --sync --only main,dev-linting,dev-testing,dev-docs --extras tools
