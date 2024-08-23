@@ -15,6 +15,7 @@ description = """\
 authors = ["Kitware, Inc. <xaitk@kitware.com>"]
 readme = "README.md"
 packages = [{include = "xaitk_jatic", from="src"}]
+documentation = "https://xaitk-jatic.readthedocs.io/"
 classifiers = [
     'Development Status :: 3 - Alpha',
     'Intended Audience :: Developers',
