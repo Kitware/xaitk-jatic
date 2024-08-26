@@ -14,6 +14,7 @@ This is an extension of the Explainable AI Toolkit (XAITK) for JATIC. This docum
    releasing
    jatic
    platform_reflections
+   containers
    miscellaneous
 
 
