@@ -26,10 +26,6 @@ copyright = "2022, Kitware, Inc."  # noqa: A001
 author = "Kitware, Inc."
 release = xaitk_jatic.__version__
 
-site_url = "https://jatic.pages.jatic.net/kitware/xaitk-jatic/"
-repo_url = "https://gitlab.jatic.net/jatic/kitware/xaitk-jatic"
-repo_name = "xaitk-jatic"
-
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
