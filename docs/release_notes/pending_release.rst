@@ -8,6 +8,8 @@ CI/CD
 
 * Swapped out pipeline to use a shared pipeline.
 
+* Added a mirroring job to replace builtin gitlab mirroring due to LFS issue.
+
 Documentation
 
 * Added Read the Docs configuration files
