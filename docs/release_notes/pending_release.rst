@@ -14,5 +14,9 @@ Documentation
 
 * Added Read the Docs configuration files
 
+* Added a Containers section to documentation
+
+* Added ``AUKUS.rst`` to Containers documentations
+
 Fixes
 -----
