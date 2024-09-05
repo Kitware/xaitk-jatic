@@ -104,37 +104,21 @@ possible and appropriately differentiate from other classes defined here.
 If there are multiple classes that perform similar behaviors but on different
 subjects, it is important to distinguish the subject of the verb in the
 naming.
-For example, `PerturbImage` vs. `PerturbVideo` share the same verb, "perturb",
-but the subject that is to be perturbed is noted as the differentiator.
 
-Some concrete examples as can be found in the main `xaitk-saliency` repository are:
-* `PerturbImage`
-    * verb: `Perturb`
-    * noun: `Image` (input and output)
-* `GenerateClassifierConfidenceSaliency`
-    * verb: `Generate`
-    * noun(s): `ClassifierConfidence` (input) and `Saliency` (output)
+## Non-public Contributions
+It is reasonable to expect that some extensions to this package may not be
+desired to be released into the public scope.
+This package makes use of a plugin framework to allow for derivative packages
+to define their own interface implementations, such that they are discoverable
+when such a package is present in the same python environment as this package.
+SMQTK-Core documentation found [here][smqtk_plugin_reference] describes how
+such a derivative package would expose their implementations such that they
+would be discoverable by the plugin framework.
 
-A special case for class naming can be made for **concrete implementations**
-derived from interface classes.
-This consideration aims to reduce repetitiveness in implementation class names,
-since they are performing the same verb on the same nouns but with different
-"hows."
-Even more concise concrete implementation names are also beneficial in the
-interplay with plugin discovery and configuration where class names *are* the
-keys for selection and are only discoverable/configurable under the context of
-their parent interface classes.
-In these cases it may be considered that the parent interface class(es) satisfy
-the verb-noun naming rule, and the naming of the implementation class should
-more reflect nature of the "how" specialization.
+If such originally non-public contributions ever do become publicly
+releasable, they may continue to live in their original homes, or may be
+contributed into this codebase via a pull request (see [above](
+#Making-a-Contribution) and [our review process](docs/review_process.rst)).
 
-For an example of this exception case, let us consider the
-`GenerateClassifierConfidenceSaliency` interface.
-With the interface being moderately lengthy in name it can easily be seen how
-repetition of this with additional verbiage to indicate specialization results
-is overly long names.
-The implementation names used here for some implementations are
-`OcclusionScoring` and `RISEScoring`.
-These drop the Verb-Noun aspects of the parent interface and replace it with
-implementation specific nomenclature of "occlusion" (method-descriptive) and
-"RISE" (acronym from source publication).
+
+[smqtk_plugin_reference]: https://smqtk-core.readthedocs.io/en/stable/plugins_configuration.html#creating-an-interface-and-exposing-implementations
