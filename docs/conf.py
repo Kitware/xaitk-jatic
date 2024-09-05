@@ -22,9 +22,10 @@ import xaitk_jatic  # noqa: E402
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "xaitk-jatic"
-copyright = "2022, Kitware, Inc."  # noqa: A001
+copyright = "2023, Kitware, Inc."  # noqa: A001
 author = "Kitware, Inc."
 release = xaitk_jatic.__version__
+
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -33,6 +34,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosectionlabel",
     "sphinx-prompt",
+    "sphinx_copybutton",
 ]
 
 suppress_warnings = [

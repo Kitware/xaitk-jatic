@@ -1,3 +1,4 @@
+# :auto shared:
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -138,6 +139,10 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# ruff
+.ruff_cache
+# :auto shared:
+
 # Lightning example notebook
 examples/lightning/MNIST/
 examples/lightning/cifar10.ckpt
@@ -170,7 +175,3 @@ examples/huggingface/submitit_logs/
 # Shared Interest example notebook
 examples/shared_interest/data/imagenet_classes.txt
 examples/shared_interest/shared-interest/
-
-
-# ruff
-.ruff_cache
