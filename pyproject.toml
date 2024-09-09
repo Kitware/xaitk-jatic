@@ -8,7 +8,6 @@ build-backend = "poetry.core.masonry.api"
 ###############################################################################
 [tool.poetry]
 name = "xaitk-jatic"
-authors = ["Kitware, Inc. <xaitk@kitware.com>"]
 readme = "README.md"
 packages = [{include = "xaitk_jatic", from="src"}]
 documentation = "https://xaitk-jatic.readthedocs.io/"
@@ -27,6 +26,7 @@ classifiers = [
 ]
 # :auto package-meta:
 # package-specific meta, don't put this in "generated package-meta"
+authors = ["Kitware, Inc. <xaitk@kitware.com>"]
 version = "0.2.0"
 description = """\
     Integration package to support interfacing, implementation and example \
