@@ -73,8 +73,8 @@ def display_sal_maps(
         x_2 = int(x_2 + pad_x)
         y_2 = int(y_2 + pad_y)
 
-        img_crop = gray_img[y_1 : (y_2 + 1), x_1 : (x_2 + 1)]
-        sal_crop = sal_map[y_1 : (y_2 + 1), x_1 : (x_2 + 1)]
+        img_crop = gray_img[y_1: (y_2 + 1), x_1: (x_2 + 1)]
+        sal_crop = sal_map[y_1: (y_2 + 1), x_1: (x_2 + 1)]
 
         ax.imshow(img_crop, alpha=0.7, cmap="gray")
         ax.imshow(sal_crop, alpha=0.3, cmap="jet")
