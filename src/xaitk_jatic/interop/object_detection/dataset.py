@@ -26,6 +26,7 @@ LOG = logging.getLogger(__name__)
 
 @dataclass
 class JATICDetectionTarget:
+    """Dataclass for the datum-level JATIC output detection format."""
     boxes: np.ndarray
     labels: np.ndarray
     scores: np.ndarray

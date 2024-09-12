@@ -24,5 +24,11 @@ Documentation
 
 * Added ``AUKUS.rst`` to Containers documentations
 
+* Added sphinx's `autosummary` template for recursively populating
+  docstrings from the module level down to the class method level.
+
+* Added support for `sphinx-click` to generate documentation for python
+  `click` functions.
+
 Fixes
 -----
