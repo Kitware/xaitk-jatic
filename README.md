@@ -24,14 +24,15 @@ https://xaitk-jatic.readthedocs.io/en/latest/installation.html).
 
 <!-- :auto getting-started: -->
 ## Getting Started
-We provide a number of examples based on Jupyter notebooks in the `./examples/` directory to show usage
-of the `xaitk-jatic` package in a number of different contexts.
+We provide a number of examples based on Jupyter notebooks in the
+`./examples/` directory to show usage of the `xaitk-jatic` package in a number
+of different contexts.
 <!-- :auto getting-started: -->
 
 <!-- :auto documentation: -->
 ## Documentation
-Documentation snapshots for releases as well as the latest master are hosted on
-[ReadTheDocs](https://xaitk-jatic.readthedocs.io/en/latest/).
+Documentation snapshots for releases as well as the latest master are hosted
+on [ReadTheDocs](https://xaitk-jatic.readthedocs.io/en/latest/).
 
 The sphinx-based documentation may also be built locally for the most
 up-to-date reference:
@@ -51,7 +52,11 @@ firefox _build/html/index.html
 ## Developer tools
 
 **pre-commit hooks**  
-pre-commit hooks are used to ensure that any code meets all linting and formatting guidelines required. After installing, this will always run before committing to ensure that any commits are following the standards, but you can also manually run the check without committing. If you want to commit despite there being errors, you can add `--no-verify` to your commit command.
+pre-commit hooks are used to ensure that any code meets all linting and
+formatting guidelines required. After installing, this will always run before
+ committing to ensure that any commits are following the standards, but you 
+ can also manually run the check without committing. If you want to commit 
+ despite there being errors, you can add `--no-verify` to your commit command.
 
 Installing pre-commit hooks: 
 ```bash
