@@ -4,5 +4,5 @@ Release Process and Notes
 .. toctree::
    :maxdepth: 2
 
-   release_process
-   release_notes
+   releasing/release_process
+   releasing/release_notes

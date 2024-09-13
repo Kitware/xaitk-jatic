@@ -33,8 +33,10 @@ release = xaitk_jatic.__version__
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosectionlabel",
+    "sphinx.ext.autosummary",
     "sphinx-prompt",
     "sphinx_copybutton",
+    "sphinx_click"
 ]
 
 suppress_warnings = [
@@ -44,7 +46,9 @@ suppress_warnings = [
     "autosectionlabel.*",
 ]
 
-templates_path: List[str] = list()  # ['_templates']
+# Autosummary templates reference link:
+# https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion/tree/master
+templates_path = ['_templates']
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 

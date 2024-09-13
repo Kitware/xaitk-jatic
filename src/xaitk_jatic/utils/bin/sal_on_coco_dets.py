@@ -58,7 +58,7 @@ def sal_on_coco_dets(
     DATASET_DIR - Root directory of dataset.
     OUTPUT_DIR - Directory to write the saliency maps to.
     CONFIG_FILE - Configuration file for the object detector and
-        GenerateObjectDetectorBlackboxSaliency implementations to use.
+    GenerateObjectDetectorBlackboxSaliency implementations to use.
 
     :param dataset_dir: Root directory of dataset.
     :param output_dir: Directory to write the saliency maps to.
