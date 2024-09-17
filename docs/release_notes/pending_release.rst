@@ -30,5 +30,7 @@ Documentation
 * Added support for `sphinx-click` to generate documentation for python
   `click` functions.
 
+* Updated config for `black` to set max line length to 120
+
 Fixes
 -----
