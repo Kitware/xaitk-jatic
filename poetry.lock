@@ -5290,22 +5290,6 @@ lint = ["docutils-stubs", "flake8 (>=3.5.0)", "flake8-simplify", "isort", "mypy 
 test = ["cython", "filelock", "html5lib", "pytest (>=4.6)"]
 
 [[package]]
-name = "sphinx-click"
-version = "6.0.0"
-description = "Sphinx extension that automatically documents click applications"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "sphinx_click-6.0.0-py3-none-any.whl", hash = "sha256:1e0a3c83bcb7c55497751b19d07ebe56b5d7b85eb76dd399cf9061b497adc317"},
-    {file = "sphinx_click-6.0.0.tar.gz", hash = "sha256:f5d664321dc0c6622ff019f1e1c84e58ce0cecfddeb510e004cf60c2a3ab465b"},
-]
-
-[package.dependencies]
-click = ">=8.0"
-docutils = "*"
-sphinx = ">=4.0"
-
-[[package]]
 name = "sphinx-copybutton"
 version = "0.5.2"
 description = "Add a copy button to each of your code cells."
@@ -6418,4 +6402,4 @@ tools = ["kwcoco", "matplotlib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "45d9f37ce3de32851126ae480a7479e2e1c17662954e94dc0773a9e35a55e0da"
+content-hash = "afedae35fbdb8c18fcaffbdfca3a5618ad86bbf3785df3ff146ecd3435f9305d"

@@ -36,7 +36,6 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx-prompt",
     "sphinx_copybutton",
-    "sphinx_click"
 ]
 
 suppress_warnings = [
