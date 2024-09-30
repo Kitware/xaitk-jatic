@@ -1,5 +1,5 @@
-Steps of the XAITK-JATIC Release Process
-========================================
+Steps of the Release Process
+============================
 Three types of releases are expected to occur:
   - major
   - minor
