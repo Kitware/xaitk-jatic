@@ -15,7 +15,7 @@ CI/CD
 * `poetry.lock` file updated for the dev environment.
 
 * Updates to dependencies to support the new CI/CD.
-  
+
 Documentation
 
 * Added Read the Docs configuration files
@@ -31,6 +31,8 @@ Documentation
   `click` functions.
 
 * Updated config for `black` to set max line length to 120
+
+* Restored and improved review process documentation.
 
 Fixes
 -----
