@@ -12,7 +12,7 @@ CI/CD
 
 * Numerous changes to help automated the CI/CD process.
 
-* `poetry.lock` file updated for the dev environment.
+* ``poetry.lock`` file updated for the dev environment.
 
 * Updates to dependencies to support the new CI/CD.
 
@@ -24,15 +24,17 @@ Documentation
 
 * Added ``AUKUS.rst`` to Containers documentations
 
-* Added sphinx's `autosummary` template for recursively populating
+* Added sphinx's ``autosummary`` template for recursively populating
   docstrings from the module level down to the class method level.
 
-* Added support for `sphinx-click` to generate documentation for python
-  `click` functions.
+* Added support for ``sphinx-click`` to generate documentation for python
+  ``click`` functions.
 
-* Updated config for `black` to set max line length to 120
+* Updated config for ``black`` to set max line length to 120
 
 * Restored and improved review process documentation.
+
+* Fixed sphinx linting errors.
 
 Fixes
 -----

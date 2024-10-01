@@ -3761,6 +3761,17 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "polib"
+version = "1.2.0"
+description = "A library to manipulate gettext files (po and mo files)."
+optional = false
+python-versions = "*"
+files = [
+    {file = "polib-1.2.0-py2.py3-none-any.whl", hash = "sha256:1c77ee1b81feb31df9bca258cbc58db1bbb32d10214b173882452c73af06d62d"},
+    {file = "polib-1.2.0.tar.gz", hash = "sha256:f3ef94aefed6e183e342a8a269ae1fc4742ba193186ad76f175938621dbfc26b"},
+]
+
+[[package]]
 name = "pre-commit"
 version = "3.5.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
@@ -4301,7 +4312,7 @@ rpds-py = ">=0.7.0"
 name = "regex"
 version = "2024.7.24"
 description = "Alternative regular expression module, to replace re."
-optional = true
+optional = false
 python-versions = ">=3.8"
 files = [
     {file = "regex-2024.7.24-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:228b0d3f567fafa0633aee87f08b9276c7062da9616931382993c03808bb68ce"},
@@ -5322,6 +5333,24 @@ sphinx = ">=1.8"
 [package.extras]
 code-style = ["pre-commit (==2.12.1)"]
 rtd = ["ipython", "myst-nb", "sphinx", "sphinx-book-theme", "sphinx-examples"]
+
+[[package]]
+name = "sphinx-lint"
+version = "1.0.0"
+description = "Check for stylistic and formal issues in .rst and .py files included in the documentation."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "sphinx_lint-1.0.0-py3-none-any.whl", hash = "sha256:6117a0f340b2dc73eadfc57db7531d4477e0929f92a0c1a2f61e6edbc272f0bc"},
+    {file = "sphinx_lint-1.0.0.tar.gz", hash = "sha256:6eafdb44172ce526f405bf36c713eb246f1340ec2d667e7298e2487ed76decd2"},
+]
+
+[package.dependencies]
+polib = "*"
+regex = "*"
+
+[package.extras]
+tests = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "sphinx-prompt"
@@ -6418,4 +6447,4 @@ tools = ["kwcoco", "matplotlib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "45d9f37ce3de32851126ae480a7479e2e1c17662954e94dc0773a9e35a55e0da"
+content-hash = "3c388621dafa9263b1c3481b8e1c80ece0fd6d9735b28ea480e4ffb62f7ae660"

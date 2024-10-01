@@ -53,8 +53,8 @@ Image Classification
 --------------------
 
 Following the findings from applying the object detection protocol, a wrapper
-for image classification was defined to curry compatability between protocol-
-based classifiers and ``xaitk-saliency``. The protocol specifying a
+for image classification was defined to curry compatability between protocol-based
+classifiers and ``xaitk-saliency``. The protocol specifying a
 ``Classifier`` itself is relatively simple and is similiar to the API defined
 by ``smqtk-classifier``. One thing of note is that the protocol allows for
 either logits or probabilities as classifier outputs. As ``xaitk-saliency``
