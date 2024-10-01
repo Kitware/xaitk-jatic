@@ -1,14 +1,14 @@
 AUKUS Container
 ===============
 
-A user of T&E tools requested a container that would accept an input image to generate 
-saliency maps. Once the maps are generated, the user expects the maps to be saved to disk 
-and the container will shut down. In order to fulfill this request, the AUKUS container was 
+A user of T&E tools requested a container that would accept an input image to generate
+saliency maps. Once the maps are generated, the user expects the maps to be saved to disk
+and the container will shut down. In order to fulfill this request, the AUKUS container was
 created.
 
 Given an input image, a XAITK saliency configuration file, and a HuggingFace model name,
 the AUKUS container is able to find detections and generate saliency maps for the input image.
-Each saliency map will be saved to a given output directory as individual images. Once all 
+Each saliency map will be saved to a given output directory as individual images. Once all
 saliency maps are saved, the container will terminate.
 
 How to Use
@@ -26,7 +26,8 @@ arguments:
 
    * ``image_file``: input image
    * ``output_dir``: directory to write saliency maps to
-   * ``config_file``: configuration file specifying the ``GenerateObjectDetectorBlackboxSaliency`` for saliency map generation
+   * ``config_file``: configuration file specifying the ``GenerateObjectDetectorBlackboxSaliency`` for saliency map
+     generation
    * ``hugging_face_model_name``: name of HuggingFace model to use
 
 Please note the values for ``image_file`` and ``config_file`` should be written from the
@@ -40,7 +41,3 @@ Currently, the main limitation of the AUKUS container is only being able to use 
 models for object detections. While this allows for some freedom of choice in model,
 users will not only be limited to use HuggingFace models, but also need to access
 HuggingFace models during execution.
-
-
-
-

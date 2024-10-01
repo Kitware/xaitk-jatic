@@ -30,8 +30,8 @@ The structure that the high-level API currently imposes upon the user
 essentially limits saliency map generation to one at a time, unless the user
 implements a threaded strategy or some other parallelization technique. The
 second integration strategy in the example notebook, the "low-level" strategy,
-aims to more effectively utilize PyTorch Lightning as such. When using the low-
-level API, the user is responsible for driving all components of saliency map
+aims to more effectively utilize PyTorch Lightning as such. When using the low-level
+API, the user is responsible for driving all components of saliency map
 generation: generating perturbed data, predicting on this data, and generating
 saliency maps from these results. While the "brains" of the computation still
 remain within ``xaitk-saliency`` itself, the finer-grained control of the
@@ -175,8 +175,8 @@ of masks increases, as expected.
 
 It was noted during this exploration that an incongruence between
 ``xaitk-saliency`` and these scalability platforms may exist. ``xaitk-saliency``
-uses a channel-last format while both Lightning and Accelerate used channel-
-first formats for the given integration use cases. This difference incurs
+uses a channel-last format while both Lightning and Accelerate used channel-first
+formats for the given integration use cases. This difference incurs
 potentially significant overhead cost to get the data in the appropriate
 format.
 
