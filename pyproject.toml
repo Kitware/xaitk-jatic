@@ -19,7 +19,6 @@ classifiers = [
     'Operating System :: MacOS :: MacOS X',
     'Operating System :: Unix',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
@@ -35,7 +34,7 @@ description = """\
 
 [tool.poetry.dependencies]
 # :auto python-version:
-python = "^3.8.1"
+python = "^3.9"
 # :auto python-version:
 
 xaitk-saliency = ">=0.8.2"
@@ -194,7 +193,7 @@ known-first-party = ["xaitk_jatic"]
 
 # :auto mypy:
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 disallow_untyped_defs = true
 ignore_errors = false
 ignore_missing_imports = true
