@@ -4,6 +4,10 @@ Pending Release Notes
 Updates / New Features
 ----------------------
 
+Build
+
+* New minimum supported python changed to ``python = "^3.9"`` due to 3.8 EOL.
+
 CI/CD
 
 * Swapped out pipeline to use a shared pipeline.
@@ -35,6 +39,11 @@ Documentation
 * Restored and improved review process documentation.
 
 * Fixed sphinx linting errors.
+
+Dependencies
+
+* Updated python minimum requirement to 3.9 (up from 3.8.1) due to 3.8 EOL. This included updates to certain
+  dependencies with bifurcations, an update to pinned versions for development/CI, and removal of 3.8 from CI.
 
 Fixes
 -----
