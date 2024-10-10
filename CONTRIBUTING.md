@@ -4,8 +4,8 @@
 Here we describe at a high level how to contribute to `xaitk-jatic`.
 See the [`xaitk-jatic` README](README.md) file for additional information.
 
-1.  Navigate to the official `xaitk-jatic` repository maintained [on JATIC GitLab](
-    https://gitlab.jatic.net/jatic/kitware/xaitk-jatic).
+1.  Navigate to the official `xaitk-jatic` repository maintained [on Kitware Github](
+    https://github.com/kitware/xaitk-jatic).
 
 2.  Fork `xaitk-jatic` into your GitLab user namespace and clone that onto
     your system.

@@ -35,7 +35,7 @@ Quick Start
 .. prompt:: bash
 
     cd /where/things/should/go/
-    git clone https://gitlab.jatic.net/jatic/kitware/xaitk-jatic ./
+    git clone https://github.com/kitware/xaitk-jatic ./
     poetry install
     poetry run pytest
     cd docs
