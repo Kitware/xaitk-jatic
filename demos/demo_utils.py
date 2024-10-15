@@ -73,8 +73,8 @@ def display_sal_maps(
         x_2 = int(x_2 + pad_x)
         y_2 = int(y_2 + pad_y)
 
-        img_crop = gray_img[y_1: (y_2 + 1), x_1: (x_2 + 1)]
-        sal_crop = sal_map[y_1: (y_2 + 1), x_1: (x_2 + 1)]
+        img_crop = gray_img[y_1 : (y_2 + 1), x_1 : (x_2 + 1)]  # noqa: E203
+        sal_crop = sal_map[y_1 : (y_2 + 1), x_1 : (x_2 + 1)]  # noqa: E203
 
         ax.imshow(img_crop, alpha=0.7, cmap="gray")
         ax.imshow(sal_crop, alpha=0.3, cmap="jet")
@@ -96,9 +96,7 @@ def get_image(url: str, img_name: str, data_dir: str = "./data") -> Image.Image:
     return Image.open(img_path)
 
 
-def show_dets(
-    ax: Axis, dets: np.ndarray, thresh: float = 0.5, show_labels: bool = False
-) -> None:
+def show_dets(ax: Axis, dets: np.ndarray, thresh: float = 0.5, show_labels: bool = False) -> None:
     for _, det in enumerate(dets):
         score_dict = det[1]
         cls_name = max(score_dict, key=score_dict.get)

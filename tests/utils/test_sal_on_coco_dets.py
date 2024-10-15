@@ -35,9 +35,7 @@ class TestSalOnCocoDetsNotUsable:
 
         runner = CliRunner()
 
-        result = runner.invoke(
-            sal_on_coco_dets, [str(dataset_dir), str(output_dir), str(config_file)]
-        )
+        result = runner.invoke(sal_on_coco_dets, [str(dataset_dir), str(output_dir), str(config_file)])
 
         assert result.output.startswith(
             "This tool requires additional dependencies, please install 'xaitk-jatic[tools]'."
@@ -131,9 +129,7 @@ class TestSalOnCocoDets:
             assert sorted(img_dir.listdir()) == sorted(map_files)
 
     @mock.patch("pathlib.Path.is_file", return_value=False)
-    def test_missing_annotations(
-        self, is_file_patch: MagicMock, tmpdir: py.path.local
-    ) -> None:
+    def test_missing_annotations(self, is_file_patch: MagicMock, tmpdir: py.path.local) -> None:
         """Check that an exception is appropriately raised if the annotations file is missing."""
         output_dir = tmpdir.join("out")
 

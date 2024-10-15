@@ -42,9 +42,7 @@ class TestCOCOJATICObjectDetectionDataset:
                 [30.0, 5.0, 77.0, 97.0],
             ]
         ),
-        np.array(
-            [[0.0, 0.0, 5.0, 5.0], [50.0, 50.0, 82.0, 67.0], [68.0, 82.0, 79.0, 89.0]]
-        ),
+        np.array([[0.0, 0.0, 5.0, 5.0], [50.0, 50.0, 82.0, 67.0], [68.0, 82.0, 79.0, 89.0]]),
     ]
 
     test_scores = [np.array([1.0, 1.0, 1.0]), np.array([1.0, 1.0, 0.5])]
@@ -66,19 +64,10 @@ class TestCOCOJATICObjectDetectionDataset:
 
         for idx in range(len(dataset)):
             img, dets, md = dataset[idx]
-            assert np.array_equal(
-                img, np.asarray(TestCOCOJATICObjectDetectionDataset.test_imgs[idx])
-            )
-            assert np.array_equal(
-                dets.boxes, TestCOCOJATICObjectDetectionDataset.test_bboxes[idx]
-            )
-            assert np.array_equal(
-                dets.scores, TestCOCOJATICObjectDetectionDataset.test_scores[idx]
-            )
-            assert (
-                md["test"]
-                == TestCOCOJATICObjectDetectionDataset.metadata[md["id"]]["test"]
-            )
+            assert np.array_equal(img, np.asarray(TestCOCOJATICObjectDetectionDataset.test_imgs[idx]))
+            assert np.array_equal(dets.boxes, TestCOCOJATICObjectDetectionDataset.test_bboxes[idx])
+            assert np.array_equal(dets.scores, TestCOCOJATICObjectDetectionDataset.test_scores[idx])
+            assert md["test"] == TestCOCOJATICObjectDetectionDataset.metadata[md["id"]]["test"]
 
     def test_bad_metadata(self) -> None:
         """Test that an exception is appropriately raised if metadata is missing."""
