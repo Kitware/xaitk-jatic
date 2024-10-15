@@ -26,6 +26,8 @@ LOG = logging.getLogger(__name__)
 
 @dataclass
 class JATICDetectionTarget:
+    """Dataclass for the datum-level JATIC output detection format."""
+
     boxes: np.ndarray
     labels: np.ndarray
     scores: np.ndarray
@@ -66,10 +68,7 @@ else:
                 labels = []
                 scores = []
 
-                if (
-                    img_id in kwcoco_dataset.gid_to_aids.keys()
-                    and len(kwcoco_dataset.gid_to_aids[img_id]) > 0
-                ):
+                if img_id in kwcoco_dataset.gid_to_aids.keys() and len(kwcoco_dataset.gid_to_aids[img_id]) > 0:
                     det_ids = kwcoco_dataset.gid_to_aids[img_id]
                     for det_id in det_ids:
                         ann = kwcoco_dataset.anns[det_id]
@@ -99,14 +98,10 @@ else:
 
             self._image_metadata = copy.deepcopy(image_metadata)
             self._image_metadata = {
-                image_id: image_md
-                for image_id, image_md in self._image_metadata.items()
-                if image_id in self._image_ids
+                image_id: image_md for image_id, image_md in self._image_metadata.items() if image_id in self._image_ids
             }
             if len(self._image_metadata) != len(self._image_ids):
-                raise ValueError(
-                    "Image metadata length mismatch, metadata needed for every image."
-                )
+                raise ValueError("Image metadata length mismatch, metadata needed for every image.")
 
         def __len__(self) -> int:
             """Returns the number of images in the dataset."""
@@ -125,11 +120,7 @@ else:
                 dict(
                     id=image_id,
                     image_info=dict(width=width, height=height, file_name=img_file),
-                    det_ids=(
-                        list(gid_to_aids[image_id])
-                        if image_id in gid_to_aids
-                        else list()
-                    ),
+                    det_ids=(list(gid_to_aids[image_id]) if image_id in gid_to_aids else list()),
                 )
             )
 
@@ -169,5 +160,4 @@ class JATICObjectDetectionDataset(Dataset):
         return len(self.imgs)
 
     def __getitem__(self, index: int) -> OBJ_DETECTION_DATUM_T:
-
         return self.imgs[index], self.dets[index], self.metadata[index]

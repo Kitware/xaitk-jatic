@@ -47,9 +47,7 @@ class TestJATICObjectDetector:
         expectation: ContextManager,
     ) -> None:
         """Test configuration stability."""
-        inst = JATICDetector(
-            detector=detector, id_to_name=id_to_name, img_batch_size=img_batch_size
-        )
+        inst = JATICDetector(detector=detector, id_to_name=id_to_name, img_batch_size=img_batch_size)
         with expectation:
             for _ in configuration_test_helper(inst):
                 # TODO: Update assertions appropriately once get_config/from_config are implemented
@@ -84,11 +82,7 @@ class TestJATICObjectDetector:
                 [dummy_expected[0]] * 2,
             ),
             (
-                [
-                    MagicMock(
-                        spec=od.ObjectDetectionTarget, boxes=[], labels=[], scores=[]
-                    )
-                ],
+                [MagicMock(spec=od.ObjectDetectionTarget, boxes=[], labels=[], scores=[])],
                 dummy_id_to_name,
                 1,
                 np.random.randint(0, 255, (1, 256, 256), dtype=np.uint8),
@@ -103,15 +97,11 @@ class TestJATICObjectDetector:
         id_to_name: Dict[int, Hashable],
         img_batch_size: int,
         imgs: Union[np.ndarray, Sequence[np.ndarray]],
-        expected_return: Iterable[
-            Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]
-        ],
+        expected_return: Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]],
     ) -> None:
         """Test that MAITE detector output is transformed appropriately."""
         mock_detector = MagicMock(spec=od.Model, return_value=detector_output)
 
-        inst = JATICDetector(
-            detector=mock_detector, id_to_name=id_to_name, img_batch_size=img_batch_size
-        )
+        inst = JATICDetector(detector=mock_detector, id_to_name=id_to_name, img_batch_size=img_batch_size)
         res = list(inst.detect_objects(imgs))
         assert res == expected_return

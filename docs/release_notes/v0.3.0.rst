@@ -1,0 +1,55 @@
+v0.3.0
+======
+
+Dropped support for Python 3.8, improved documenation, and refactored CI/CD.
+
+Updates / New Features
+----------------------
+
+Build
+
+* New minimum supported python changed to ``python = "^3.9"`` due to 3.8 EOL.
+
+CI/CD
+
+* Swapped out pipeline to use a shared pipeline.
+
+* Added a mirroring job to replace builtin gitlab mirroring due to LFS issue.
+
+* Numerous changes to help automated the CI/CD process.
+
+* ``poetry.lock`` file updated for the dev environment.
+
+* Updates to dependencies to support the new CI/CD.
+
+Documentation
+
+* Added Read the Docs configuration files
+
+* Added a Containers section to documentation
+
+* Added ``AUKUS.rst`` to Containers documentations
+
+* Added sphinx's ``autosummary`` template for recursively populating
+  docstrings from the module level down to the class method level.
+
+* Added support for ``sphinx-click`` to generate documentation for python
+  ``click`` functions.
+
+* Updated config for ``black`` to set max line length to 120
+
+* Restored and improved review process documentation.
+
+* Fixed sphinx linting errors.
+
+Dependencies
+
+* Updated python minimum requirement to 3.9 (up from 3.8.1) due to 3.8 EOL. This included updates to certain
+  dependencies with bifurcations, an update to pinned versions for development/CI, and removal of 3.8 from CI.
+
+Fixes
+-----
+
+Notebooks
+
+* Updates huggingface Accelerate call to fix error that was causing CI to fail

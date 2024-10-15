@@ -101,7 +101,6 @@ class ResNetFRCNN(DetectImageObjects):
     def detect_objects(
         self, img_iter: Iterable[np.ndarray]
     ) -> Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]]:
-
         model = self.get_model()
 
         # batch model passes
@@ -112,10 +111,7 @@ class ResNetFRCNN(DetectImageObjects):
             batch.append(img)
 
             if len(batch) is self.img_batch_size:
-                batch_tensors = [
-                    self.model_loader(batch_img).to(device=self.model_device)
-                    for batch_img in batch
-                ]
+                batch_tensors = [self.model_loader(batch_img).to(device=self.model_device) for batch_img in batch]
 
                 with torch.no_grad():
                     img_dets = model(batch_tensors)
@@ -132,10 +128,7 @@ class ResNetFRCNN(DetectImageObjects):
 
         # compute leftover batch
         if len(batch) > 0:
-            batch_tensors = [
-                self.model_loader(batch_img).to(device=self.model_device)
-                for batch_img in batch
-            ]
+            batch_tensors = [self.model_loader(batch_img).to(device=self.model_device) for batch_img in batch]
 
             with torch.no_grad():
                 img_dets = model(batch_tensors)
@@ -153,10 +146,7 @@ class ResNetFRCNN(DetectImageObjects):
             bboxes = img_dets["boxes"]
             scores = img_dets["scores"]
 
-            a_bboxes = [
-                AxisAlignedBoundingBox([box[0], box[1]], [box[2], box[3]])
-                for box in bboxes
-            ]
+            a_bboxes = [AxisAlignedBoundingBox([box[0], box[1]], [box[2], box[3]]) for box in bboxes]
 
             score_dicts = []
 
@@ -220,9 +210,7 @@ try:
         all_boxes = []
         all_scores = []
         all_labels = []
-        for boxes, scores, image_shape in zip(
-            pred_boxes_list, pred_scores_list, image_shapes
-        ):
+        for boxes, scores, image_shape in zip(pred_boxes_list, pred_scores_list, image_shapes):
             boxes = box_ops.clip_boxes_to_image(boxes, image_shape)
 
             # create labels for each prediction

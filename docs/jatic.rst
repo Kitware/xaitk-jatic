@@ -1,22 +1,11 @@
-#####
-JATIC
-#####
+######################
+JATIC Interoperability
+######################
 
-----------------
-Object Detection
-----------------
+.. autosummary::
+   :toctree: _implementations/interop
+   :template: custom-module-template.rst
+   :recursive:
 
-JATICDetector
--------------
-.. autoclass:: xaitk_jatic.interop.object_detection.JATICDetector
-   :members:
-
---------------------
-Image Classification
---------------------
-
-JATICImageClassifier
---------------------
-.. autoclass:: xaitk_jatic.interop.image_classification.JATICImageClassifier
-   :members:
-
+   xaitk_jatic.interop.object_detection
+   xaitk_jatic.interop.image_classification

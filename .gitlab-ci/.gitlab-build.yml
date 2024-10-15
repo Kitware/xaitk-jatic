@@ -1,14 +1,13 @@
 ###############################################################################
 # Stage -- Build
 ###############################################################################
+# 
+# Overrides:
+# 
+# 1) Installed "tools" extras
+#
+###############################################################################
 
 build:cache:
-  extends: .shared-setup
-  stage: build
   script:
-    - poetry install --sync --with dev-linting,dev-testing,dev-docs --all-extras
-  cache:
-    key: $CI_COMMIT_REF_SLUG
-    paths:
-      - .cache
-    policy: push
+    - poetry install --sync --only main,dev-linting,dev-testing,dev-docs --extras tools

@@ -61,8 +61,6 @@ def sal_on_dets(
     return compute_sal_maps(
         dataset=dataset,
         sal_generator=sal_generator,
-        blackbox_detector=JATICDetector(
-            detector=detector, id_to_name=id_to_name, img_batch_size=img_batch_size
-        ),
+        blackbox_detector=JATICDetector(detector=detector, id_to_name=id_to_name, img_batch_size=img_batch_size),
         num_classes=len(id_to_name),
     )

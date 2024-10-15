@@ -22,13 +22,10 @@ import xaitk_jatic  # noqa: E402
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "xaitk-jatic"
-copyright = "2022, Kitware, Inc."  # noqa: A001
+copyright = "2023, Kitware, Inc."  # noqa: A001
 author = "Kitware, Inc."
 release = xaitk_jatic.__version__
 
-site_url = "https://jatic.pages.jatic.net/kitware/xaitk-jatic/"
-repo_url = "https://gitlab.jatic.net/jatic/kitware/xaitk-jatic"
-repo_name = "xaitk-jatic"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -36,7 +33,10 @@ repo_name = "xaitk-jatic"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosectionlabel",
+    "sphinx.ext.autosummary",
     "sphinx-prompt",
+    "sphinx_copybutton",
+    "sphinx_click",
 ]
 
 suppress_warnings = [
@@ -46,7 +46,9 @@ suppress_warnings = [
     "autosectionlabel.*",
 ]
 
-templates_path: List[str] = list()  # ['_templates']
+# Autosummary templates reference link:
+# https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion/tree/master
+templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 

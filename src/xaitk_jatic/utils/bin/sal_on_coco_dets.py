@@ -58,7 +58,7 @@ def sal_on_coco_dets(
     DATASET_DIR - Root directory of dataset.
     OUTPUT_DIR - Directory to write the saliency maps to.
     CONFIG_FILE - Configuration file for the object detector and
-        GenerateObjectDetectorBlackboxSaliency implementations to use.
+    GenerateObjectDetectorBlackboxSaliency implementations to use.
 
     :param dataset_dir: Root directory of dataset.
     :param output_dir: Directory to write the saliency maps to.
@@ -76,9 +76,7 @@ def sal_on_coco_dets(
     if generate_config_file:
         config: Dict[str, Any] = dict()
 
-        config["DetectImageObjects"] = make_default_config(
-            DetectImageObjects.get_impls()
-        )
+        config["DetectImageObjects"] = make_default_config(DetectImageObjects.get_impls())
         config["GenerateObjectDetectorBlackboxSaliency"] = make_default_config(
             GenerateObjectDetectorBlackboxSaliency.get_impls()
         )
@@ -93,17 +91,13 @@ def sal_on_coco_dets(
         logging.basicConfig(level=logging.INFO)
 
     if not is_usable:
-        print(
-            "This tool requires additional dependencies, please install 'xaitk-jatic[tools]'."
-        )
+        print("This tool requires additional dependencies, please install 'xaitk-jatic[tools]'.")
         exit(-1)
 
     # Load COCO dataset
     coco_file = Path(dataset_dir) / "annotations.json"
     if not coco_file.is_file():
-        raise ValueError(
-            "Could not identify annotations file. Expected at '[dataset_dir]/annotations.json'."
-        )
+        raise ValueError("Could not identify annotations file. Expected at '[dataset_dir]/annotations.json'.")
     logging.info(f"Loading kwcoco annotations from {coco_file}.")
     kwcoco_dataset = kwcoco.CocoDataset(coco_file)
 
@@ -111,12 +105,9 @@ def sal_on_coco_dets(
     metadata_file = Path(dataset_dir) / "image_metadata.json"
     if not metadata_file.is_file():
         logging.info(
-            "Could not identify metadata file, assuming no metadata. "
-            "Expected at '[dataset_dir]/image_metadata.json'"
+            "Could not identify metadata file, assuming no metadata. " "Expected at '[dataset_dir]/image_metadata.json'"
         )
-        metadata: Dict[int, Dict[str, Any]] = {
-            img_id: dict() for img_id in kwcoco_dataset.imgs.keys()
-        }
+        metadata: Dict[int, Dict[str, Any]] = {img_id: dict() for img_id in kwcoco_dataset.imgs.keys()}
     else:
         logging.info(f"Loading metadata from {metadata_file}")
         with open(metadata_file) as f:
@@ -140,9 +131,7 @@ def sal_on_coco_dets(
         config["GenerateObjectDetectorBlackboxSaliency"],
         GenerateObjectDetectorBlackboxSaliency.get_impls(),
     )
-    blackbox_detector = from_config_dict(
-        config["DetectImageObjects"], DetectImageObjects.get_impls()
-    )
+    blackbox_detector = from_config_dict(config["DetectImageObjects"], DetectImageObjects.get_impls())
     # TODO: Add MAITE object handling once config options are added
 
     img_sal_maps, _ = compute_sal_maps(
@@ -193,7 +182,5 @@ def sal_on_coco_dets(
             else:
                 plt.imshow(sal_map, cmap="jet")
                 plt.colorbar()
-            plt.savefig(
-                os.path.join(sub_dir, f"det_{det_id}.jpeg"), bbox_inches="tight"
-            )
+            plt.savefig(os.path.join(sub_dir, f"det_{det_id}.jpeg"), bbox_inches="tight")
             plt.close(fig)
