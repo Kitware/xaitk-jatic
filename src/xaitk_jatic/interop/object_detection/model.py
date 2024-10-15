@@ -42,7 +42,6 @@ class JATICDetector(DetectImageObjects):
             labels: Sequence[Hashable],
             probs: np.ndarray,
         ) -> Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]:
-
             dets_dict: Dict[AxisAlignedBoundingBox, Dict[Hashable, float]] = dict()
             for box, label, prob in zip(bboxes, labels, probs):
                 if box not in dets_dict:

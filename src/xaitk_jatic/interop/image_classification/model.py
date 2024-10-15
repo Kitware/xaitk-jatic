@@ -25,13 +25,9 @@ class JATICImageClassifier(ClassifyImage):
         self._img_batch_size = img_batch_size
 
     def get_labels(self) -> Sequence[Hashable]:
-        return [
-            self._id_to_name[id] for id in sorted(self._id_to_name.keys())  # noqa: A001
-        ]
+        return [self._id_to_name[id] for id in sorted(self._id_to_name.keys())]  # noqa: A001
 
-    def classify_images(
-        self, img_iter: IMAGE_ITER_T
-    ) -> Iterator[CLASSIFICATION_DICT_T]:
+    def classify_images(self, img_iter: IMAGE_ITER_T) -> Iterator[CLASSIFICATION_DICT_T]:
         all_out = list()
         batch = list()
 
@@ -47,12 +43,7 @@ class JATICImageClassifier(ClassifyImage):
             predictions = np.asarray(self._classifier(batch))
 
             for pred in predictions:
-                all_out.append(
-                    {
-                        self._id_to_name[id]: score
-                        for id, score in enumerate(pred)  # noqa: A001
-                    }
-                )
+                all_out.append({self._id_to_name[id]: score for id, score in enumerate(pred)})  # noqa: A001
 
         # Batch model passes
         for img in img_iter:

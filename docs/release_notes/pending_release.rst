@@ -47,3 +47,7 @@ Dependencies
 
 Fixes
 -----
+
+Notebooks
+
+* Updates huggingface Accelerate call to fix error that was causing CI to fail

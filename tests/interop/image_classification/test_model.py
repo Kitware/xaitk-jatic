@@ -37,9 +37,7 @@ class TestJATICImageClassifier:
         expectation: ContextManager,
     ) -> None:
         """Test configuration stability."""
-        inst = JATICImageClassifier(
-            classifier=classifier, id_to_name=id_to_name, img_batch_size=img_batch_size
-        )
+        inst = JATICImageClassifier(classifier=classifier, id_to_name=id_to_name, img_batch_size=img_batch_size)
         with expectation:
             for _ in configuration_test_helper(inst):
                 # TODO: Update assertions appropriately once get_config/from_config are implemented
@@ -109,12 +107,8 @@ class TestJATICImageClassifier:
             (dummy_id_to_name_2, expected_labels_2),
         ],
     )
-    def test_labels(
-        self, id_to_name: Dict[int, Hashable], expected_labels: Sequence[Hashable]
-    ) -> None:
+    def test_labels(self, id_to_name: Dict[int, Hashable], expected_labels: Sequence[Hashable]) -> None:
         """Test that get_labels() returns the correct labels."""
-        inst = JATICImageClassifier(
-            classifier=MagicMock(spec=ic.Model), id_to_name=id_to_name
-        )
+        inst = JATICImageClassifier(classifier=MagicMock(spec=ic.Model), id_to_name=id_to_name)
 
         assert inst.get_labels() == expected_labels

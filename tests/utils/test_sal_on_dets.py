@@ -18,7 +18,6 @@ from xaitk_jatic.utils.sal_on_dets import compute_sal_maps, sal_on_dets
 
 
 class TestComputeSalMaps:
-
     def test_compute_sal_maps(self) -> None:
         """Test saliency map generation with dummy detector, RISEGrid, and DRISEScoring."""
 
@@ -27,9 +26,7 @@ class TestComputeSalMaps:
 
             def detect_objects(
                 self, img_iter: Iterable[np.ndarray]
-            ) -> Iterable[
-                Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]
-            ]:
+            ) -> Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]]:
                 for _ in img_iter:
                     yield [
                         (
@@ -73,10 +70,7 @@ class TestComputeSalMaps:
 
 
 class TestSalOnDets:
-
-    @mock.patch(
-        "xaitk_jatic.utils.sal_on_dets.compute_sal_maps", return_value=(list(), dict())
-    )
+    @mock.patch("xaitk_jatic.utils.sal_on_dets.compute_sal_maps", return_value=(list(), dict()))
     def test_sal_on_dets(self, patch: MagicMock) -> None:
         """Test workflow with MAITE detector."""
         dataset = MagicMock(spec=Dataset)

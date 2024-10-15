@@ -142,9 +142,7 @@ def generate_saliency_maps(
         logging.basicConfig(level=logging.INFO)
 
     if not is_usable:
-        print(
-            "This tool requires additional dependencies, please install `xaitk-jatic[docker]'"
-        )
+        print("This tool requires additional dependencies, please install `xaitk-jatic[docker]'")
         exit(-1)
 
     # Load config
@@ -160,13 +158,9 @@ def generate_saliency_maps(
     sal_generator.fill = fill
 
     logging.info("Building detection model...")
-    jatic_detector = HuggingFaceDetector(
-        model_name=hugging_face_model_name, threshold=0.5, device="cpu"
-    )
+    jatic_detector = HuggingFaceDetector(model_name=hugging_face_model_name, threshold=0.5, device="cpu")
 
-    blackbox_detector = JATICDetector(
-        detector=jatic_detector, id_to_name=jatic_detector.id2label(), img_batch_size=5
-    )
+    blackbox_detector = JATICDetector(detector=jatic_detector, id_to_name=jatic_detector.id2label(), img_batch_size=5)
 
     img_path = Path(image_file)
     ref_img = np.asarray(Image.open(img_path))
@@ -181,9 +175,7 @@ def generate_saliency_maps(
     detector_bboxes, detector_scores = dets_to_mats(dets, jatic_detector)
 
     logging.info("Generating saliency maps...")
-    img_sal_maps = sal_generator(
-        ref_img, detector_bboxes, detector_scores, blackbox_detector
-    )
+    img_sal_maps = sal_generator(ref_img, detector_bboxes, detector_scores, blackbox_detector)
 
     logging.info("Saving saliency maps...")
     for img_idx, sal_map in enumerate(img_sal_maps):
@@ -191,9 +183,7 @@ def generate_saliency_maps(
         plt.axis("off")
         plt.imshow(sal_map, cmap="jet")
         plt.colorbar()
-        plt.savefig(
-            os.path.join(output_dir, f"det_{img_idx}.jpeg"), bbox_inches="tight"
-        )
+        plt.savefig(os.path.join(output_dir, f"det_{img_idx}.jpeg"), bbox_inches="tight")
         plt.close(fig)
 
     logging.info("Saliency maps saved. Exiting...")
