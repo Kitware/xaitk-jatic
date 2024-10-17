@@ -1,13 +1,13 @@
 # Contributing to `XAITK-JATIC`
 
 ## Making a Contribution
-Here we describe at a high level how to contribute to `pyBSM`.
+Here we describe at a high level how to contribute to `XAITK-JATIC`.
 See the [`XAITK-JATIC` README](README.md) file for additional information.
 
 1.  Navigate to the official XAITK-JATIC repository maintained [on GitHub](
     https://github.com/Kitware/xaitk-jatic).
 
-2.  Fork pyBSM into your GitHub user namespace and clone that onto
+2.  Fork XAITK-JATIC into your GitHub user namespace and clone that onto
     your system.
 
 3.  Create a topic branch, edit files and create commits:
@@ -28,13 +28,13 @@ See the [`XAITK-JATIC` README](README.md) file for additional information.
 
         $ git push origin HEAD -u
 
-5.  Visit the Kitware pyBSM GitHub, browse to the "Pull requests" tab
+5.  Visit the Kitware XAITK-JATIC GitHub, browse to the "Pull requests" tab
     and click on the "New pull request" button in the upper-right.
     Click on the "Compare across forks" link, browse to your fork and browse to
     the topic branch for the pull request.
     Finally, click the "Create pull request" button to create the request.
 
-`pyBSM` uses GitHub for code review and GitHub Actions for continuous
+`XAITK-JATIC` uses GitHub for code review and GitHub Actions for continuous
 testing.
 New pull requests trigger Continuous Integration workflows (CI) when the merge
 target is the `main` or `release`-variant branch.
