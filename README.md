@@ -27,6 +27,9 @@ https://xaitk-jatic.readthedocs.io/en/latest/installation.html).
 We provide a number of examples based on Jupyter notebooks in the
 `./examples/` directory to show usage of the `xaitk-jatic` package in a number
 of different contexts.
+
+Contributions are welcome!
+See the [CONTRIBUTING.md](./CONTRIBUTING.md) file for details.
 <!-- :auto getting-started: -->
 
 <!-- :auto documentation: -->
