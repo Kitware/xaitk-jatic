@@ -26,6 +26,7 @@ classifiers = [
 # :auto package-meta:
 # package-specific meta, don't put this in "generated package-meta"
 authors = ["Kitware, Inc. <xaitk@kitware.com>"]
+license = "Apache-2.0"
 version = "0.3.0"
 description = """\
     Integration package to support interfacing, implementation and example \
