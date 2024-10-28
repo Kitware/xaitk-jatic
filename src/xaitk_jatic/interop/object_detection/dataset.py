@@ -111,7 +111,7 @@ else:
             """Returns the dataset object at the given index."""
             image_id = self._image_ids[index]
             img_file = self._kwcoco_dataset.get_image_fpath(image_id)
-            image = Image.open(img_file).convert("RGB")
+            image = Image.open(img_file)
             width, height = image.size
 
             gid_to_aids = self._kwcoco_dataset.gid_to_aids
@@ -124,8 +124,12 @@ else:
                 )
             )
 
+            image_array = np.asarray(image)
+            if image.mode == "L":
+                image_array = np.expand_dims(image_array, axis=2)
+
             input_img, dets, metadata = (
-                np.asarray(np.transpose(np.asarray(image), axes=(2, 0, 1))),
+                np.asarray(np.transpose(image_array, axes=(2, 0, 1))),
                 self._annotations[image_id],
                 self._image_metadata[image_id],
             )

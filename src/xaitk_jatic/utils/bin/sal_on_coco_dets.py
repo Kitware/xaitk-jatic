@@ -146,6 +146,11 @@ def sal_on_coco_dets(
         ref_img, dets, md = input_dataset[dset_idx]
         img_file = md["image_info"]["file_name"]
 
+        if overlay_image:
+            # Convert to channel last
+            ref_img = np.transpose(np.asarray(ref_img), axes=(1, 2, 0))
+            ref_img = np.squeeze(ref_img)
+
         # split file from parent folder
         img_name = os.path.split(img_file)[1]
         # split off file extension
@@ -164,7 +169,7 @@ def sal_on_coco_dets(
             fig = plt.figure()
             plt.axis("off")
             if overlay_image:
-                gray_img = np.asarray(Image.fromarray(np.transpose(np.asarray(ref_img), axes=(1, 2, 0))).convert("L"))
+                gray_img = np.asarray(Image.fromarray(np.asarray(ref_img)).convert("L"))
                 plt.imshow(gray_img, alpha=0.7, cmap="gray")
 
                 plt.gca().add_patch(
