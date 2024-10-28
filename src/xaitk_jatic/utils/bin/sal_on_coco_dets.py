@@ -164,7 +164,7 @@ def sal_on_coco_dets(
             fig = plt.figure()
             plt.axis("off")
             if overlay_image:
-                gray_img = np.asarray(Image.fromarray(np.asarray(ref_img)).convert("L"))
+                gray_img = np.asarray(Image.fromarray(np.transpose(np.asarray(ref_img), axes=(1, 2, 0))).convert("L"))
                 plt.imshow(gray_img, alpha=0.7, cmap="gray")
 
                 plt.gca().add_patch(

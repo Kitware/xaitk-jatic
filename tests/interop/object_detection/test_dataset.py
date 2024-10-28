@@ -32,7 +32,7 @@ class TestCOCOJATICObjectDetectionDataset:
         metadata = {1: {"test": 1}, 2: {"test": 2}, 3: {"test": 3}}
 
         test_img_files = ["test_image1.png", "test_image2.png"]
-        test_imgs = [np.array(Image.open(dset_dir / f)) for f in test_img_files]
+        test_imgs = [np.array(Image.open(dset_dir / f).convert("RGB")) for f in test_img_files]
 
     test_bboxes = [
         np.array(
@@ -64,7 +64,9 @@ class TestCOCOJATICObjectDetectionDataset:
 
         for idx in range(len(dataset)):
             img, dets, md = dataset[idx]
-            assert np.array_equal(img, np.asarray(TestCOCOJATICObjectDetectionDataset.test_imgs[idx]))
+            assert np.array_equal(
+                img, np.transpose(np.asarray(TestCOCOJATICObjectDetectionDataset.test_imgs[idx]), axes=(2, 0, 1))
+            )
             assert np.array_equal(dets.boxes, TestCOCOJATICObjectDetectionDataset.test_bboxes[idx])
             assert np.array_equal(dets.scores, TestCOCOJATICObjectDetectionDataset.test_scores[idx])
             assert md["test"] == TestCOCOJATICObjectDetectionDataset.metadata[md["id"]]["test"]
