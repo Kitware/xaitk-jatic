@@ -6,7 +6,9 @@ Updates / New Features
 
 Code Changes
 
-* Moved OTF perturber computation to perturb method for OTF perturbers.
+* Updated ``COCOJATICObjectDetectionDataset`` to load images in channel first format.
+
+* Updated ``compute_sal_maps`` to convert image input to channel last format.
 
 Documentation
 

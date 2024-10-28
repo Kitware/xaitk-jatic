@@ -33,7 +33,7 @@ def compute_sal_maps(
 
         img_sal_maps.append(
             sal_generator(
-                np.asarray(ref_img),
+                np.asarray(np.transpose(ref_img, axes=(1, 2, 0))),
                 np.asarray(dets.boxes),
                 score_matrix,
                 blackbox_detector,
