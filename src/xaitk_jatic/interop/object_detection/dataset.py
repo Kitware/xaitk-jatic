@@ -124,8 +124,12 @@ else:
                 )
             )
 
+            image_array = np.asarray(image)
+            if image.mode == "L":
+                image_array = np.expand_dims(image_array, axis=2)
+
             input_img, dets, metadata = (
-                np.asarray(image),
+                np.asarray(np.transpose(image_array, axes=(2, 0, 1))),
                 self._annotations[image_id],
                 self._image_metadata[image_id],
             )
