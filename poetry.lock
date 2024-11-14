@@ -5649,11 +5649,6 @@ files = [
     {file = "triton-3.0.0-1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:34e509deb77f1c067d8640725ef00c5cbfcb2052a1a3cb6a6d343841f92624eb"},
     {file = "triton-3.0.0-1-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:bcbf3b1c48af6a28011a5c40a5b3b9b5330530c3827716b5fbf6d7adcc1e53e9"},
     {file = "triton-3.0.0-1-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:6e5727202f7078c56f91ff13ad0c1abab14a0e7f2c87e91b12b6f64f3e8ae609"},
-    {file = "triton-3.0.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:39b052da883351fdf6be3d93cedae6db3b8e3988d3b09ed221bccecfa9612230"},
-    {file = "triton-3.0.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cd34f19a8582af96e6291d4afce25dac08cb2a5d218c599163761e8e0827208e"},
-    {file = "triton-3.0.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0d5e10de8c011adeb7c878c6ce0dd6073b14367749e34467f1cff2bde1b78253"},
-    {file = "triton-3.0.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e8903767951bf86ec960b4fe4e21bc970055afc65e9d57e916d79ae3c93665e3"},
-    {file = "triton-3.0.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:41004fb1ae9a53fcb3e970745feb87f0e3c94c6ce1ba86e95fa3b8537894bef7"},
 ]
 
 [package.dependencies]
@@ -5870,13 +5865,13 @@ test = ["websockets"]
 
 [[package]]
 name = "xaitk-saliency"
-version = "0.8.3"
+version = "0.9.1"
 description = "Visual saliency map generation interfaces and baseline implementations for explainable AI."
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "xaitk_saliency-0.8.3-py3-none-any.whl", hash = "sha256:a9b7bd7500f5c66d8fd74ac655cde9d7fe5354c8c825ea1a7b89f87c93daa0a8"},
-    {file = "xaitk_saliency-0.8.3.tar.gz", hash = "sha256:7cfb6affeb8bd3fde3fc10f3c635f65bd9f913729efdcc9398a8ce1ccd29d09a"},
+    {file = "xaitk_saliency-0.9.1-py3-none-any.whl", hash = "sha256:7605e927cc7021e56ef1cc4d7e50a3a827173be1e34bba2b299466c0f06201b5"},
+    {file = "xaitk_saliency-0.9.1.tar.gz", hash = "sha256:8cb8f6a48873c51ef5d2f71f3cda2dbe8c02856fb1d1093ed03ea5c9c56a51eb"},
 ]
 
 [package.dependencies]
@@ -5890,8 +5885,8 @@ scikit-image = [
     {version = ">=0.20.0", markers = "python_version >= \"3.11\" and python_version < \"3.12\""},
     {version = ">=0.22.0", markers = "python_version >= \"3.12\""},
 ]
-scikit-learn = {version = ">=1.5", markers = "python_version >= \"3.9\""}
-scipy = {version = ">=1.9", markers = "python_version >= \"3.11\" and python_version < \"4.0\""}
+scikit-learn = ">=1.5.0"
+scipy = ">=1.9"
 setuptools = "*"
 smqtk-classifier = ">=0.17.0"
 smqtk-core = ">=0.18.0"
@@ -5899,7 +5894,7 @@ smqtk-descriptors = ">=0.16.0"
 smqtk-detection = ">=0.19.0"
 
 [package.extras]
-example-deps = ["matplotlib (>=3.4.1)", "notebook (>=7.0.7)", "papermill (>=2.3.3)", "torch (>=1.9.0,!=2.0.1)", "torchvision (>=0.10.0)", "tqdm (==4.66.3)"]
+example-deps = ["matplotlib (>=3.4.1)", "notebook (>=7.2.2)", "papermill (>=2.3.3)", "torch (>=1.9.0,!=2.0.1)", "torchvision (>=0.10.0)", "tqdm (==4.66.3)"]
 tools = ["kwcoco (>=0.2.18)", "matplotlib (>=3.4.1)", "pyyaml (>=6.0.1)", "shapely (>=2.0.2)"]
 
 [[package]]
@@ -6081,4 +6076,4 @@ tools = ["kwcoco", "matplotlib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "497d03936c3b9365b3148f9ef4ead020abdb766d93bd6a9d85edee168c63f183"
+content-hash = "a420663ce8d5d4de9a0fdf80b05470ee9ef4bfc07fe28681080a8c6b4b6ceb2d"
