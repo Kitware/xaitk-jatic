@@ -27,7 +27,7 @@ classifiers = [
 # package-specific meta, don't put this in "generated package-meta"
 authors = ["Kitware, Inc. <xaitk@kitware.com>"]
 license = "Apache-2.0"
-version = "0.4.0"
+version = "0.4.1"
 description = """\
     Integration package to support interfacing, implementation and example \
     needs for the JATIC."""
