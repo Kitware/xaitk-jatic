@@ -1,6 +1,8 @@
 v0.4.2
 ======
 
+Bumped the minimum version of ``xaitk-saliency`` to unpin upstream ``tqdm`` version.
+
 Updates / New Features
 ----------------------
 
