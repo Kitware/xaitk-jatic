@@ -5865,13 +5865,13 @@ test = ["websockets"]
 
 [[package]]
 name = "xaitk-saliency"
-version = "0.9.1"
+version = "0.9.2"
 description = "Visual saliency map generation interfaces and baseline implementations for explainable AI."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "xaitk_saliency-0.9.1-py3-none-any.whl", hash = "sha256:7605e927cc7021e56ef1cc4d7e50a3a827173be1e34bba2b299466c0f06201b5"},
-    {file = "xaitk_saliency-0.9.1.tar.gz", hash = "sha256:8cb8f6a48873c51ef5d2f71f3cda2dbe8c02856fb1d1093ed03ea5c9c56a51eb"},
+    {file = "xaitk_saliency-0.9.2-py3-none-any.whl", hash = "sha256:07f019fb64da9117c3397adb754c44416b5ea7134d8be2cfacd2cfccebfa1ccc"},
+    {file = "xaitk_saliency-0.9.2.tar.gz", hash = "sha256:301fd9f857a21db3785fa428b54f00d1783a191b19a9c0dd073e329eb6fc39c0"},
 ]
 
 [package.dependencies]
@@ -5894,7 +5894,7 @@ smqtk-descriptors = ">=0.16.0"
 smqtk-detection = ">=0.19.0"
 
 [package.extras]
-example-deps = ["matplotlib (>=3.4.1)", "notebook (>=7.2.2)", "papermill (>=2.3.3)", "torch (>=1.9.0,!=2.0.1)", "torchvision (>=0.10.0)", "tqdm (==4.66.3)"]
+example-deps = ["matplotlib (>=3.4.1)", "notebook (>=7.2.2)", "papermill (>=2.3.3)", "torch (>=1.9.0,!=2.0.1)", "torchvision (>=0.10.0)", "tqdm (>=4.66.3)"]
 tools = ["kwcoco (>=0.2.18)", "matplotlib (>=3.4.1)", "pyyaml (>=6.0.1)", "shapely (>=2.0.2)"]
 
 [[package]]
@@ -6076,4 +6076,4 @@ tools = ["kwcoco", "matplotlib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "a420663ce8d5d4de9a0fdf80b05470ee9ef4bfc07fe28681080a8c6b4b6ceb2d"
+content-hash = "6282a5af2eaed0540817f19adc332f2940b1a5964895a808493d5a019e782882"
