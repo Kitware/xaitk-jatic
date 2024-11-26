@@ -1,4 +1,7 @@
 <!-- :auto badges: -->
+[![PyPI - Python Version](https://img.shields.io/pypi/v/xaitk-jatic)](https://pypi.org/project/xaitk-jatic/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/xaitk-jatic)
+[![Documentation Status](https://readthedocs.org/projects/xaitk-jatic/badge/?version=latest)](https://xaitk-jatic.readthedocs.io/en/latest/?badge=latest)
 <!-- :auto badges: -->
 
 # XAITK JATIC Integrations
