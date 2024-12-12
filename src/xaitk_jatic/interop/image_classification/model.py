@@ -1,4 +1,4 @@
-from typing import Dict, Hashable, Iterator, Sequence
+from collections.abc import Hashable, Iterator, Sequence
 
 import maite.protocols.image_classification as ic
 import numpy as np
@@ -17,15 +17,15 @@ class JATICImageClassifier(ClassifyImage):
     def __init__(
         self,
         classifier: ic.Model,
-        id_to_name: Dict[int, Hashable],
+        ids: Sequence[int],
         img_batch_size: int = 1,
     ):
         self._classifier = classifier
-        self._id_to_name = dict(sorted(id_to_name.items()))
+        self._ids = sorted(ids)
         self._img_batch_size = img_batch_size
 
     def get_labels(self) -> Sequence[Hashable]:
-        return [self._id_to_name[id] for id in sorted(self._id_to_name.keys())]  # noqa: A001
+        return self._ids
 
     def classify_images(self, img_iter: IMAGE_ITER_T) -> Iterator[CLASSIFICATION_DICT_T]:
         all_out = list()
@@ -43,7 +43,7 @@ class JATICImageClassifier(ClassifyImage):
             predictions = np.asarray(self._classifier(batch))
 
             for pred in predictions:
-                all_out.append({self._id_to_name[id]: score for id, score in enumerate(pred)})  # noqa: A001
+                all_out.append({id: score for id, score in enumerate(pred)})  # noqa: A001
 
         # Batch model passes
         for img in img_iter:
@@ -61,5 +61,5 @@ class JATICImageClassifier(ClassifyImage):
 
     def get_config(self) -> dict:
         raise NotImplementedError(
-            "Constructor arguments are not serializable as is and require further implementation to do so."
+            "Constructor arguments are not serializable as is and require further implementation to do so.",
         )
