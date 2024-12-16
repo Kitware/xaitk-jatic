@@ -1,5 +1,6 @@
 import unittest.mock as mock
-from typing import Dict, Hashable, Iterable, Tuple
+from collections.abc import Hashable, Iterable, Sequence
+from typing import Dict, Tuple
 from unittest.mock import MagicMock
 
 import numpy as np
@@ -25,7 +26,8 @@ class TestComputeSalMaps:
             """Dummy detector that returns consant detections."""
 
             def detect_objects(
-                self, img_iter: Iterable[np.ndarray]
+                self,
+                img_iter: Iterable[np.ndarray],
             ) -> Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]]:
                 for _ in img_iter:
                     yield [
@@ -50,7 +52,7 @@ class TestComputeSalMaps:
                     boxes=np.asarray([[1, 2, 3, 4], [5, 6, 7, 8]]),
                     labels=np.asarray([0, 1]),
                     scores=np.asarray([0.85, 0.64]),
-                )
+                ),
             ]
             * 4,
             metadata=[{}] * 4,
@@ -76,14 +78,14 @@ class TestSalOnDets:
         dataset = MagicMock(spec=Dataset)
         sal_generator = DRISEStack(n=1, s=3, p1=0.5)
         maite_detector = MagicMock(spec=Model)
-        id_to_name: Dict[int, Hashable] = {0: "cat0", 1: "cat1", 2: "cat2"}
+        ids: Sequence[int] = [0, 1, 2]
         img_batch_size = 4
 
         sal_on_dets(
             dataset=dataset,
             sal_generator=sal_generator,
             detector=maite_detector,
-            id_to_name=id_to_name,
+            ids=ids,
             img_batch_size=img_batch_size,
         )
 
@@ -93,6 +95,6 @@ class TestSalOnDets:
         assert kwargs["sal_generator"] == sal_generator
         assert isinstance(kwargs["blackbox_detector"], JATICDetector)
         assert kwargs["blackbox_detector"]._detector == maite_detector
-        assert kwargs["blackbox_detector"]._id_to_name == id_to_name
+        assert kwargs["blackbox_detector"]._ids == ids
         assert kwargs["blackbox_detector"]._img_batch_size == img_batch_size
-        assert kwargs["num_classes"] == len(id_to_name)
+        assert kwargs["num_classes"] == len(ids)

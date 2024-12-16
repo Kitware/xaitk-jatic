@@ -10,4 +10,4 @@
 
 build:cache:
   script:
-    - poetry install --sync --only main,dev-linting,dev-testing,dev-docs --extras tools
+    - poetry install --sync --only main,linting,tests,docs --extras tools

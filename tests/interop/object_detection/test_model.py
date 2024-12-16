@@ -1,4 +1,5 @@
-from typing import ContextManager, Dict, Hashable, Iterable, Sequence, Tuple, Union
+from collections.abc import Hashable, Iterable, Sequence
+from typing import ContextManager, Dict, Tuple, Union
 from unittest.mock import MagicMock
 
 import maite.protocols.object_detection as od
@@ -23,9 +24,9 @@ class TestJATICObjectDetector:
     )
     dummy_expected = [
         [
-            (AxisAlignedBoundingBox([1, 2], [3, 4]), {"A": 0.25, "B": 0.0, "C": 0.75}),
-            (AxisAlignedBoundingBox([5, 6], [7, 8]), {"A": 0.95, "B": 0.0, "C": 0.0}),
-        ]
+            (AxisAlignedBoundingBox([1, 2], [3, 4]), {0: 0.25, 1: 0.0, 2: 0.75}),
+            (AxisAlignedBoundingBox([5, 6], [7, 8]), {0: 0.95, 1: 0.0, 2: 0.0}),
+        ],
     ]
 
     @pytest.mark.parametrize(
@@ -36,7 +37,7 @@ class TestJATICObjectDetector:
                 dummy_id_to_name,
                 2,
                 pytest.raises(NotImplementedError, match=r"Constructor arg"),
-            )
+            ),
         ],
     )
     def test_configuration(
@@ -47,7 +48,7 @@ class TestJATICObjectDetector:
         expectation: ContextManager,
     ) -> None:
         """Test configuration stability."""
-        inst = JATICDetector(detector=detector, id_to_name=id_to_name, img_batch_size=img_batch_size)
+        inst = JATICDetector(detector=detector, ids=id_to_name.keys(), img_batch_size=img_batch_size)
         with expectation:
             for _ in configuration_test_helper(inst):
                 # TODO: Update assertions appropriately once get_config/from_config are implemented
@@ -102,6 +103,6 @@ class TestJATICObjectDetector:
         """Test that MAITE detector output is transformed appropriately."""
         mock_detector = MagicMock(spec=od.Model, return_value=detector_output)
 
-        inst = JATICDetector(detector=mock_detector, id_to_name=id_to_name, img_batch_size=img_batch_size)
+        inst = JATICDetector(detector=mock_detector, ids=id_to_name.keys(), img_batch_size=img_batch_size)
         res = list(inst.detect_objects(imgs))
         assert res == expected_return
