@@ -1,4 +1,5 @@
-from typing import Dict, Hashable, List, Tuple
+from collections.abc import Sequence
+from typing import Dict, List, Tuple
 
 import numpy as np
 from maite.protocols.object_detection import Dataset, Model
@@ -37,7 +38,7 @@ def compute_sal_maps(
                 np.asarray(dets.boxes),
                 score_matrix,
                 blackbox_detector,
-            )
+            ),
         )
 
     return img_sal_maps, to_config_dict(sal_generator)
@@ -47,7 +48,7 @@ def sal_on_dets(
     dataset: Dataset,
     sal_generator: GenerateObjectDetectorBlackboxSaliency,
     detector: Model,
-    id_to_name: Dict[int, Hashable],
+    ids: Sequence[int],
     img_batch_size: int = 1,
 ) -> Tuple[List[np.ndarray], Dict]:
     """Generate saliency maps for provided dataset.
@@ -61,6 +62,6 @@ def sal_on_dets(
     return compute_sal_maps(
         dataset=dataset,
         sal_generator=sal_generator,
-        blackbox_detector=JATICDetector(detector=detector, id_to_name=id_to_name, img_batch_size=img_batch_size),
-        num_classes=len(id_to_name),
+        blackbox_detector=JATICDetector(detector=detector, ids=ids, img_batch_size=img_batch_size),
+        num_classes=len(ids),
     )

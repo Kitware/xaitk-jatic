@@ -1,4 +1,5 @@
-from typing import Dict, Hashable, Iterable, Sequence, Tuple
+from collections.abc import Hashable, Iterable, Sequence
+from typing import Dict, Tuple
 
 import maite.protocols.object_detection as od
 import numpy as np
@@ -17,15 +18,16 @@ class JATICDetector(DetectImageObjects):
     def __init__(
         self,
         detector: od.Model,
-        id_to_name: Dict[int, Hashable],
+        ids: Sequence[int],
         img_batch_size: int = 1,
     ):
         self._detector = detector
-        self._id_to_name = dict(sorted(id_to_name.items()))
+        self._ids = sorted(ids)
         self._img_batch_size = img_batch_size
 
     def detect_objects(
-        self, img_iter: Iterable[np.ndarray]
+        self,
+        img_iter: Iterable[np.ndarray],
     ) -> Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]]:
         all_out = list()
 
@@ -39,13 +41,13 @@ class JATICDetector(DetectImageObjects):
         # Combine JATIC detections for same bbox into one DetectImageObject detection
         def _xform_dets(
             bboxes: Iterable[AxisAlignedBoundingBox],
-            labels: Sequence[Hashable],
+            labels: np.ndarray,
             probs: np.ndarray,
         ) -> Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]:
             dets_dict: Dict[AxisAlignedBoundingBox, Dict[Hashable, float]] = dict()
             for box, label, prob in zip(bboxes, labels, probs):
                 if box not in dets_dict:
-                    dets_dict[box] = {la: 0.0 for la in self._id_to_name.values()}
+                    dets_dict[box] = {la: 0.0 for la in self._ids}
                 dets_dict[box][label] = prob
 
             return [(box, prob_dict) for box, prob_dict in dets_dict.items()]
@@ -61,7 +63,7 @@ class JATICDetector(DetectImageObjects):
 
             for pred in predictions:
                 boxes = [_xform_bbox(box) for box in np.asarray(pred.boxes)]
-                labels = [self._id_to_name[la] for la in np.asarray(pred.labels)]
+                labels = np.asarray(pred.labels)
                 scores = np.asarray(pred.scores)
 
                 all_out.append(_xform_dets(bboxes=boxes, labels=labels, probs=scores))
@@ -83,5 +85,5 @@ class JATICDetector(DetectImageObjects):
 
     def get_config(self) -> dict:
         raise NotImplementedError(
-            "Constructor arguments are not serializable as is and require further implementation to do so."
+            "Constructor arguments are not serializable as is and require further implementation to do so.",
         )
