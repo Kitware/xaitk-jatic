@@ -11,6 +11,8 @@ from smqtk_core.configuration import configuration_test_helper
 
 from xaitk_jatic.interop.image_classification.model import JATICImageClassifier
 
+rng = np.random.default_rng()
+
 
 class TestJATICImageClassifier:
     dummy_id_to_name_1 = {0: "A", 1: "B", 2: "C"}
@@ -40,9 +42,7 @@ class TestJATICImageClassifier:
         """Test configuration stability."""
         inst = JATICImageClassifier(classifier=classifier, ids=id_to_name.keys(), img_batch_size=img_batch_size)
         with expectation:
-            for _ in configuration_test_helper(inst):
-                # Exception will be raised, get_config not implemented as MAITE models are not serializable
-                pass
+            configuration_test_helper(inst)
 
     @pytest.mark.parametrize(
         (
@@ -56,23 +56,23 @@ class TestJATICImageClassifier:
             (
                 [dummy_out],
                 dummy_id_to_name_1,
-                2,
-                [np.random.default_rng().integers(0, 255, (256, 256, 3), dtype=np.uint8, endpoint=True)],
-                [dict(zip(dummy_id_to_name_1.keys(), dummy_out))],
+                1,
+                [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
+                [dict(zip(expected_labels, dummy_out))],
             ),
             (
                 [dummy_out],
                 dummy_id_to_name_1,
                 1,
-                [np.random.default_rng().integers(0, 255, (256, 256), dtype=np.uint8, endpoint=True)],
-                [dict(zip(dummy_id_to_name_1.keys(), dummy_out))],
+                [rng.integers(0, 255, (256, 256), dtype=np.uint8)],
+                [dict(zip(expected_labels, dummy_out))],
             ),
             (
                 [dummy_out] * 2,
                 dummy_id_to_name_1,
                 2,
-                np.random.default_rng().integers(0, 255, (2, 256, 256), dtype=np.uint8, endpoint=True),
-                [dict(zip(dummy_id_to_name_1.keys(), dummy_out))] * 2,
+                rng.integers(0, 255, (2, 256, 256), dtype=np.uint8),
+                [dict(zip(expected_labels, dummy_out)), dict(zip(expected_labels, dummy_out))],
             ),
         ],
         ids=["single 3 channel", "single greyscale", "multiple images"],

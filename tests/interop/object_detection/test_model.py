@@ -11,6 +11,8 @@ from smqtk_image_io import AxisAlignedBoundingBox
 
 from xaitk_jatic.interop.object_detection.model import JATICDetector
 
+rng = np.random.default_rng()
+
 
 class TestJATICObjectDetector:
     dummy_id_to_name = {0: "A", 1: "B", 2: "C"}
@@ -51,9 +53,7 @@ class TestJATICObjectDetector:
         """Test configuration stability."""
         inst = JATICDetector(detector=detector, ids=id_to_name.keys(), img_batch_size=img_batch_size)
         with expectation:
-            for _ in configuration_test_helper(inst):
-                # Exception will be raised, get_config not implemented as MAITE models are not serializable
-                pass
+            configuration_test_helper(inst)
 
     @pytest.mark.parametrize(
         ("detector_output", "id_to_name", "img_batch_size", "imgs", "expected_return"),
@@ -61,29 +61,29 @@ class TestJATICObjectDetector:
             (
                 [dummy_out],
                 dummy_id_to_name,
-                2,
-                [np.random.default_rng().integers(0, 255, (256, 256, 3), dtype=np.uint8, endpoint=True)],
+                1,
+                [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
                 dummy_expected,
             ),
             (
                 [dummy_out],
                 dummy_id_to_name,
                 1,
-                [np.random.default_rng().integers(0, 255, (256, 256), dtype=np.uint8, endpoint=True)],
+                [rng.integers(0, 255, (256, 256), dtype=np.uint8)],
                 dummy_expected,
             ),
             (
                 [dummy_out] * 2,
                 dummy_id_to_name,
                 2,
-                np.random.default_rng().integers(0, 255, (2, 256, 256), dtype=np.uint8, endpoint=True),
+                rng.integers(0, 255, (2, 256, 256), dtype=np.uint8),
                 [dummy_expected[0]] * 2,
             ),
             (
                 [MagicMock(spec=od.ObjectDetectionTarget, boxes=[], labels=[], scores=[])],
                 dummy_id_to_name,
                 1,
-                np.random.default_rng().integers(0, 255, (1, 256, 256), dtype=np.uint8, endpoint=True),
+                rng.integers(0, 255, (1, 256, 256), dtype=np.uint8),
                 [[]],
             ),
         ],

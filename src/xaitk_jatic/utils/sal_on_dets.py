@@ -1,5 +1,38 @@
+"""
+This module provides functionality for generating saliency maps for object detection models
+using blackbox saliency generation techniques. It integrates with the MAITE dataset and
+object detection protocols to produce visual explanations for model predictions.
+
+Functions:
+    compute_sal_maps: Generates saliency maps for a given dataset using a blackbox object detector
+                      and a saliency map generator.
+    sal_on_dets: Facilitates saliency map computation with a MAITE-compatible detector.
+
+Dependencies:
+    - numpy: For numerical operations.
+    - smqtk_core.configuration: For configuration handling.
+    - smqtk_detection.interfaces.detect_image_objects: Interface for object detection in images.
+    - xaitk_saliency: For generating saliency maps for object detection.
+    - maite.protocols.object_detection: For handling datasets and models in the MAITE framework.
+    - xaitk_jatic.interop.object_detection.model: For interoperability with JATIC object detection models.
+
+Usage:
+    These functions enable generating saliency maps for datasets using compatible object detection
+    models and saliency generators. Saliency maps provide insights into which parts of an image
+    influenced the model's predictions.
+
+Example:
+    # Generate saliency maps for a dataset using a specific saliency generator and detector.
+    saliency_maps, config = sal_on_dets(
+        dataset=my_dataset,
+        sal_generator=my_sal_generator,
+        detector=my_model,
+        id_to_name=my_label_mapping,
+        img_batch_size=4
+    )
+"""
+
 from collections.abc import Sequence
-from typing import Dict, List, Tuple
 
 import numpy as np
 from maite.protocols.object_detection import Dataset, Model
@@ -15,7 +48,7 @@ def compute_sal_maps(
     sal_generator: GenerateObjectDetectorBlackboxSaliency,
     blackbox_detector: DetectImageObjects,
     num_classes: int,
-) -> Tuple[List[np.ndarray], Dict]:
+) -> tuple[list[np.ndarray], dict]:
     """Generate saliency maps for the provided dataset.
 
     :param dataset: MAITE dataset
@@ -50,7 +83,7 @@ def sal_on_dets(
     detector: Model,
     ids: Sequence[int],
     img_batch_size: int = 1,
-) -> Tuple[List[np.ndarray], Dict]:
+) -> tuple[list[np.ndarray], dict]:
     """Generate saliency maps for provided dataset.
 
     :param dataset: MAITE dataset

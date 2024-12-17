@@ -14,6 +14,8 @@ from xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise import DRISESta
 from tests import DATA_DIR
 from xaitk_jatic.utils.bin.sal_on_coco_dets import sal_on_coco_dets
 
+rng = np.random.default_rng()
+
 deps = ["kwcoco", "matplotlib"]
 specs = [find_spec(dep) for dep in deps]
 is_usable = all(spec is not None for spec in specs)
@@ -38,7 +40,7 @@ class TestSalOnCocoDetsNotUsable:
         result = runner.invoke(sal_on_coco_dets, [str(dataset_dir), str(output_dir), str(config_file)])
 
         assert result.output.startswith(
-            "This tool requires additional dependencies, please install 'xaitk-jatic[tools]'."
+            "This tool requires additional dependencies, please install 'xaitk-jatic[tools]'.",
         )
         assert not output_dir.check(dir=1)
 
@@ -52,8 +54,8 @@ class TestSalOnCocoDets:
 
     mock_return_value = (
         [
-            np.random.randint(0, 255, (3, 256, 256), dtype=np.uint8),
-            np.random.randint(0, 255, (3, 256, 256), dtype=np.uint8),
+            rng.integers(0, 255, (3, 256, 256), dtype=np.uint8),
+            rng.integers(0, 255, (3, 256, 256), dtype=np.uint8),
         ],
         {
             "type": "xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise.DRISEStack",
@@ -129,7 +131,7 @@ class TestSalOnCocoDets:
             assert sorted(img_dir.listdir()) == sorted(map_files)
 
     @mock.patch("pathlib.Path.is_file", return_value=False)
-    def test_missing_annotations(self, is_file_patch: MagicMock, tmpdir: py.path.local) -> None:
+    def test_missing_annotations(self, tmpdir: py.path.local) -> None:
         """Check that an exception is appropriately raised if the annotations file is missing."""
         output_dir = tmpdir.join("out")
 
@@ -140,7 +142,7 @@ class TestSalOnCocoDets:
                 catch_exceptions=False,
             )
 
-    @mock.patch("pathlib.Path.is_file", side_effect=[True, False])
+    @mock.patch("pathlib.Path.is_file", side_effect=[True, False, False])
     @mock.patch(
         "xaitk_jatic.utils.bin.sal_on_coco_dets.compute_sal_maps",
         return_value=mock_return_value,
@@ -148,7 +150,7 @@ class TestSalOnCocoDets:
     def test_missing_metadata(
         self,
         _: MagicMock,  # noqa: PT019
-        is_file_patch: MagicMock,
+        is_file_patch: MagicMock,  # noqa:ARG002
         caplog: pytest.LogCaptureFixture,
         tmpdir: py.path.local,
     ) -> None:

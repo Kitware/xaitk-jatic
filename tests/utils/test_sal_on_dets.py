@@ -1,6 +1,5 @@
 import unittest.mock as mock
 from collections.abc import Hashable, Iterable, Sequence
-from typing import Dict, Tuple
 from unittest.mock import MagicMock
 
 import numpy as np
@@ -17,6 +16,8 @@ from xaitk_jatic.interop.object_detection.dataset import (
 from xaitk_jatic.interop.object_detection.model import JATICDetector
 from xaitk_jatic.utils.sal_on_dets import compute_sal_maps, sal_on_dets
 
+rng = np.random.default_rng()
+
 
 class TestComputeSalMaps:
     def test_compute_sal_maps(self) -> None:
@@ -28,7 +29,7 @@ class TestComputeSalMaps:
             def detect_objects(
                 self,
                 img_iter: Iterable[np.ndarray],
-            ) -> Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]]:
+            ) -> Iterable[Iterable[tuple[AxisAlignedBoundingBox, dict[Hashable, float]]]]:
                 for _ in img_iter:
                     yield [
                         (
@@ -46,7 +47,7 @@ class TestComputeSalMaps:
         sal_generator = DRISEStack(n=1, s=3, p1=0.5)
         detector = TestDetector()
         dataset = JATICObjectDetectionDataset(
-            imgs=[np.random.randint(0, 255, (256, 256, 3), dtype=np.uint8)] * 4,
+            imgs=[rng.integers(0, 255, (256, 256, 3), dtype=np.uint8)] * 4,
             dets=[
                 JATICDetectionTarget(
                     boxes=np.asarray([[1, 2, 3, 4], [5, 6, 7, 8]]),
