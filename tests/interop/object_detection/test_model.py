@@ -1,5 +1,6 @@
 from collections.abc import Hashable, Iterable, Sequence
-from typing import ContextManager, Dict, Tuple, Union
+from contextlib import AbstractContextManager
+from typing import Union
 from unittest.mock import MagicMock
 
 import maite.protocols.object_detection as od
@@ -43,20 +44,16 @@ class TestJATICObjectDetector:
     def test_configuration(
         self,
         detector: od.Model,
-        id_to_name: Dict[int, Hashable],
+        id_to_name: dict[int, Hashable],
         img_batch_size: int,
-        expectation: ContextManager,
+        expectation: AbstractContextManager,
     ) -> None:
         """Test configuration stability."""
         inst = JATICDetector(detector=detector, ids=id_to_name.keys(), img_batch_size=img_batch_size)
         with expectation:
             for _ in configuration_test_helper(inst):
-                # TODO: Update assertions appropriately once get_config/from_config are implemented
-                """
-                assert i._detector == detector
-                assert i._id_to_name == id_to_name
-                assert i._img_batch_size == img_batch_size
-                """
+                # Exception will be raised, get_config not implemented as MAITE models are not serializable
+                pass
 
     @pytest.mark.parametrize(
         ("detector_output", "id_to_name", "img_batch_size", "imgs", "expected_return"),
@@ -65,28 +62,28 @@ class TestJATICObjectDetector:
                 [dummy_out],
                 dummy_id_to_name,
                 2,
-                [np.random.randint(0, 255, (256, 256, 3), dtype=np.uint8)],
+                [np.random.default_rng().integers(0, 255, (256, 256, 3), dtype=np.uint8, endpoint=True)],
                 dummy_expected,
             ),
             (
                 [dummy_out],
                 dummy_id_to_name,
                 1,
-                [np.random.randint(0, 255, (256, 256), dtype=np.uint8)],
+                [np.random.default_rng().integers(0, 255, (256, 256), dtype=np.uint8, endpoint=True)],
                 dummy_expected,
             ),
             (
                 [dummy_out] * 2,
                 dummy_id_to_name,
                 2,
-                np.random.randint(0, 255, (2, 256, 256), dtype=np.uint8),
+                np.random.default_rng().integers(0, 255, (2, 256, 256), dtype=np.uint8, endpoint=True),
                 [dummy_expected[0]] * 2,
             ),
             (
                 [MagicMock(spec=od.ObjectDetectionTarget, boxes=[], labels=[], scores=[])],
                 dummy_id_to_name,
                 1,
-                np.random.randint(0, 255, (1, 256, 256), dtype=np.uint8),
+                np.random.default_rng().integers(0, 255, (1, 256, 256), dtype=np.uint8, endpoint=True),
                 [[]],
             ),
         ],
@@ -95,10 +92,10 @@ class TestJATICObjectDetector:
     def test_smoketest(
         self,
         detector_output: Sequence[od.ObjectDetectionTarget],
-        id_to_name: Dict[int, Hashable],
+        id_to_name: dict[int, Hashable],
         img_batch_size: int,
         imgs: Union[np.ndarray, Sequence[np.ndarray]],
-        expected_return: Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]],
+        expected_return: Iterable[Iterable[tuple[AxisAlignedBoundingBox, dict[Hashable, float]]]],
     ) -> None:
         """Test that MAITE detector output is transformed appropriately."""
         mock_detector = MagicMock(spec=od.Model, return_value=detector_output)
