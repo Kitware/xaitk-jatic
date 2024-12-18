@@ -1,5 +1,6 @@
 import unittest.mock as mock
 from collections.abc import Hashable, Iterable, Sequence
+from typing import TypedDict
 from unittest.mock import MagicMock
 
 import numpy as np
@@ -7,6 +8,7 @@ from maite.protocols.object_detection import Dataset, Model
 from smqtk_core.configuration import to_config_dict
 from smqtk_detection.interfaces.detect_image_objects import DetectImageObjects
 from smqtk_image_io.bbox import AxisAlignedBoundingBox
+from typing_extensions import ReadOnly, Required
 from xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise import DRISEStack
 
 from xaitk_jatic.interop.object_detection.dataset import (
@@ -17,6 +19,10 @@ from xaitk_jatic.interop.object_detection.model import JATICDetector
 from xaitk_jatic.utils.sal_on_dets import compute_sal_maps, sal_on_dets
 
 rng = np.random.default_rng()
+
+
+class _DummyDatumMetadata(TypedDict):
+    id: Required[ReadOnly[int]]
 
 
 class TestComputeSalMaps:
@@ -56,7 +62,8 @@ class TestComputeSalMaps:
                 ),
             ]
             * 4,
-            metadata=[{}] * 4,
+            datum_metadata=[_DummyDatumMetadata(id=idx) for idx in range(4)],
+            dataset_id="dummy_dataset",
         )
 
         sal_maps, sal_md = compute_sal_maps(

@@ -3,7 +3,9 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
+from maite.protocols import DatumMetadata
 from PIL import Image  # type: ignore
+from typing_extensions import ReadOnly
 
 from tests import DATA_DIR
 from xaitk_jatic.interop.object_detection.dataset import (
@@ -28,12 +30,20 @@ rng = np.random.default_rng()
 dset_dir = Path(DATA_DIR)
 
 
+class _DummyDatumMetadata(DatumMetadata):
+    foo: ReadOnly[str]
+
+
 @pytest.mark.skipif(not is_usable, reason="Extra 'xaitk-jatic[tools]' not installed.")
 class TestCOCOJATICObjectDetectionDataset:
     if is_usable and kwcoco is not None:
         coco_file = dset_dir / "annotations.json"
         kwcoco_dataset = kwcoco.CocoDataset(coco_file)
-        metadata = {1: {"test": 1}, 2: {"test": 2}, 3: {"test": 3}}
+        metadata = [
+            _DummyDatumMetadata(id=1, foo="a"),
+            _DummyDatumMetadata(id=2, foo="b"),
+            _DummyDatumMetadata(id=3, foo="c"),
+        ]
 
         test_img_files = ["test_image1.png", "test_image2.png"]
         test_imgs = [np.array(Image.open(dset_dir / f)) for f in test_img_files]
@@ -82,7 +92,9 @@ class TestCOCOJATICObjectDetectionDataset:
             )
             assert np.array_equal(dets.boxes, TestCOCOJATICObjectDetectionDataset.test_bboxes[idx])
             assert np.array_equal(dets.scores, TestCOCOJATICObjectDetectionDataset.test_scores[idx])
-            assert md["test"] == TestCOCOJATICObjectDetectionDataset.metadata[md["id"]]["test"]
+            # -1 because these IDs start at 1
+            assert "foo" in md
+            assert md["foo"] == TestCOCOJATICObjectDetectionDataset.metadata[md["id"] - 1]["foo"]
 
     def test_bad_metadata(self) -> None:
         """Test that an exception is appropriately raised if metadata is missing."""
@@ -92,7 +104,7 @@ class TestCOCOJATICObjectDetectionDataset:
         with pytest.raises(ValueError, match=r"Image metadata length mismatch"):
             _ = COCOJATICObjectDetectionDataset(
                 kwcoco_dataset=TestCOCOJATICObjectDetectionDataset.kwcoco_dataset,
-                image_metadata=dict(),
+                image_metadata=list(),
             )
 
 
@@ -110,14 +122,18 @@ class TestJATICObjectDetectionDataset:
             scores=np.asarray([0.34, 0.95]),
         ),
     ]
-    metadata = [{"md": 0}, {"md": 1}]
+    metadata = [
+        _DummyDatumMetadata(id=1, foo="a"),
+        _DummyDatumMetadata(id=2, foo="b"),
+    ]
 
     def test_len(self) -> None:
         """Test length property."""
         dataset = JATICObjectDetectionDataset(
             imgs=TestJATICObjectDetectionDataset.imgs,
             dets=TestJATICObjectDetectionDataset.dets,
-            metadata=TestJATICObjectDetectionDataset.metadata,
+            datum_metadata=TestJATICObjectDetectionDataset.metadata,
+            dataset_id="dummy_dataset",
         )
 
         assert len(dataset) == len(TestJATICObjectDetectionDataset.imgs)
@@ -127,7 +143,8 @@ class TestJATICObjectDetectionDataset:
         dataset = JATICObjectDetectionDataset(
             imgs=TestJATICObjectDetectionDataset.imgs,
             dets=TestJATICObjectDetectionDataset.dets,
-            metadata=TestJATICObjectDetectionDataset.metadata,
+            datum_metadata=TestJATICObjectDetectionDataset.metadata,
+            dataset_id="dummy_dataset",
         )
 
         for idx in range(len(dataset)):
