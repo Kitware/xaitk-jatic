@@ -4,12 +4,15 @@ requires = ["poetry-core>=1.9"]
 build-backend = "poetry.core.masonry.api"
 # :auto build-system:
 
-# :auto package-meta:
 [tool.poetry]
 name = "xaitk-jatic"
-readme = "README.md"
-packages = [{include = "xaitk_jatic", from="src"}]
+version = "0.4.3"
+description = "Integration package to support interfacing, implementation and example needs for the JATIC."
+license = "Apache-2.0"
 documentation = "https://xaitk-jatic.readthedocs.io/"
+readme = "README.md"
+authors = ["Kitware, Inc. <xaitk@kitware.com>"]
+packages = [{include = "xaitk_jatic", from="src"}]
 classifiers = [
     'Development Status :: 3 - Alpha',
     'Intended Audience :: Developers',
@@ -22,14 +25,6 @@ classifiers = [
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
 ]
-# :auto package-meta:
-# package-specific meta, don't put this in "generated package-meta"
-authors = ["Kitware, Inc. <xaitk@kitware.com>"]
-license = "Apache-2.0"
-version = "0.4.3"
-description = """\
-    Integration package to support interfacing, implementation and example \
-    needs for the JATIC."""
 
 [tool.poetry.dependencies]
 # :auto python-version:
