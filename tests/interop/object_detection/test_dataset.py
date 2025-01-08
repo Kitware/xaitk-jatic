@@ -21,6 +21,7 @@ try:
 except ImportError:
     is_usable = False
 
+rng = np.random.default_rng()
 dset_dir = Path(DATA_DIR)
 
 
@@ -42,7 +43,7 @@ class TestCOCOJATICObjectDetectionDataset:
                 [10.0, 20.0, 40.0, 60.0],
                 [12.0, 45.0, 62.0, 75.0],
                 [30.0, 5.0, 77.0, 97.0],
-            ]
+            ],
         ),
         np.array([[0.0, 0.0, 5.0, 5.0], [50.0, 50.0, 82.0, 67.0], [68.0, 82.0, 79.0, 89.0]]),
     ]
@@ -68,7 +69,8 @@ class TestCOCOJATICObjectDetectionDataset:
             img, dets, md = dataset[idx]
             # assert False
             assert np.array_equal(
-                img, np.transpose(np.asarray(TestCOCOJATICObjectDetectionDataset.test_imgs[idx]), axes=(2, 0, 1))
+                img,
+                np.transpose(np.asarray(TestCOCOJATICObjectDetectionDataset.test_imgs[idx]), axes=(2, 0, 1)),
             )
             assert np.array_equal(dets.boxes, TestCOCOJATICObjectDetectionDataset.test_bboxes[idx])
             assert np.array_equal(dets.scores, TestCOCOJATICObjectDetectionDataset.test_scores[idx])
@@ -84,7 +86,7 @@ class TestCOCOJATICObjectDetectionDataset:
 
 
 class TestJATICObjectDetectionDataset:
-    imgs = [np.random.randint(0, 255, (256, 256, 3), dtype=np.uint8) for _ in range(2)]
+    imgs = [rng.integers(0, 255, (256, 256, 3), dtype=np.uint8) for _ in range(2)]
     dets = [
         JATICDetectionTarget(
             boxes=np.asarray([[0.0, 0.0, 50.0, 50.0]]),

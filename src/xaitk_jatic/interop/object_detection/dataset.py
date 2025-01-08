@@ -1,7 +1,24 @@
+"""
+This module provides dataset classes for working with object detection data in the JATIC framework.
+It includes adapters for COCO-format datasets and general datasets for varying-sized images.
+
+Classes:
+    JATICDetectionTarget: A dataclass for storing detection results, including bounding boxes, labels, and scores.
+    COCOJATICObjectDetectionDataset: Converts a COCO dataset to be compatible with the JATIC object detection protocol.
+    JATICObjectDetectionDataset: A generic wrapper for object detection datasets with varying-sized images.
+
+Dependencies:
+    - kwcoco: For working with COCO-format datasets.
+    - numpy: For numerical operations.
+    - maite.protocols.object_detection: For object detection protocols.
+    - PIL: For image processing.
+"""
+
 import copy
 import logging
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any, Dict, Sequence, Tuple
+from typing import Any
 
 import numpy as np
 from maite.protocols.object_detection import (
@@ -19,7 +36,7 @@ try:
 except ImportError:
     is_usable = False
 
-OBJ_DETECTION_DATUM_T = Tuple[InputType, TargetType, DatumMetadataType]
+OBJ_DETECTION_DATUM_T = tuple[InputType, TargetType, DatumMetadataType]
 
 LOG = logging.getLogger(__name__)
 
@@ -35,7 +52,7 @@ class JATICDetectionTarget:
 
 if not is_usable:
     LOG.warning(
-        "COCOJATICObjectDetectionDataset requires additional dependencies, please install 'xaitk-jatic[tools]'."
+        "COCOJATICObjectDetectionDataset requires additional dependencies, please install 'xaitk-jatic[tools]'.",
     )
 else:
 
@@ -46,18 +63,29 @@ else:
         ----------
         kwcoco_dataset : kwcoco.CocoDataset
             The kwcoco COCODataset object.
-        image_metadata : Dict[int, Dict[str, Any]]
+        image_metadata : dict[int, dict[str, Any]]
             A dict of per-image metadata, by image id. Any metadata required by a perturber should be provided.
         skip_no_anns: bool
             If True, do not include images with no annotations in the dataset
         """
 
-        def __init__(
+        def __init__(  # noqa: C901
             self,
             kwcoco_dataset: kwcoco.CocoDataset,
-            image_metadata: Dict[int, Dict[str, Any]],
+            image_metadata: dict[int, dict[str, Any]],
             skip_no_anns: bool = False,
-        ):
+        ) -> None:
+            """
+            Initialize the COCOJATICObjectDetectionDataset.
+
+            Args:
+                kwcoco_dataset (kwcoco.CocoDataset): The COCO dataset object.
+                image_metadata (dict[int, dict[str, Any]]): Metadata for each image by ID.
+                skip_no_anns (bool): Whether to skip images without annotations. Defaults to False.
+
+            Raises:
+                ValueError: If metadata is missing for any image in the dataset.
+            """
             self._kwcoco_dataset = kwcoco_dataset
 
             self._image_ids = list()
@@ -68,7 +96,7 @@ else:
                 labels = []
                 scores = []
 
-                if img_id in kwcoco_dataset.gid_to_aids.keys() and len(kwcoco_dataset.gid_to_aids[img_id]) > 0:
+                if img_id in kwcoco_dataset.gid_to_aids and len(kwcoco_dataset.gid_to_aids[img_id]) > 0:
                     det_ids = kwcoco_dataset.gid_to_aids[img_id]
                     for det_id in det_ids:
                         ann = kwcoco_dataset.anns[det_id]
@@ -93,7 +121,9 @@ else:
                     continue
                 self._image_ids.append(img_id)
                 self._annotations[img_id] = JATICDetectionTarget(
-                    boxes=bboxes, labels=np.asarray(labels), scores=np.asarray(scores)
+                    boxes=bboxes,
+                    labels=np.asarray(labels),
+                    scores=np.asarray(scores),
                 )
 
             self._image_metadata = copy.deepcopy(image_metadata)
@@ -121,7 +151,7 @@ else:
                     id=image_id,
                     image_info=dict(width=width, height=height, file_name=img_file),
                     det_ids=(list(gid_to_aids[image_id]) if image_id in gid_to_aids else list()),
-                )
+                ),
             )
 
             image_array = np.asarray(image)
@@ -146,7 +176,7 @@ class JATICObjectDetectionDataset(Dataset):
         Sequence of images.
     dets : Sequence[ObjectDetectionTarget]
         Sequence of detections for each image.
-    metadata : Sequence[Dict[str, Any]]
+    metadata : Sequence[dict[str, Any]]
         Sequence of custom metadata for each image.
     """
 
@@ -156,12 +186,38 @@ class JATICObjectDetectionDataset(Dataset):
         dets: Sequence[TargetType],
         metadata: Sequence[DatumMetadataType],
     ) -> None:
+        """
+        Initialize the JATICObjectDetectionDataset.
+
+        Args:
+            imgs (Sequence[np.ndarray]): Sequence of images in the dataset.
+            dets (Sequence[TargetType]): Sequence of detection targets for the images.
+            metadata (Sequence[DatumMetadataType]): Sequence of metadata dictionaries.
+        """
         self.imgs = imgs
         self.dets = dets
         self.metadata = metadata
 
     def __len__(self) -> int:
+        """
+        Get the number of images in the dataset.
+
+        Returns:
+            int: The number of images.
+        """
         return len(self.imgs)
 
     def __getitem__(self, index: int) -> OBJ_DETECTION_DATUM_T:
+        """
+        Retrieve a dataset item by index.
+
+        Args:
+            index (int): The index of the dataset item to retrieve.
+
+        Returns:
+            OBJ_DETECTION_DATUM_T: A tuple containing:
+                - Input image as a numpy array.
+                - Detection targets for the image.
+                - Metadata for the image.
+        """
         return self.imgs[index], self.dets[index], self.metadata[index]
