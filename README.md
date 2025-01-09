@@ -16,7 +16,7 @@ Ensure the source tree is acquired locally before proceeding.
 
 To install the current version via `pip`:
 ```bash
-pip install xaitk-jatic[<extra1>,<extra2>,..]
+pip install xaitk-jatic[<extra1>,<extra2>,...]
 ```
 
 Alternatively, you can use [Poetry](https://python-poetry.org/):
@@ -75,7 +75,7 @@ poetry run pre-commit run --all-files
 - Follow the [JATIC Design Principles](https://cdao.pages.jatic.net/public/program/design-principles/).
 - Adopt the Git Flow branching strategy.
 - Detailed release information is available in [docs/release_process.rst](./docs/release_process.rst).
-- Additional contribution guidelines can be found in [CONTRIBUTING.md](./CONTRIBUTING.md).
+- Additional contribution guidelines and issue reporting steps can be found in [CONTRIBUTING.md](./CONTRIBUTING.md).
 <!-- :auto contributing: -->
 
 <!-- :auto license: -->
