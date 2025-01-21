@@ -38,7 +38,7 @@ import numpy as np
 from maite.protocols.object_detection import Dataset, Model
 from smqtk_core.configuration import to_config_dict
 from smqtk_detection.interfaces.detect_image_objects import DetectImageObjects
-from xaitk_saliency import GenerateObjectDetectorBlackboxSaliency
+from xaitk_saliency.interfaces.gen_object_detector_blackbox_sal import GenerateObjectDetectorBlackboxSaliency
 
 from xaitk_jatic.interop.object_detection.model import JATICDetector
 

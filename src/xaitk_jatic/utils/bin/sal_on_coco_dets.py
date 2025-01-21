@@ -27,7 +27,7 @@ import numpy as np
 from PIL import Image  # type: ignore
 from smqtk_core.configuration import from_config_dict, make_default_config
 from smqtk_detection.interfaces.detect_image_objects import DetectImageObjects
-from xaitk_saliency import GenerateObjectDetectorBlackboxSaliency
+from xaitk_saliency.interfaces.gen_object_detector_blackbox_sal import GenerateObjectDetectorBlackboxSaliency
 
 from xaitk_jatic.utils.sal_on_dets import compute_sal_maps
 

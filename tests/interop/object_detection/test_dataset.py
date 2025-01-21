@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
@@ -10,6 +11,8 @@ from xaitk_jatic.interop.object_detection.dataset import (
     JATICObjectDetectionDataset,
 )
 
+kwcoco = None
+COCOJATICObjectDetectionDataset = None
 try:
     import kwcoco  # type: ignore
 
@@ -27,7 +30,7 @@ dset_dir = Path(DATA_DIR)
 
 @pytest.mark.skipif(not is_usable, reason="Extra 'xaitk-jatic[tools]' not installed.")
 class TestCOCOJATICObjectDetectionDataset:
-    if is_usable:
+    if is_usable and kwcoco is not None:
         coco_file = dset_dir / "annotations.json"
         kwcoco_dataset = kwcoco.CocoDataset(coco_file)
         metadata = {1: {"test": 1}, 2: {"test": 2}, 3: {"test": 3}}
@@ -52,6 +55,8 @@ class TestCOCOJATICObjectDetectionDataset:
 
     def test_len(self) -> None:
         """Test length property."""
+        if TYPE_CHECKING:
+            assert COCOJATICObjectDetectionDataset is not None
         dataset = COCOJATICObjectDetectionDataset(
             kwcoco_dataset=TestCOCOJATICObjectDetectionDataset.kwcoco_dataset,
             image_metadata=TestCOCOJATICObjectDetectionDataset.metadata,
@@ -60,6 +65,9 @@ class TestCOCOJATICObjectDetectionDataset:
 
     def test_get_item(self) -> None:
         """Test indexing."""
+        if TYPE_CHECKING:
+            assert COCOJATICObjectDetectionDataset is not None
+
         dataset = COCOJATICObjectDetectionDataset(
             kwcoco_dataset=TestCOCOJATICObjectDetectionDataset.kwcoco_dataset,
             image_metadata=TestCOCOJATICObjectDetectionDataset.metadata,
@@ -78,6 +86,9 @@ class TestCOCOJATICObjectDetectionDataset:
 
     def test_bad_metadata(self) -> None:
         """Test that an exception is appropriately raised if metadata is missing."""
+        if TYPE_CHECKING:
+            assert COCOJATICObjectDetectionDataset is not None
+
         with pytest.raises(ValueError, match=r"Image metadata length mismatch"):
             _ = COCOJATICObjectDetectionDataset(
                 kwcoco_dataset=TestCOCOJATICObjectDetectionDataset.kwcoco_dataset,

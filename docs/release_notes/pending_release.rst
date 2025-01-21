@@ -8,3 +8,5 @@ Fixes
 -----
 
 * Fixed all ruff and mypy errors in the CI
+
+* Fixed all pyright errors
