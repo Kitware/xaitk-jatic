@@ -6,7 +6,7 @@ import numpy as np
 from maite.protocols.object_detection import Dataset, Model
 from smqtk_core.configuration import to_config_dict
 from smqtk_detection.interfaces.detect_image_objects import DetectImageObjects
-from smqtk_detection.utils.bbox import AxisAlignedBoundingBox
+from smqtk_image_io.bbox import AxisAlignedBoundingBox
 from xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise import DRISEStack
 
 from xaitk_jatic.interop.object_detection.dataset import (

@@ -7,7 +7,7 @@ import maite.protocols.object_detection as od
 import numpy as np
 import pytest
 from smqtk_core.configuration import configuration_test_helper
-from smqtk_image_io import AxisAlignedBoundingBox
+from smqtk_image_io.bbox import AxisAlignedBoundingBox
 
 from xaitk_jatic.interop.object_detection.model import JATICDetector
 
@@ -51,7 +51,7 @@ class TestJATICObjectDetector:
         expectation: AbstractContextManager,
     ) -> None:
         """Test configuration stability."""
-        inst = JATICDetector(detector=detector, ids=id_to_name.keys(), img_batch_size=img_batch_size)
+        inst = JATICDetector(detector=detector, ids=list(id_to_name.keys()), img_batch_size=img_batch_size)
         with expectation:
             configuration_test_helper(inst)
 
@@ -100,6 +100,6 @@ class TestJATICObjectDetector:
         """Test that MAITE detector output is transformed appropriately."""
         mock_detector = MagicMock(spec=od.Model, return_value=detector_output)
 
-        inst = JATICDetector(detector=mock_detector, ids=id_to_name.keys(), img_batch_size=img_batch_size)
+        inst = JATICDetector(detector=mock_detector, ids=list(id_to_name.keys()), img_batch_size=img_batch_size)
         res = list(inst.detect_objects(imgs))
         assert res == expected_return

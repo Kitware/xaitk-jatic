@@ -2,6 +2,7 @@ import logging
 import os
 import unittest.mock as mock
 from importlib.util import find_spec
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import numpy as np
@@ -20,7 +21,7 @@ deps = ["kwcoco", "matplotlib"]
 specs = [find_spec(dep) for dep in deps]
 is_usable = all(spec is not None for spec in specs)
 
-dataset_dir = DATA_DIR
+dataset_dir_path = DATA_DIR
 config_file = os.path.join(DATA_DIR, "config.json")
 
 
@@ -33,16 +34,16 @@ class TestSalOnCocoDetsNotUsable:
     @mock.patch("xaitk_jatic.utils.bin.sal_on_coco_dets.is_usable", False)
     def test_warning(self, tmpdir: py.path.local) -> None:
         """Test that proper warning is displayed when required dependencies are not installed."""
-        output_dir = tmpdir.join("out")
+        output_dir_path = tmpdir.join(Path("out"))
 
         runner = CliRunner()
 
-        result = runner.invoke(sal_on_coco_dets, [str(dataset_dir), str(output_dir), str(config_file)])
+        result = runner.invoke(sal_on_coco_dets, [str(dataset_dir_path), str(output_dir_path), str(config_file)])
 
         assert result.output.startswith(
             "This tool requires additional dependencies, please install 'xaitk-jatic[tools]'.",
         )
-        assert not output_dir.check(dir=1)
+        assert not output_dir_path.check(dir=1)
 
 
 @pytest.mark.skipif(not is_usable, reason="Extra 'xaitk-jatic[tools]' not installed.")
@@ -71,16 +72,16 @@ class TestSalOnCocoDets:
 
     def test_config_gen(self, tmpdir: py.path.local) -> None:
         """Test the generate configuration file option."""
-        output_dir = tmpdir.join("out")
+        output_dir_path = tmpdir.join(Path("out"))
 
-        output_config = tmpdir.join("gen_conf.json")
+        output_config = tmpdir.join(Path("gen_conf.json"))
 
         runner = CliRunner()
         runner.invoke(
             sal_on_coco_dets,
             [
-                str(dataset_dir),
-                str(output_dir),
+                str(dataset_dir_path),
+                str(output_dir_path),
                 str(config_file),
                 "-g",
                 str(output_config),
@@ -90,7 +91,7 @@ class TestSalOnCocoDets:
         # check that config file was created
         assert output_config.check(file=1)
         # check that no output was generated
-        assert not output_dir.check(dir=1)
+        assert not output_dir_path.check(dir=1)
 
     @pytest.mark.parametrize("overlay_image", [False, True])
     @mock.patch(
@@ -104,10 +105,10 @@ class TestSalOnCocoDets:
         tmpdir: py.path.local,
     ) -> None:
         """Test that compute_sal_maps is called appropriately and the images are saved correctly."""
-        output_dir = tmpdir.join("out")
+        output_dir_path = tmpdir.join(Path("out"))
 
         runner = CliRunner()
-        runner_args = [str(dataset_dir), str(output_dir), str(config_file), "-v"]
+        runner_args = [str(dataset_dir_path), str(output_dir_path), str(config_file), "-v"]
         if overlay_image:
             runner_args.append("--overlay-image")
         result = runner.invoke(sal_on_coco_dets, runner_args, catch_exceptions=False)
@@ -120,25 +121,24 @@ class TestSalOnCocoDets:
         assert kwargs["num_classes"] == 3
 
         # expected created directories for image saliency maps
-        img_dirs = [output_dir.join(d) for d in ["test_image1", "test_image2"]]
+        img_dir_paths = [output_dir_path.join(Path(d)) for d in ["test_image1", "test_image2"]]
         # detection ids that belong to each image
         img_dets = [[1, 2, 3], [4, 5, 6]]
 
         assert result.exit_code == 0
-        assert sorted(output_dir.listdir()) == sorted(img_dirs)
-        for img_dir, det_ids in zip(img_dirs, img_dets):
-            map_files = [img_dir.join(f"det_{det_id}.jpeg") for det_id in det_ids]
+        assert sorted(output_dir_path.listdir()) == sorted(img_dir_paths)
+        for img_dir, det_ids in zip(img_dir_paths, img_dets):
+            map_files = [img_dir.join(Path(f"det_{det_id}.jpeg")) for det_id in det_ids]
             assert sorted(img_dir.listdir()) == sorted(map_files)
 
     @mock.patch("pathlib.Path.is_file", return_value=False)
     def test_missing_annotations(self, tmpdir: py.path.local) -> None:
         """Check that an exception is appropriately raised if the annotations file is missing."""
-        output_dir = tmpdir.join("out")
 
         with pytest.raises(ValueError, match=r"Could not identify annotations file."):
             CliRunner().invoke(
                 sal_on_coco_dets,
-                [str(dataset_dir), str(output_dir), str(config_file), "-v"],
+                [str(dataset_dir_path), str(tmpdir), str(config_file), "-v"],
                 catch_exceptions=False,
             )
 
@@ -158,13 +158,12 @@ class TestSalOnCocoDets:
 
         This will only run as as long as it's not required by the perturber.
         """
-        output_dir = tmpdir.join("out")
 
         with caplog.at_level(logging.INFO):
             runner = CliRunner()
             result = runner.invoke(
                 sal_on_coco_dets,
-                [str(dataset_dir), str(output_dir), str(config_file), "-v"],
+                [str(dataset_dir_path), str(tmpdir), str(config_file), "-v"],
                 catch_exceptions=False,
             )
 

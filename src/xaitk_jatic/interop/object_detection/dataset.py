@@ -18,6 +18,7 @@ import copy
 import logging
 from collections.abc import Sequence
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -71,7 +72,7 @@ else:
 
         def __init__(  # noqa: C901
             self,
-            kwcoco_dataset: kwcoco.CocoDataset,
+            kwcoco_dataset: "kwcoco.CocoDataset",
             image_metadata: dict[int, dict[str, Any]],
             skip_no_anns: bool = False,
         ) -> None:
@@ -116,8 +117,8 @@ else:
                 elif skip_no_anns:
                     continue
 
-                img_file = kwcoco_dataset.get_image_fpath(img_id)
-                if not img_file.exists():
+                img_file_path = Path(kwcoco_dataset.get_image_fpath(img_id))
+                if not img_file_path.exists():
                     continue
                 self._image_ids.append(img_id)
                 self._annotations[img_id] = JATICDetectionTarget(
@@ -140,8 +141,8 @@ else:
         def __getitem__(self, index: int) -> OBJ_DETECTION_DATUM_T:
             """Returns the dataset object at the given index."""
             image_id = self._image_ids[index]
-            img_file = self._kwcoco_dataset.get_image_fpath(image_id)
-            image = Image.open(img_file)
+            img_file_path = Path(self._kwcoco_dataset.get_image_fpath(image_id))
+            image = Image.open(img_file_path)
             width, height = image.size
 
             gid_to_aids = self._kwcoco_dataset.gid_to_aids
@@ -149,7 +150,7 @@ else:
             self._image_metadata[image_id].update(
                 dict(
                     id=image_id,
-                    image_info=dict(width=width, height=height, file_name=img_file),
+                    image_info=dict(width=width, height=height, file_name=img_file_path),
                     det_ids=(list(gid_to_aids[image_id]) if image_id in gid_to_aids else list()),
                 ),
             )

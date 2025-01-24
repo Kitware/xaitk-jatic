@@ -40,7 +40,7 @@ class TestJATICImageClassifier:
         expectation: AbstractContextManager,
     ) -> None:
         """Test configuration stability."""
-        inst = JATICImageClassifier(classifier=classifier, ids=id_to_name.keys(), img_batch_size=img_batch_size)
+        inst = JATICImageClassifier(classifier=classifier, ids=list(id_to_name.keys()), img_batch_size=img_batch_size)
         with expectation:
             configuration_test_helper(inst)
 
@@ -90,7 +90,7 @@ class TestJATICImageClassifier:
 
         inst = JATICImageClassifier(
             classifier=mock_classifier,
-            ids=id_to_name.keys(),
+            ids=list(id_to_name.keys()),
             img_batch_size=img_batch_size,
         )
 
@@ -106,6 +106,6 @@ class TestJATICImageClassifier:
     )
     def test_labels(self, id_to_name: dict[int, Hashable], expected_labels: Sequence[Hashable]) -> None:
         """Test that get_labels() returns the correct labels."""
-        inst = JATICImageClassifier(classifier=MagicMock(spec=ic.Model), ids=id_to_name.keys())
+        inst = JATICImageClassifier(classifier=MagicMock(spec=ic.Model), ids=list(id_to_name.keys()))
 
         assert inst.get_labels() == expected_labels
