@@ -1,12 +1,13 @@
 # :auto build-system:
 [build-system]
-requires = ["poetry-core>=1.9"]
+requires = ["poetry-core>=1.9,<2.0"]
 build-backend = "poetry.core.masonry.api"
 # :auto build-system:
 
 # :auto package-meta:
 [tool.poetry]
 name = "xaitk-jatic"
+license = "Apache-2.0"
 readme = "README.md"
 packages = [{include = "xaitk_jatic", from="src"}]
 documentation = "https://xaitk-jatic.readthedocs.io/"
@@ -23,13 +24,10 @@ classifiers = [
     'Programming Language :: Python :: 3.12',
 ]
 # :auto package-meta:
-# package-specific meta, don't put this in "generated package-meta"
+# package-specific meta, d-on't put this in "generated package-meta"
 authors = ["Kitware, Inc. <xaitk@kitware.com>"]
-license = "Apache-2.0"
-version = "0.4.3"
-description = """\
-    Integration package to support interfacing, implementation and example \
-    needs for the JATIC."""
+version = "0.5.0"
+description = "Integration package to support interfacing, implementation and example needs for the JATIC."
 
 [tool.poetry.dependencies]
 # :auto python-version:
@@ -37,7 +35,7 @@ python = "^3.9"
 # :auto python-version:
 
 xaitk-saliency = ">=0.9.2"
-maite = "^0.6.0"
+maite = "^0.7.1"
 setuptools = ">=65.6.3"
 scipy = ">=1.10.0"  # CVE-2023-25399
 # Python capped to <3.13 because of:
@@ -68,11 +66,12 @@ docker = [ "transformers", "timm", "matplotlib", "torchvision" ]
 optional = true
 
 [tool.poetry.group.linting.dependencies]
-mypy = ">=0.991,!=1.11.0"
+mypy = ">=1.12.0"
 pre-commit = ">=2.20"
 ruff = "^0.5.6"
 types-setuptools = ">=65.6.0.1"
 sphinx-lint = ">=1.0.0"
+pyright = {version=">=1.1.320",extras=["nodejs"]}
 # :auto linting:
 types-Pillow = ">=9.0"
 types-tqdm = ">=4.64"
@@ -106,7 +105,7 @@ notebook = ">=7.2.2"
 papermill = ">=2.4.0"
 # :auto tests:
 # maite protocol testing
-maite = { version = "^0.6.0", extras = ["test"] }
+maite = { version = "^0.7.1", extras = ["test"] }
 
 
 [tool.poetry.scripts]
@@ -224,3 +223,22 @@ incremental = false
 module = "tests.*"
 ignore_errors = true
 # :auto mypy:
+
+# :auto pyright:
+[tool.pyright]
+pythonVersion = "3.9"
+reportMissingImports = "warning"
+typeCheckingMode = "standard"
+include = [
+    "src/xaitk_jatic",
+    "tests",
+    "examples"
+    ]
+exclude = [
+    "**/__pycache__",
+    "demos",
+    "scripts",
+    "docs/_build",
+    "docs/_implementations",
+    ]
+# :auto pyright:

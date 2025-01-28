@@ -1,15 +1,33 @@
+"""
+This module provides a CLI tool for generating saliency maps for object detection
+models applied to datasets in COCO format. It leverages saliency generation methods
+and blackbox object detection models to create visual explanations for predictions.
+
+Functions:
+    sal_on_coco_dets: CLI command to generate saliency maps and optionally overlay them
+                      on input images with bounding boxes.
+
+Dependencies:
+    - kwcoco: For working with COCO-format datasets.
+    - matplotlib: For visualizing and saving saliency maps.
+    - xaitk_saliency: For generating saliency maps.
+    - smqtk_detection: For object detection interfaces.
+    - PIL: For image processing.
+    - numpy: For numerical operations.
+"""
+
 import json
 import logging
 import os
 from pathlib import Path
-from typing import Any, Dict, TextIO
+from typing import Any, TextIO
 
 import click  # type: ignore
 import numpy as np
 from PIL import Image  # type: ignore
 from smqtk_core.configuration import from_config_dict, make_default_config
 from smqtk_detection.interfaces.detect_image_objects import DetectImageObjects
-from xaitk_saliency import GenerateObjectDetectorBlackboxSaliency
+from xaitk_saliency.interfaces.gen_object_detector_blackbox_sal import GenerateObjectDetectorBlackboxSaliency
 
 from xaitk_jatic.utils.sal_on_dets import compute_sal_maps
 
@@ -43,7 +61,7 @@ except ImportError:
     help="overlay saliency map on images with bounding boxes, RGB images are converted to grayscale",
 )
 @click.option("--verbose", "-v", count=True, help="print progress messages")
-def sal_on_coco_dets(
+def sal_on_coco_dets(  # noqa: C901
     dataset_dir: str,
     output_dir: str,
     config_file: TextIO,
@@ -74,14 +92,12 @@ def sal_on_coco_dets(
     :param verbose: Display progress messages. Default is false.
     """
     if generate_config_file:
-        config: Dict[str, Any] = dict()
+        config: dict[str, Any] = dict()
 
         config["DetectImageObjects"] = make_default_config(DetectImageObjects.get_impls())
         config["GenerateObjectDetectorBlackboxSaliency"] = make_default_config(
-            GenerateObjectDetectorBlackboxSaliency.get_impls()
+            GenerateObjectDetectorBlackboxSaliency.get_impls(),
         )
-
-        # TODO: Add MAITE config option(s) once it's possible to hydrate a MAITE model
 
         json.dump(config, generate_config_file, indent=4)
 
@@ -105,18 +121,20 @@ def sal_on_coco_dets(
     metadata_file = Path(dataset_dir) / "image_metadata.json"
     if not metadata_file.is_file():
         logging.info(
-            "Could not identify metadata file, assuming no metadata. " "Expected at '[dataset_dir]/image_metadata.json'"
+            "Could not identify metadata file, assuming no metadata. Expected at '[dataset_dir]/image_metadata.json'",
         )
-        metadata: Dict[int, Dict[str, Any]] = {img_id: dict() for img_id in kwcoco_dataset.imgs.keys()}
+        metadata = [{"id": img_id} for img_id in kwcoco_dataset.imgs]
     else:
         logging.info(f"Loading metadata from {metadata_file}")
         with open(metadata_file) as f:
             metadata = json.load(f)
-        metadata = {int(img_id): md for img_id, md in metadata.items()}
 
     # Initialize dataset object
     input_dataset = COCOJATICObjectDetectionDataset(
-        kwcoco_dataset=kwcoco_dataset, image_metadata=metadata, skip_no_anns=True
+        kwcoco_dataset=kwcoco_dataset,
+        # TODO: Remove ignore after switch to pyright, mypy doesn't have good typed dict support  # noqa: FIX002
+        image_metadata=metadata,  # type: ignore
+        skip_no_anns=True,
     )
 
     cids = [cat["id"] for cat in kwcoco_dataset.cats.values()]
@@ -132,7 +150,6 @@ def sal_on_coco_dets(
         GenerateObjectDetectorBlackboxSaliency.get_impls(),
     )
     blackbox_detector = from_config_dict(config["DetectImageObjects"], DetectImageObjects.get_impls())
-    # TODO: Add MAITE object handling once config options are added
 
     img_sal_maps, _ = compute_sal_maps(
         dataset=input_dataset,
@@ -160,11 +177,11 @@ def sal_on_coco_dets(
 
         os.makedirs(sub_dir, exist_ok=True)
 
-        det_ids = md["det_ids"]
+        ann_ids = md["ann_ids"]
         bboxes = np.asarray(dets.boxes)
         for sal_idx, bbox in enumerate(bboxes):
             sal_map = img_sal_maps[dset_idx][sal_idx]
-            det_id = det_ids[sal_idx]
+            det_id = ann_ids[sal_idx]
 
             fig = plt.figure()
             plt.axis("off")
@@ -180,7 +197,7 @@ def sal_on_coco_dets(
                         linewidth=1,
                         edgecolor="r",
                         facecolor="none",
-                    )
+                    ),
                 )
                 plt.imshow(sal_map, cmap="jet", alpha=0.3)
                 plt.colorbar()

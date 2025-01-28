@@ -1,13 +1,14 @@
 import unittest.mock as mock
 from collections.abc import Hashable, Iterable, Sequence
-from typing import Dict, Tuple
+from typing import TypedDict
 from unittest.mock import MagicMock
 
 import numpy as np
 from maite.protocols.object_detection import Dataset, Model
 from smqtk_core.configuration import to_config_dict
 from smqtk_detection.interfaces.detect_image_objects import DetectImageObjects
-from smqtk_detection.utils.bbox import AxisAlignedBoundingBox
+from smqtk_image_io.bbox import AxisAlignedBoundingBox
+from typing_extensions import ReadOnly, Required
 from xaitk_saliency.impls.gen_object_detector_blackbox_sal.drise import DRISEStack
 
 from xaitk_jatic.interop.object_detection.dataset import (
@@ -16,6 +17,12 @@ from xaitk_jatic.interop.object_detection.dataset import (
 )
 from xaitk_jatic.interop.object_detection.model import JATICDetector
 from xaitk_jatic.utils.sal_on_dets import compute_sal_maps, sal_on_dets
+
+rng = np.random.default_rng()
+
+
+class _DummyDatumMetadata(TypedDict):
+    id: Required[ReadOnly[int]]
 
 
 class TestComputeSalMaps:
@@ -28,7 +35,7 @@ class TestComputeSalMaps:
             def detect_objects(
                 self,
                 img_iter: Iterable[np.ndarray],
-            ) -> Iterable[Iterable[Tuple[AxisAlignedBoundingBox, Dict[Hashable, float]]]]:
+            ) -> Iterable[Iterable[tuple[AxisAlignedBoundingBox, dict[Hashable, float]]]]:
                 for _ in img_iter:
                     yield [
                         (
@@ -46,7 +53,7 @@ class TestComputeSalMaps:
         sal_generator = DRISEStack(n=1, s=3, p1=0.5)
         detector = TestDetector()
         dataset = JATICObjectDetectionDataset(
-            imgs=[np.random.randint(0, 255, (256, 256, 3), dtype=np.uint8)] * 4,
+            imgs=[rng.integers(0, 255, (256, 256, 3), dtype=np.uint8)] * 4,
             dets=[
                 JATICDetectionTarget(
                     boxes=np.asarray([[1, 2, 3, 4], [5, 6, 7, 8]]),
@@ -55,7 +62,8 @@ class TestComputeSalMaps:
                 ),
             ]
             * 4,
-            metadata=[{}] * 4,
+            datum_metadata=[_DummyDatumMetadata(id=idx) for idx in range(4)],
+            dataset_id="dummy_dataset",
         )
 
         sal_maps, sal_md = compute_sal_maps(

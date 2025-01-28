@@ -10,3 +10,4 @@ Release Notes
    release_notes/v0.4.1
    release_notes/v0.4.2
    release_notes/v0.4.3
+   release_notes/v0.5.0

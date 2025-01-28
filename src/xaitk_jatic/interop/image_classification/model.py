@@ -1,17 +1,43 @@
+"""
+This module provides the `JATICImageClassifier` class, an adapter for integrating JATIC-based
+image classifiers with the SMQTK `ClassifyImage` interface. It enables the use of JATIC
+protocol-based classifiers in pipelines that require the SMQTK interface.
+
+Classes:
+    JATICImageClassifier: Adapts a JATIC image classification model for compatibility with
+                          SMQTK's `ClassifyImage` interface.
+
+Dependencies:
+    - maite.protocols.image_classification: For the JATIC image classification protocol.
+    - numpy: For numerical operations.
+    - smqtk_classifier: For SMQTK classifier interfaces and classification utilities.
+"""
+
 from collections.abc import Hashable, Iterator, Sequence
 
 import maite.protocols.image_classification as ic
 import numpy as np
 from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 from smqtk_classifier.interfaces.classify_image import IMAGE_ITER_T, ClassifyImage
+from typing_extensions import override
 
 
 class JATICImageClassifier(ClassifyImage):
-    """Adapter for JATIC classifier protocol.
+    """
+    Adapter for the JATIC image classification protocol, implementing the SMQTK `ClassifyImage` interface.
 
-    :param classifier: The JATIC protocol-based classifier.
-    :param id_to_name: Mapping from label IDs to names.
-    :param img_batch_size: Image batch size for inference.
+    This adapter allows a JATIC protocol-based classifier to be used in SMQTK pipelines by transforming
+    classification outputs into the expected format.
+
+    Attributes:
+        _classifier (ic.Model): The JATIC protocol-based image classifier instance.
+        _ids (dict[int, Hashable]): A dictionary mapping label IDs to human-readable names.
+        _img_batch_size (int): The number of images to process in a single batch.
+
+    Methods:
+        get_labels: Retrieve the human-readable class labels.
+        classify_images: Perform classification on a batch of input images.
+        get_config: Raise a `NotImplementedError` for serialization (not yet supported).
     """
 
     def __init__(
@@ -19,15 +45,25 @@ class JATICImageClassifier(ClassifyImage):
         classifier: ic.Model,
         ids: Sequence[int],
         img_batch_size: int = 1,
-    ):
+    ) -> None:
+        """
+        Initialize the JATICImageClassifier with a JATIC protocol-based classifier.
+
+        Args:
+            classifier (ic.Model): The JATIC protocol-based image classification model.
+            ids (dict[int, Hashable]): A dictionary mapping label IDs to human-readable names.
+            img_batch_size (int, optional): The number of images to process in a single batch. Defaults to 1.
+        """
         self._classifier = classifier
         self._ids = sorted(ids)
         self._img_batch_size = img_batch_size
 
+    @override
     def get_labels(self) -> Sequence[Hashable]:
         return self._ids
 
-    def classify_images(self, img_iter: IMAGE_ITER_T) -> Iterator[CLASSIFICATION_DICT_T]:
+    @override
+    def classify_images(self, img_iter: IMAGE_ITER_T) -> Iterator[CLASSIFICATION_DICT_T]:  # noqa: C901
         all_out = list()
         batch = list()
 
@@ -39,18 +75,17 @@ class JATICImageClassifier(ClassifyImage):
             return np.moveaxis(img, -1, 0)
 
         # Transform outputs of a single batch
-        def _generate_outputs(batch: Sequence[np.ndarray]) -> None:
+        def _generate_outputs(batch: Sequence[np.ndarray]) -> list[dict[int, float]]:
             predictions = np.asarray(self._classifier(batch))
 
-            for pred in predictions:
-                all_out.append({id: score for id, score in enumerate(pred)})  # noqa: A001
+            return [dict(enumerate(pred)) for pred in predictions]
 
         # Batch model passes
         for img in img_iter:
             batch.append(_to_channels_first(img))
 
             if len(batch) == self._img_batch_size:
-                _generate_outputs(batch)
+                all_out.extend(_generate_outputs(batch))
                 batch = list()
 
         # Leftover batch
@@ -59,6 +94,7 @@ class JATICImageClassifier(ClassifyImage):
 
         return iter(all_out)
 
+    @override
     def get_config(self) -> dict:
         raise NotImplementedError(
             "Constructor arguments are not serializable as is and require further implementation to do so.",
