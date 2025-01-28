@@ -123,17 +123,17 @@ def sal_on_coco_dets(  # noqa: C901
         logging.info(
             "Could not identify metadata file, assuming no metadata. Expected at '[dataset_dir]/image_metadata.json'",
         )
-        metadata: dict[int, dict[str, Any]] = {img_id: dict() for img_id in kwcoco_dataset.imgs}
+        metadata = [{"id": img_id} for img_id in kwcoco_dataset.imgs]
     else:
         logging.info(f"Loading metadata from {metadata_file}")
         with open(metadata_file) as f:
             metadata = json.load(f)
-        metadata = {int(img_id): md for img_id, md in metadata.items()}
 
     # Initialize dataset object
     input_dataset = COCOJATICObjectDetectionDataset(
         kwcoco_dataset=kwcoco_dataset,
-        image_metadata=metadata,
+        # TODO: Remove ignore after switch to pyright, mypy doesn't have good typed dict support  # noqa: FIX002
+        image_metadata=metadata,  # type: ignore
         skip_no_anns=True,
     )
 
@@ -177,11 +177,11 @@ def sal_on_coco_dets(  # noqa: C901
 
         os.makedirs(sub_dir, exist_ok=True)
 
-        det_ids = md["det_ids"]
+        ann_ids = md["ann_ids"]
         bboxes = np.asarray(dets.boxes)
         for sal_idx, bbox in enumerate(bboxes):
             sal_map = img_sal_maps[dset_idx][sal_idx]
-            det_id = det_ids[sal_idx]
+            det_id = ann_ids[sal_idx]
 
             fig = plt.figure()
             plt.axis("off")

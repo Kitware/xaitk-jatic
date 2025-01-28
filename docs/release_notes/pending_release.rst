@@ -4,6 +4,11 @@ Pending Release Notes
 Updates / New Features
 ----------------------
 
+Updates
+-------
+
+* Updated to be compatible with MAITE v0.7.1
+
 Fixes
 -----
 
