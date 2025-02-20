@@ -145,21 +145,21 @@ cython_debug/
 # :auto shared:
 
 # Lightning example notebook
-examples/lightning/MNIST/
-examples/lightning/cifar10.ckpt
-examples/lightning/cifar-10-batches-py/
-examples/lightning/cifar-10-python.tar.gz
-examples/lightning/lightning_logs/
-examples/lightning/submitit_logs/
-examples/lightning/*.pkl
+docs/examples/lightning/MNIST/
+docs/examples/lightning/cifar10.ckpt
+docs/examples/lightning/cifar-10-batches-py/
+docs/examples/lightning/cifar-10-python.tar.gz
+docs/examples/lightning/lightning_logs/
+docs/examples/lightning/submitit_logs/
+docs/examples/lightning/*.pkl
 
 # MLFlow example notebook
-examples/mlflow/data
-examples/mlflow/mlruns
-examples/mlflow/saliency_map_np_arrays
+docs/examples/mlflow/data
+docs/examples/mlflow/mlruns
+docs/examples/mlflow/saliency_map_np_arrays
 
 # Object detection protocol notebook
-examples/data/
+docs/examples/data/
 
 # Demo notebooks
 demos/data/
@@ -167,12 +167,12 @@ demos/mlruns
 demos/saliency_map_np_arrays
 
 # Gradio example notebook
-examples/gradio/data
+docs/examples/gradio/data
 
 # Hugging Face Accelerate notebook
-examples/huggingface/*.pkl
-examples/huggingface/submitit_logs/
+docs/examples/huggingface/*.pkl
+docs/examples/huggingface/submitit_logs/
 
 # Shared Interest example notebook
-examples/shared_interest/data/imagenet_classes.txt
-examples/shared_interest/shared-interest/
+docs/examples/shared_interest/data/imagenet_classes.txt
+docs/examples/shared_interest/shared-interest/
