@@ -1,9 +1,9 @@
 ###############################################################################
 # Stage -- Unit Testing
 ###############################################################################
-# 
+#
 # Overrides:
-# 
+#
 # 1) Installed "tools" extras
 # 2) nrtk-jatic specific notebooks.
 #
@@ -18,35 +18,35 @@ notebooks:
   parallel:
     matrix:
       # Sequences combinatorically combine within a list entry
-      - NOTEBOOK_DIR: "examples"
+      - NOTEBOOK_DIR: "docs/examples"
         NOTEBOOK_FILE: [
           "jatic-image-classifier-protocol.ipynb",
           "jatic-object-detector-protocol.ipynb",
           jatic-perturbations.ipynb
         ]
-      - NOTEBOOK_DIR: "examples/armory"
+      - NOTEBOOK_DIR: "docs/examples/armory"
         NOTEBOOK_FILE: [
           "xaitk-armory.ipynb"
         ]
-      - NOTEBOOK_DIR: "examples/gradio"
+      - NOTEBOOK_DIR: "docs/examples/gradio"
         NOTEBOOK_FILE: [
           "model-comparison.ipynb",
           "xaitk-gradio.ipynb"
         ]
-      - NOTEBOOK_DIR: "examples/huggingface"
+      - NOTEBOOK_DIR: "docs/examples/huggingface"
         NOTEBOOK_FILE: [
           "xaitk-accelerate.ipynb",
           "xaitk-huggingface.ipynb"
         ]
-      - NOTEBOOK_DIR: "examples/lightning"
+      - NOTEBOOK_DIR: "docs/examples/lightning"
         NOTEBOOK_FILE: [
           "xaitk-lightning.ipynb",
         ]
-      - NOTEBOOK_DIR: "examples/mlflow"
+      - NOTEBOOK_DIR: "docs/examples/mlflow"
         NOTEBOOK_FILE: [
           "MNIST_MLFlow_scikit_saliency.ipynb"
         ]
-      - NOTEBOOK_DIR: "examples/shared_interest"
+      - NOTEBOOK_DIR: "docs/examples/shared_interest"
         NOTEBOOK_FILE: [
           "xaitk-shared_interest.ipynb"
         ]
