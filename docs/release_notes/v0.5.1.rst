@@ -1,6 +1,8 @@
 v0.5.1
 ======
 
+Moved example notes books to docs folder and addressed a vulnerability.
+
 Updates / New Features
 ----------------------
 
