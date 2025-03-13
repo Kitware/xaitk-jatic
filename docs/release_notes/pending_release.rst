@@ -10,3 +10,5 @@ Documentation
 
 Fixes
 -----
+
+* Addressed ``CVE-2024-11394`` by updating ``transformers`` to ``^4.48.0``.
