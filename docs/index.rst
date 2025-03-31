@@ -9,6 +9,10 @@ This is an extension of the Explainable AI Toolkit (XAITK) for JATIC. This docum
 exclusive to the JATIC extention of XAITK. Documentation for XAITK can be found
 `here <https://xaitk-saliency.readthedocs.io/en/latest/>`_.
 
+.. :auto acknowledgment:
+
+.. :auto acknowledgment:
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
