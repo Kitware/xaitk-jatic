@@ -210,10 +210,11 @@ def dets_to_mats(dets: list, jatic_detector: HuggingFaceDetector) -> tuple[np.nd
             - Bounding boxes as a NumPy array of shape (N, 4).
             - Scores as a NumPy array of shape (N, num_classes).
     """
-    labels = [jatic_detector.id2label()[id_] for id_ in sorted(jatic_detector.id2label().keys())]  # type: ignore
+    ids = sorted(jatic_detector.id2label().keys())  # type: ignore
 
     bboxes = np.empty((0, 4))
-    scores = np.empty((0, len(labels)))
+    scores = np.empty((0, len(ids)))
+
     for det in dets:
         bbox = det[0]
 
@@ -228,7 +229,7 @@ def dets_to_mats(dets: list, jatic_detector: HuggingFaceDetector) -> tuple[np.nd
         )
 
         score_dict = det[1]
-        score_array = [score_dict[label] for label in labels]
+        score_array = [score_dict[idx] for idx in ids]
 
         scores = np.vstack(
             (
