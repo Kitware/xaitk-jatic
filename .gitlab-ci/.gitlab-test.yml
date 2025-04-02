@@ -22,7 +22,7 @@ notebooks:
         NOTEBOOK_FILE: [
           "jatic-image-classifier-protocol.ipynb",
           "jatic-object-detector-protocol.ipynb",
-          jatic-perturbations.ipynb
+          "jatic-perturbations.ipynb"
         ]
       - NOTEBOOK_DIR: "docs/examples/armory"
         NOTEBOOK_FILE: [
