@@ -1,4 +1,3 @@
-
 include:
   - project: "jatic/kitware/devel-jatic"
     ref: "main"
