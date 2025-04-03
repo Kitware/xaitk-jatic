@@ -8,6 +8,8 @@ CI/CD
 
 * Added Dockerfile to the ``build-branch`` job to build the docker image
 
+* Updated ``index.rst``, ``installation.rst``, and ``README.md``  based on ``devel-jatic``.
+
 Fixes
 -----
 
