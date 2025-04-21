@@ -8,7 +8,12 @@
 ###############################################################################
 trigger_aukus:
   extends: .trigger
+  trigger:
+    include:
+      - project: "jatic/kitware/xaitk-jatic"
+        ref: "main"
+        file: ".gitlab-ci/pipelines/.gitlab-container-aukus.yml"
   variables:
+    PIPELINE_CONTEXT: "$CI_PIPELINE_SOURCE"
     CONTAINER_NAME: "aukus"
     DOCKERFILE_FILE: "Dockerfile"
-    PIPELINE_CONTEXT: "$CI_PIPELINE_SOURCE"
