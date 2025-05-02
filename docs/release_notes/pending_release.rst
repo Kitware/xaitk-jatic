@@ -12,6 +12,10 @@ CI/CD
 
 * Added automated scanning and testing of the ``aukus`` deployment container.
 
+Documentation
+
+* Added warning to use Poetry only in a virtual environment per Poetry documentation.
+
 Fixes
 -----
 
