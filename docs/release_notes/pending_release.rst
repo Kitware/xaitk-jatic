@@ -20,3 +20,5 @@ Fixes
 -----
 
 * Fix docker-entrypoint to match a previous code changes
+
+* Fix ``jatic-perturbations.ipynb`` error with Albumentation's gaussian blur.
