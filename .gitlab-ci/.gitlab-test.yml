@@ -47,10 +47,6 @@ notebooks:
           "xaitk-shared_interest.ipynb"
         ]
 
-# Temporary allow failure for pytest-core due to missing import guards
-pytest-core:
-  allow_failure: true
-
 pytest-extras:
   allow_failure: false
   variables:
