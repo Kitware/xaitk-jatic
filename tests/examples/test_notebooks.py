@@ -1,7 +1,10 @@
 import pytest
 from maite.testing.pyright import list_error_messages, pyright_analyze
 
+from xaitk_jatic.interop.object_detection.dataset import is_usable
 
+
+@pytest.mark.skipif(not is_usable, reason="Extra 'xaitk-jatic[tools]' not installed.")
 @pytest.mark.filterwarnings("ignore:Jupyter is migrating its paths")
 @pytest.mark.parametrize(
     ("filepath", "expected_num_errors"),

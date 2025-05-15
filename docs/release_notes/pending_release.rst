@@ -18,6 +18,10 @@ Documentation
 
 * Clarified that ``poetry<2.0`` is currently required.
 
+Tests
+
+* Added ``skipif`` marker for ``test_notebooks.py`` if ``tools`` extras is not installed.
+
 Fixes
 -----
 
