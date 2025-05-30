@@ -198,7 +198,7 @@ class JATICObjectDetectionDataset(Dataset):
         Sequence of metadata for each image.
     dataset_id: str
         Dataset ID.
-    index2label: Optional[dict[int, str]]
+    index2label: dict[int, str] | None
         Mapping from class index to label.
     """
 
@@ -218,7 +218,7 @@ class JATICObjectDetectionDataset(Dataset):
             dets (Sequence[TargetType]): Sequence of detection targets for the images.
             datum_metadata (Sequence[DatumMetadataType]): Sequence of metadata dictionaries.
             dataset_id (str): Dataset ID.
-            index2label (Optional[dict[int, str]]): Mapping from class index to label.
+            index2label (dict[int, str] | None): Mapping from class index to label.
         """
         self.imgs = imgs
         self.dets = dets
