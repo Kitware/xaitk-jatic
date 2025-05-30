@@ -62,11 +62,13 @@ Notes:
     - The provided model checkpoint (`carla_rgb_weights_eval5.pt`) must be available locally.
 """
 
+from __future__ import annotations
+
 import importlib.util
 import logging
 from collections.abc import Hashable, Iterable
 from types import MethodType
-from typing import Any, Union
+from typing import Any
 
 import numpy as np
 from smqtk_image_io.bbox import AxisAlignedBoundingBox
@@ -108,7 +110,7 @@ class ResNetFRCNN(DetectImageObjects):
         num_dets: int = 100,
         img_batch_size: int = 1,
         use_cuda: bool = False,
-        cuda_device: Union[int, str] = "cuda:0",
+        cuda_device: int | str = "cuda:0",
     ) -> None:
         """
         Initialize the object detector with configurable parameters.
@@ -126,7 +128,7 @@ class ResNetFRCNN(DetectImageObjects):
             use_cuda (bool, optional):
                 Whether to enable GPU acceleration using CUDA.
                 Defaults to False.
-            cuda_device (Union[int, str], optional):
+            cuda_device (int | str, optional):
                 CUDA device to use for computation (e.g., "cuda:0" or device index).
                 Defaults to "cuda:0".
 
@@ -135,7 +137,7 @@ class ResNetFRCNN(DetectImageObjects):
             num_dets (int): Maximum number of detections per image.
             img_batch_size (int): Batch size for image processing.
             use_cuda (bool): Indicates if CUDA (GPU) is used.
-            cuda_device (Union[int, str]): Specifies the CUDA device.
+            cuda_device (int | str): Specifies the CUDA device.
             checkpoint (str): Path to the pre-trained model weights.
             model (Optional[torch.nn.Module]): The detection model (lazy loaded).
             model_device (Optional[torch.device]): The device where the model resides.
@@ -165,7 +167,7 @@ class ResNetFRCNN(DetectImageObjects):
             ],
         )
 
-    def get_model(self) -> "torch.nn.Module":
+    def get_model(self) -> torch.nn.Module:
         """Lazy load the torch model in an idempotent manner.
 
         :raises RuntimeError: Use of CUDA was requested but is not available.
