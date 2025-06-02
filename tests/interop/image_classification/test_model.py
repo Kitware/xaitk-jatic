@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Hashable, Iterator, Sequence
 from contextlib import AbstractContextManager
-from typing import Union
 from unittest.mock import MagicMock
 
 import maite.protocols.image_classification as ic
@@ -82,7 +83,7 @@ class TestJATICImageClassifier:
         classifier_output: ic.TargetBatchType,
         id_to_name: dict[int, Hashable],
         img_batch_size: int,
-        imgs: Union[np.ndarray, Sequence[np.ndarray]],
+        imgs: np.ndarray | Sequence[np.ndarray],
         expected_return: Iterator[CLASSIFICATION_DICT_T],
     ) -> None:
         """Test that MAITE classifier output is transformed appropriately."""

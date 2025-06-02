@@ -14,12 +14,14 @@ Dependencies:
     - PIL: For image processing.
 """
 
+from __future__ import annotations
+
 import copy
 import logging
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 from maite.protocols import DatasetMetadata, DatumMetadata
@@ -71,10 +73,10 @@ class COCOJATICObjectDetectionDataset(Dataset):
 
     def __init__(  # noqa: C901
         self,
-        kwcoco_dataset: "kwcoco.CocoDataset",
+        kwcoco_dataset: kwcoco.CocoDataset,
         image_metadata: Sequence[DatumMetadataType],
         skip_no_anns: bool = False,
-        dataset_id: Optional[str] = None,
+        dataset_id: str | None = None,
     ) -> None:
         """
         Initialize MAITE-compliant dataset from a COCO dataset.
@@ -196,7 +198,7 @@ class JATICObjectDetectionDataset(Dataset):
         Sequence of metadata for each image.
     dataset_id: str
         Dataset ID.
-    index2label: Optional[dict[int, str]]
+    index2label: dict[int, str] | None
         Mapping from class index to label.
     """
 
@@ -206,7 +208,7 @@ class JATICObjectDetectionDataset(Dataset):
         dets: Sequence[TargetType],
         datum_metadata: Sequence[DatumMetadataType],
         dataset_id: str,
-        index2label: Optional[dict[int, str]] = None,
+        index2label: dict[int, str] | None = None,
     ) -> None:
         """
         Initialize MAITE-compliant dataset
@@ -216,7 +218,7 @@ class JATICObjectDetectionDataset(Dataset):
             dets (Sequence[TargetType]): Sequence of detection targets for the images.
             datum_metadata (Sequence[DatumMetadataType]): Sequence of metadata dictionaries.
             dataset_id (str): Dataset ID.
-            index2label (Optional[dict[int, str]]): Mapping from class index to label.
+            index2label (dict[int, str] | None): Mapping from class index to label.
         """
         self.imgs = imgs
         self.dets = dets
