@@ -32,7 +32,7 @@ conda install -c conda-forge xaitk-jatic
 
 Certain plugins may require additional runtime dependencies. Details on these
 requirements can be found
-[here](https://xaitk-jatic.readthedocs.io/en/latest/implementations.html).
+[here](https://xaitk-jatic.readthedocs.io/en/latest/installation.html).
 
 For more detailed installation instructions, visit the
 [installation documentation](https://xaitk-jatic.readthedocs.io/en/latest/installation.html).

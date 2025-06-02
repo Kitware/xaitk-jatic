@@ -6,7 +6,7 @@ Scalability Platforms
 PyTorch Lightning
 =================
 
-Integrating with PyTorch Lightning was the first major exploration into
+Integrating with `PyTorch Lightning`_ was the first major exploration into
 generating saliency maps over many images (datasets) instead of just a few
 selected samples so there was a learning curve in how to best achieve
 that goal in addition to PyTorch Lightning specific lessons learned. This
@@ -51,7 +51,7 @@ in Lightning have many entry points and are relatively flexible. However, it
 was found ill-advised to get new model outputs (for perturbed data) within a
 callback as that can again trigger other callbacks causing a cascading effect
 among other issues. The next option that was considered was overriding or
-writing a custom `loop`_. Loops are once again easy to add to a Lightning
+writing a custom loop. Loops are once again easy to add to a Lightning
 trainer and are still separate from the ``LightningModule`` itself, but it takes
 some effort to maintain existing functionality within these loops
 (bookkeeping/hooks) and ensuring resources (e.g. perturbed data) end up on the
@@ -67,7 +67,8 @@ wrapped model with an existing checkpoint so no re-training needs to occur.
 The example notebook generates saliency maps for every image that is predicted
 upon, with the idea that a condition-check could be included if desired.
 
-.. _Callbacks: https://pytorch-lightning.readthedocs.io/en/stable/extensions/callbacks.html
+.. _PyTorch Lightning: https://lightning.ai/docs/pytorch/stable/starter/introduction.html
+.. _Callbacks: https://lightning.ai/docs/pytorch/stable/api_references.html#callbacks
 .. _loop: https://pytorch-lightning.readthedocs.io/en/stable/extensions/loops.html
 .. _predict step: https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html#prediction-loop
 
