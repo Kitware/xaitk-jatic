@@ -32,3 +32,5 @@ Fixes
 * Removed ``Optional`` and ``Union`` type hints.
 
 * Update pytest and ruff configurations
+
+* Fix broken link in README
