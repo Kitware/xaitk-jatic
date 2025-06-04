@@ -34,3 +34,6 @@ Fixes
 * Update pytest and ruff configurations
 
 * Fix broken link in README
+
+* Add support for parsing non-consecutive class labels within the ``JATICImageClassifier``
+  adapter.
