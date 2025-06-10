@@ -9,12 +9,8 @@
 #
 ###############################################################################
 
-.test-setup:
-  before_script:
-    - !reference [.shared-setup, before_script]
-    - poetry install --sync --only main,tests --extras tools
-
 notebooks:
+  rules: !reference [.notebooks, rules]
   parallel:
     matrix:
       # Sequences combinatorically combine within a list entry
@@ -22,7 +18,7 @@ notebooks:
         NOTEBOOK_FILE: [
           "jatic-image-classifier-protocol.ipynb",
           "jatic-object-detector-protocol.ipynb",
-          jatic-perturbations.ipynb
+          "jatic-perturbations.ipynb"
         ]
       - NOTEBOOK_DIR: "docs/examples/armory"
         NOTEBOOK_FILE: [
@@ -50,3 +46,8 @@ notebooks:
         NOTEBOOK_FILE: [
           "xaitk-shared_interest.ipynb"
         ]
+
+pytest-extras:
+  allow_failure: false
+  variables:
+    EXTRAS: "tools"

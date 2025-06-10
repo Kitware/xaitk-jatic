@@ -1,0 +1,19 @@
+###############################################################################
+# Stage -- Container
+###############################################################################
+#
+# Overrides:
+#
+# 1) Uses this repository's Dockerfile(s)
+###############################################################################
+trigger_aukus:
+  extends: .trigger_containers
+  trigger:
+    include:
+      - project: "jatic/kitware/xaitk-jatic"
+        ref: "main"
+        file: ".gitlab-ci/pipelines/.gitlab-container-aukus.yml"
+  variables:
+    PIPELINE_CONTEXT: "$CI_PIPELINE_SOURCE"
+    CONTAINER_NAME: "aukus"
+    DOCKERFILE_FILE: "Dockerfile"

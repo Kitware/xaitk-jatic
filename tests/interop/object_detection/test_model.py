@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Hashable, Iterable, Sequence
 from contextlib import AbstractContextManager
-from typing import Union
 from unittest.mock import MagicMock
 
 import maite.protocols.object_detection as od
@@ -94,7 +95,7 @@ class TestJATICObjectDetector:
         detector_output: Sequence[od.ObjectDetectionTarget],
         id_to_name: dict[int, Hashable],
         img_batch_size: int,
-        imgs: Union[np.ndarray, Sequence[np.ndarray]],
+        imgs: np.ndarray | Sequence[np.ndarray],
         expected_return: Iterable[Iterable[tuple[AxisAlignedBoundingBox, dict[Hashable, float]]]],
     ) -> None:
         """Test that MAITE detector output is transformed appropriately."""

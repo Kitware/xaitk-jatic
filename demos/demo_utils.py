@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import os
 import urllib.request
-from typing import List, Optional, Tuple
+from typing import List, Tuple
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -47,7 +49,7 @@ def display_sal_maps(
     sal_maps: List[np.ndarray],
     bboxes: List[Tuple[int, int, int, int]],
     ref_img: np.ndarray,
-    title: Optional[str] = None,
+    title: str | None = None,
     fig_size: Tuple[int, int] = (8, 4),
 ) -> None:
     gray_img = np.asarray(Image.fromarray(ref_img).convert("L"))

@@ -1,6 +1,6 @@
 # :auto build-system:
 [build-system]
-requires = ["poetry-core>=1.9,<2.0"]
+requires = ["poetry-core>=1.8.5,<2.0"]
 build-backend = "poetry.core.masonry.api"
 # :auto build-system:
 
@@ -26,7 +26,7 @@ classifiers = [
 # :auto package-meta:
 # package-specific meta, d-on't put this in "generated package-meta"
 authors = ["Kitware, Inc. <xaitk@kitware.com>"]
-version = "0.5.1"
+version = "0.6.0"
 description = "Integration package to support interfacing, implementation and example needs for the JATIC."
 
 [tool.poetry.dependencies]
@@ -52,7 +52,7 @@ numpy = [
 kwcoco = { version = ">=0.2.18", optional = true}
 matplotlib = { version=">=3.4.1", optional = true }
 # Optional for Docker container
-transformers = {version = "^4.48.0", optional = true}
+transformers = {version = "^4.50.0", optional = true}
 timm = {version = "^1.0.7", optional = true}
 torchvision = {version = ">=0.10.0", optional = true}
 
@@ -66,9 +66,8 @@ docker = [ "transformers", "timm", "matplotlib", "torchvision" ]
 optional = true
 
 [tool.poetry.group.linting.dependencies]
-mypy = ">=0.991,!=1.11.0"
 pre-commit = ">=2.20"
-ruff = "^0.5.6"
+ruff = "^0.11.0"
 types-setuptools = ">=65.6.0.1"
 sphinx-lint = ">=1.0.0"
 pyright = {version=">=1.1.320",extras=["nodejs"]}
@@ -104,6 +103,7 @@ syrupy = ">=4.0.0"
 # Jupyter notebook testing
 notebook = ">=7.2.2"
 papermill = ">=2.4.0"
+pyright = {version=">=1.1.320",extras=["nodejs"]}
 # :auto tests:
 # maite protocol testing
 maite = { version = "^0.7.1", extras = ["test"] }
@@ -125,6 +125,7 @@ addopts = [
     "--cov=./tests",                    # Also cover our tests for dead spots
     "--cov-report=term",                # Coverage report to terminal
     "--cov-report=xml:coverage.xml",    # for external tool reporting
+    "--snapshot-warn-unused",           # Prevent test failure when skipping tests
 ]
 testpaths = [
     "tests",
@@ -160,17 +161,13 @@ select = [
     "F", "E", "W", "C90", "I", "N", "D1", "D200", "D201", "D211", "D403", "D419", "UP",
     "YTT", "ANN", "S",  "BLE", "B", "A", "COM", "C4", "T10", "ISC", "ICN", "PYI", "PT", "Q",
     "RSE", "RET", "SLF", "SIM", "TID252", "ARG", "FIX", "PD", "FLY", "NPY", "RUF027",
-    "RUF100", "PERF"
+    "RUF100", "PERF", "UP045", "RUF013"
 ]
 preview = true  # needed for RUF027
 explicit-preview-rules = true
 
-ignore = [
-  "ANN101",
-  "ANN102",
-  # -- Ignore these rules, since they contradict our coding standards
-  "C408",  # JATIC guidelines prefer "list()", rather than "[]", to create an empty list
-]
+# From program suggested config
+ignore = ["ANN101","ANN102","C408","C416"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
@@ -210,20 +207,6 @@ line-ending = "auto"
 docstring-code-format = true
 docstring-code-line-length = "dynamic"
 # :auto ruff:
-
-# :auto mypy:
-[tool.mypy]
-python_version = "3.9"
-disallow_untyped_defs = true
-ignore_errors = false
-ignore_missing_imports = true
-strict_optional = false
-incremental = false
-
-[[tool.mypy.overrides]]
-module = "tests.*"
-ignore_errors = true
-# :auto mypy:
 
 # :auto pyright:
 [tool.pyright]

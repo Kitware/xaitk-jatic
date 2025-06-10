@@ -132,8 +132,7 @@ def sal_on_coco_dets(  # noqa: C901
     # Initialize dataset object
     input_dataset = COCOJATICObjectDetectionDataset(
         kwcoco_dataset=kwcoco_dataset,
-        # TODO: Remove ignore after switch to pyright, mypy doesn't have good typed dict support  # noqa: FIX002
-        image_metadata=metadata,  # type: ignore
+        image_metadata=metadata,
         skip_no_anns=True,
     )
 
