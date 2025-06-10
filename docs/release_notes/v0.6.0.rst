@@ -1,6 +1,9 @@
 v0.6.0
 ======
 
+Add support for parsing non-consecutive (but sorted) class labels within the ``JATICImageClassifier`` adapter,
+Documentation improvements regarding ``poetry``, and CI/CD improvements.
+
 Updates / New Features
 ----------------------
 
@@ -25,7 +28,7 @@ Tests
 Fixes
 -----
 
-* Fix docker-entrypoint to match a previous code changes
+* Fix docker-entrypoint to match previous code changes
 
 * Fix ``jatic-perturbations.ipynb`` error with Albumentation's gaussian blur.
 
