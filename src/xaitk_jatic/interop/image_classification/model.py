@@ -78,7 +78,8 @@ class JATICImageClassifier(ClassifyImage):
         def _generate_outputs(batch: Sequence[np.ndarray]) -> list[dict[int, float]]:
             predictions = np.asarray(self._classifier(batch))
 
-            return [dict(enumerate(pred)) for pred in predictions]
+            # Note: We make an assumption that MAITE outputs will be ordered
+            return [{self._ids[idx]: value for idx, value in enumerate(pred)} for pred in predictions]
 
         # Batch model passes
         for img in img_iter:
