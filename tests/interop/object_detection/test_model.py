@@ -9,6 +9,7 @@ import numpy as np
 import pytest
 from smqtk_core.configuration import configuration_test_helper
 from smqtk_image_io.bbox import AxisAlignedBoundingBox
+from syrupy.assertion import SnapshotAssertion
 
 from xaitk_jatic.interop.object_detection.model import JATICDetector
 
@@ -110,6 +111,7 @@ class TestJATICObjectDetector:
     )
     def test_smoketest(
         self,
+        snapshot,
         detector_output: Sequence[od.ObjectDetectionTarget],
         id_to_name: dict[int, Hashable],
         img_batch_size: int,
@@ -121,4 +123,4 @@ class TestJATICObjectDetector:
 
         inst = JATICDetector(detector=mock_detector, ids=list(id_to_name.keys()), img_batch_size=img_batch_size)
         res = list(inst.detect_objects(imgs))
-        assert res == expected_return
+        assert res == snapshot
