@@ -9,8 +9,8 @@
 # XAITK JATIC Integrations
 
 "Bucket" to house various examples and resources related to
-[`xaitk-saliency`](https://github.com/xaitk/xaitk-saliency)
-integration and scaling for JATIC use as part of the JATIC program.
+[`xaitk-saliency`](https://github.com/xaitk/xaitk-saliency) integration and
+scaling for JATIC use as part of the JATIC program.
 
 <!-- :auto installation: -->
 
@@ -32,7 +32,7 @@ conda install -c conda-forge xaitk-jatic
 
 Certain plugins may require additional runtime dependencies. Details on these
 requirements can be found
-[here](https://xaitk-jatic.readthedocs.io/en/latest/implementations.html).
+[here](https://xaitk-jatic.readthedocs.io/en/latest/installation.html).
 
 For more detailed installation instructions, visit the
 [installation documentation](https://xaitk-jatic.readthedocs.io/en/latest/installation.html).
