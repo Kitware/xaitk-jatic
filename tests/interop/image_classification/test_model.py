@@ -1,19 +1,19 @@
 from __future__ import annotations
 
-from collections.abc import Hashable, Iterator, Sequence
+from collections.abc import Hashable, Sequence
 from contextlib import AbstractContextManager
 from unittest.mock import MagicMock
 
 import maite.protocols.image_classification as ic
 import numpy as np
 import pytest
-from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 from smqtk_core.configuration import configuration_test_helper
 from syrupy.assertion import SnapshotAssertion
 
 from xaitk_jatic.interop.image_classification.model import JATICImageClassifier
 
 rng = np.random.default_rng()
+
 
 class TestJATICImageClassifier:
     dummy_id_to_name_1 = {0: "A", 1: "B", 2: "C"}
@@ -104,12 +104,11 @@ class TestJATICImageClassifier:
     )
     def test_smoketest(
         self,
-        snapshot,
+        snapshot: SnapshotAssertion,
         classifier_output: ic.TargetType,
         id_to_name: dict[int, Hashable],
         img_batch_size: int,
         imgs: np.ndarray | Sequence[np.ndarray],
-        expected_return: Iterator[CLASSIFICATION_DICT_T],
     ) -> None:
         """Test that MAITE classifier output is transformed appropriately."""
         mock_classifier = MagicMock(spec=ic.Model, return_value=classifier_output)
@@ -132,7 +131,11 @@ class TestJATICImageClassifier:
             (dummy_non_consecutive_id_to_name_2, expected_non_consecutive_labels),
         ],
     )
-    def test_labels(self, snapshot, id_to_name: dict[int, Hashable], expected_labels: Sequence[Hashable]) -> None:
+    def test_labels(
+        self,
+        snapshot: SnapshotAssertion,
+        id_to_name: dict[int, Hashable],
+    ) -> None:
         """Test that get_labels() returns the correct labels."""
         inst = JATICImageClassifier(classifier=MagicMock(spec=ic.Model), ids=list(id_to_name.keys()))
 

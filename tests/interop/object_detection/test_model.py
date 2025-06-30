@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Hashable, Iterable, Sequence
+from collections.abc import Hashable, Sequence
 from contextlib import AbstractContextManager
 from unittest.mock import MagicMock
 
@@ -111,12 +111,11 @@ class TestJATICObjectDetector:
     )
     def test_smoketest(
         self,
-        snapshot,
+        snapshot: SnapshotAssertion,
         detector_output: Sequence[od.ObjectDetectionTarget],
         id_to_name: dict[int, Hashable],
         img_batch_size: int,
         imgs: np.ndarray | Sequence[np.ndarray],
-        expected_return: Iterable[Iterable[tuple[AxisAlignedBoundingBox, dict[Hashable, float]]]],
     ) -> None:
         """Test that MAITE detector output is transformed appropriately."""
         mock_detector = MagicMock(spec=od.Model, return_value=detector_output)
