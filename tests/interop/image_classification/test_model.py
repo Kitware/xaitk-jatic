@@ -9,11 +9,11 @@ import numpy as np
 import pytest
 from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 from smqtk_core.configuration import configuration_test_helper
+from syrupy.assertion import SnapshotAssertion
 
 from xaitk_jatic.interop.image_classification.model import JATICImageClassifier
 
 rng = np.random.default_rng()
-
 
 class TestJATICImageClassifier:
     dummy_id_to_name_1 = {0: "A", 1: "B", 2: "C"}
@@ -104,6 +104,7 @@ class TestJATICImageClassifier:
     )
     def test_smoketest(
         self,
+        snapshot,
         classifier_output: ic.TargetType,
         id_to_name: dict[int, Hashable],
         img_batch_size: int,
@@ -120,7 +121,7 @@ class TestJATICImageClassifier:
         )
 
         res = list(inst.classify_images(imgs))
-        assert res == expected_return
+        assert snapshot == res
 
     @pytest.mark.parametrize(
         ("id_to_name", "expected_labels"),
