@@ -121,7 +121,7 @@ class TestJATICImageClassifier:
         )
 
         res = list(inst.classify_images(imgs))
-        assert snapshot == res
+        assert res == snapshot
 
     @pytest.mark.parametrize(
         ("id_to_name", "expected_labels"),
@@ -132,8 +132,8 @@ class TestJATICImageClassifier:
             (dummy_non_consecutive_id_to_name_2, expected_non_consecutive_labels),
         ],
     )
-    def test_labels(self, id_to_name: dict[int, Hashable], expected_labels: Sequence[Hashable]) -> None:
+    def test_labels(self, snapshot, id_to_name: dict[int, Hashable], expected_labels: Sequence[Hashable]) -> None:
         """Test that get_labels() returns the correct labels."""
         inst = JATICImageClassifier(classifier=MagicMock(spec=ic.Model), ids=list(id_to_name.keys()))
 
-        assert inst.get_labels() == expected_labels
+        assert inst.get_labels() == snapshot
