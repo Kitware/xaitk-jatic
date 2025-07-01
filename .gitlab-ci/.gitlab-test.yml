@@ -50,4 +50,4 @@ notebooks:
 pytest-extras:
   allow_failure: false
   variables:
-    EXTRAS: "tools"
+    EXTRAS: "tools docker"

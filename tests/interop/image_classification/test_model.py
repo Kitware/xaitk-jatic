@@ -104,7 +104,7 @@ class TestJATICImageClassifier:
     )
     def test_smoketest(
         self,
-        classifier_output: ic.TargetBatchType,
+        classifier_output: ic.TargetType,
         id_to_name: dict[int, Hashable],
         img_batch_size: int,
         imgs: np.ndarray | Sequence[np.ndarray],
