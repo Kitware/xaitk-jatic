@@ -41,7 +41,7 @@ Example:
 import json
 import logging
 import os
-from collections.abc import Hashable
+from collections.abc import Hashable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TextIO
@@ -50,9 +50,10 @@ import click  # type: ignore
 import maite.protocols.object_detection as od
 import numpy as np
 import torch  # type: ignore
+from maite.protocols import ModelMetadata
 from PIL import Image  # type: ignore
 from smqtk_core.configuration import from_config_dict
-from xaitk_saliency import GenerateObjectDetectorBlackboxSaliency
+from xaitk_saliency.interfaces.gen_object_detector_blackbox_sal import GenerateObjectDetectorBlackboxSaliency
 
 from xaitk_jatic.interop.object_detection.model import JATICDetector
 
@@ -139,38 +140,43 @@ class HuggingFaceDetector:
             >>> print(detector.threshold)
             0.5
         """
-        self.image_processor = AutoImageProcessor.from_pretrained(model_name)
-        self.model = AutoModelForObjectDetection.from_pretrained(model_name)
+        self.image_processor = AutoImageProcessor.from_pretrained(model_name)  # pyright: ignore [reportPossiblyUnboundVariable]
+        self.model = AutoModelForObjectDetection.from_pretrained(model_name)  # pyright: ignore [reportPossiblyUnboundVariable]
         self.threshold = threshold
         self.device = device
 
         self.model.eval()
         self.model.to(device)
 
+        self.metadata = ModelMetadata(
+            id=model_name,
+            index2label=self.model.config.id2label,
+        )
+
     def id2label(self) -> dict[int, Hashable]:
         """Returns a dictionary mapping class indices to labels."""
         return self.model.config.id2label
 
-    def __call__(self, batch: od.InputBatchType) -> od.TargetBatchType:
+    def __call__(self, batch: Sequence[od.InputType]) -> Sequence[od.TargetType]:
         """
         Run object detection on a batch of input images.
 
         Args:
-            batch (od.InputBatchType): Batch of input images as tensors.
+            batch (Sequence[od.InputType]): Batch of input images as tensors.
 
         Returns:
-            od.TargetBatchType: List of DetectionTarget results containing boxes, labels, and scores.
+            Sequence[od.TargetType]: List of DetectionTarget results containing boxes, labels, and scores.
         """
         # tensor bridging
-        batch = torch.as_tensor(batch)
-        if batch.ndim != 4:
+        torch_batch = torch.as_tensor(batch)
+        if torch_batch.ndim != 4:
             raise ValueError("Batch must have 4 dimensions")
 
         # save original image sizes for resizing boxes
-        target_sizes = [get_image_size(img)[::-1] for img in batch]
+        target_sizes = [get_image_size(img)[::-1] for img in torch_batch]  # pyright: ignore [reportPossiblyUnboundVariable]
 
         # preprocess
-        hf_inputs = self.image_processor(batch, return_tensors="pt")
+        hf_inputs = self.image_processor(torch_batch, return_tensors="pt")
 
         # put on device
         hf_inputs = hf_inputs.to(self.device)
@@ -184,7 +190,7 @@ class HuggingFaceDetector:
             target_sizes=target_sizes,
         )
 
-        predictions: od.TargetBatchType = list()
+        predictions: Sequence[od.TargetType] = list()
         for result in hf_results:
             predictions.append(
                 DetectionTarget(
@@ -247,7 +253,7 @@ def dets_to_mats(dets: list, jatic_detector: HuggingFaceDetector) -> tuple[np.nd
 @click.argument("config_file", type=click.File(mode="r"))
 @click.argument("hugging_face_model_name", type=str)
 @click.option("--verbose", "-v", count=True, help="print progress messages")
-def generate_saliency_maps(
+def generate_saliency_maps(  # noqa: C901
     image_file: str,
     output_dir: str,
     config_file: TextIO,
@@ -281,7 +287,8 @@ def generate_saliency_maps(
     )
 
     fill = [95, 96, 93]
-    sal_generator.fill = fill
+    if hasattr(sal_generator, "fill"):
+        sal_generator.fill = fill  # pyright: ignore [reportAttributeAccessIssue]
 
     logging.info("Building detection model...")
     jatic_detector = HuggingFaceDetector(model_name=hugging_face_model_name, threshold=0.5, device="cpu")
@@ -296,7 +303,7 @@ def generate_saliency_maps(
     ref_img = np.asarray(Image.open(img_path))
 
     logging.info("Finding detections...")
-    dets = list(blackbox_detector([ref_img]))[0]
+    dets = list(list(blackbox_detector([ref_img]))[0])
 
     if len(dets) == 0:
         print("No detections found. Exiting...")
@@ -309,12 +316,12 @@ def generate_saliency_maps(
 
     logging.info("Saving saliency maps...")
     for img_idx, sal_map in enumerate(img_sal_maps):
-        fig = plt.figure()
-        plt.axis("off")
-        plt.imshow(sal_map, cmap="jet")
-        plt.colorbar()
-        plt.savefig(os.path.join(output_dir, f"det_{img_idx}.jpeg"), bbox_inches="tight")
-        plt.close(fig)
+        fig = plt.figure()  # pyright: ignore [reportPossiblyUnboundVariable]
+        plt.axis("off")  # pyright: ignore [reportPossiblyUnboundVariable]
+        plt.imshow(sal_map, cmap="jet")  # pyright: ignore [reportPossiblyUnboundVariable]
+        plt.colorbar()  # pyright: ignore [reportPossiblyUnboundVariable]
+        plt.savefig(os.path.join(output_dir, f"det_{img_idx}.jpeg"), bbox_inches="tight")  # pyright: ignore [reportPossiblyUnboundVariable]
+        plt.close(fig)  # pyright: ignore [reportPossiblyUnboundVariable]
 
     logging.info("Saliency maps saved. Exiting...")
 

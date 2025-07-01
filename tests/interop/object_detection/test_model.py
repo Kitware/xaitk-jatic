@@ -26,6 +26,17 @@ class TestJATICObjectDetector:
         labels=dummy_labels,
         scores=dummy_scores,
     )
+
+    dummy_multiclass_boxes = np.asarray([[1, 2, 3, 4], [5, 6, 7, 8]])
+    dummy_multiclass_scores = np.asarray([[0.25, 0, 0.75], [0.95, 0, 0]])
+    dummy_multiclass_labels = np.asarray([0, 2, 0])
+    dummy_multiclass_out = MagicMock(
+        spec=od.ObjectDetectionTarget,
+        boxes=dummy_multiclass_boxes,
+        labels=dummy_multiclass_labels,
+        scores=dummy_multiclass_scores,
+    )
+
     dummy_expected = [
         [
             (AxisAlignedBoundingBox([1, 2], [3, 4]), {0: 0.25, 1: 0.0, 2: 0.75}),
@@ -87,8 +98,15 @@ class TestJATICObjectDetector:
                 rng.integers(0, 255, (1, 256, 256), dtype=np.uint8),
                 [[]],
             ),
+            (
+                [dummy_multiclass_out],
+                dummy_id_to_name,
+                1,
+                [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
+                dummy_expected,
+            ),
         ],
-        ids=["single 3 channel", "single greyscale", "multiple images", "no dets"],
+        ids=["single 3 channel", "single greyscale", "multiple images", "no dets", "multiclass_scores"],
     )
     def test_smoketest(
         self,
