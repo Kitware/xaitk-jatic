@@ -100,7 +100,6 @@ class TestJATICObjectDetector:
                 dummy_id_to_name,
                 1,
                 [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
-                dummy_expected,
             ),
         ],
         ids=["single 3 channel", "single greyscale", "multiple images", "no dets", "multiclass_scores"],
