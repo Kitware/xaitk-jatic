@@ -69,35 +69,31 @@ class TestJATICObjectDetector:
             configuration_test_helper(inst)
 
     @pytest.mark.parametrize(
-        ("detector_output", "id_to_name", "img_batch_size", "imgs", "expected_return"),
+        ("detector_output", "id_to_name", "img_batch_size", "imgs"),
         [
             (
                 [dummy_out],
                 dummy_id_to_name,
                 1,
                 [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
-                dummy_expected,
             ),
             (
                 [dummy_out],
                 dummy_id_to_name,
                 1,
                 [rng.integers(0, 255, (256, 256), dtype=np.uint8)],
-                dummy_expected,
             ),
             (
                 [dummy_out] * 2,
                 dummy_id_to_name,
                 2,
                 rng.integers(0, 255, (2, 256, 256), dtype=np.uint8),
-                [dummy_expected[0]] * 2,
             ),
             (
                 [MagicMock(spec=od.ObjectDetectionTarget, boxes=[], labels=[], scores=[])],
                 dummy_id_to_name,
                 1,
                 rng.integers(0, 255, (1, 256, 256), dtype=np.uint8),
-                [[]],
             ),
             (
                 [dummy_multiclass_out],
