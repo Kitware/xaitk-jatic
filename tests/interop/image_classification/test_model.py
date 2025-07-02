@@ -55,7 +55,6 @@ class TestJATICImageClassifier:
             "id_to_name",
             "img_batch_size",
             "imgs",
-            "expected_return",
         ),
         [
             (
@@ -63,35 +62,30 @@ class TestJATICImageClassifier:
                 dummy_id_to_name_1,
                 1,
                 [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
-                [dict(zip(expected_labels, dummy_out))],
             ),
             (
                 [dummy_out],
                 dummy_id_to_name_1,
                 1,
                 [rng.integers(0, 255, (256, 256), dtype=np.uint8)],
-                [dict(zip(expected_labels, dummy_out))],
             ),
             (
                 [dummy_out] * 2,
                 dummy_id_to_name_1,
                 2,
                 rng.integers(0, 255, (2, 256, 256), dtype=np.uint8),
-                [dict(zip(expected_labels, dummy_out)), dict(zip(expected_labels, dummy_out))],
             ),
             (
                 [dummy_out],
                 dummy_non_consecutive_id_to_name_1,
                 1,
                 [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
-                [dict(zip(expected_non_consecutive_labels, dummy_out))],
             ),
             (
                 [dummy_out],
                 dummy_non_consecutive_id_to_name_2,
                 1,
                 [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
-                [dict(zip(expected_non_consecutive_labels, dummy_out))],
             ),
         ],
         ids=[
@@ -123,12 +117,12 @@ class TestJATICImageClassifier:
         assert res == snapshot
 
     @pytest.mark.parametrize(
-        ("id_to_name", "expected_labels"),
+        ("id_to_name"),
         [
-            (dummy_id_to_name_1, expected_labels),
-            (dummy_id_to_name_2, expected_labels),
-            (dummy_non_consecutive_id_to_name_1, expected_non_consecutive_labels),
-            (dummy_non_consecutive_id_to_name_2, expected_non_consecutive_labels),
+            (dummy_id_to_name_1),
+            (dummy_id_to_name_2),
+            (dummy_non_consecutive_id_to_name_1),
+            (dummy_non_consecutive_id_to_name_2),
         ],
     )
     def test_labels(

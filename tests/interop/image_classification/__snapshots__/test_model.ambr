@@ -1,26 +1,26 @@
 # serializer version: 1
-# name: TestJATICImageClassifier.test_labels[id_to_name0-expected_labels0]
+# name: TestJATICImageClassifier.test_labels[id_to_name0]
   list([
     0,
     1,
     2,
   ])
 # ---
-# name: TestJATICImageClassifier.test_labels[id_to_name1-expected_labels1]
+# name: TestJATICImageClassifier.test_labels[id_to_name1]
   list([
     0,
     1,
     2,
   ])
 # ---
-# name: TestJATICImageClassifier.test_labels[id_to_name2-expected_labels2]
+# name: TestJATICImageClassifier.test_labels[id_to_name2]
   list([
     1,
     2,
     4,
   ])
 # ---
-# name: TestJATICImageClassifier.test_labels[id_to_name3-expected_labels3]
+# name: TestJATICImageClassifier.test_labels[id_to_name3]
   list([
     1,
     2,
