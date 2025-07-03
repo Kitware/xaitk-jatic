@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from collections.abc import Hashable, Iterator, Sequence
+from collections.abc import Hashable, Sequence
 from contextlib import AbstractContextManager
 from unittest.mock import MagicMock
 
 import maite.protocols.image_classification as ic
 import numpy as np
 import pytest
-from smqtk_classifier.interfaces.classification_element import CLASSIFICATION_DICT_T
 from smqtk_core.configuration import configuration_test_helper
+from syrupy.assertion import SnapshotAssertion
 
 from xaitk_jatic.interop.image_classification.model import JATICImageClassifier
 
@@ -55,7 +55,6 @@ class TestJATICImageClassifier:
             "id_to_name",
             "img_batch_size",
             "imgs",
-            "expected_return",
         ),
         [
             (
@@ -63,35 +62,30 @@ class TestJATICImageClassifier:
                 dummy_id_to_name_1,
                 1,
                 [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
-                [dict(zip(expected_labels, dummy_out))],
             ),
             (
                 [dummy_out],
                 dummy_id_to_name_1,
                 1,
                 [rng.integers(0, 255, (256, 256), dtype=np.uint8)],
-                [dict(zip(expected_labels, dummy_out))],
             ),
             (
                 [dummy_out] * 2,
                 dummy_id_to_name_1,
                 2,
                 rng.integers(0, 255, (2, 256, 256), dtype=np.uint8),
-                [dict(zip(expected_labels, dummy_out)), dict(zip(expected_labels, dummy_out))],
             ),
             (
                 [dummy_out],
                 dummy_non_consecutive_id_to_name_1,
                 1,
                 [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
-                [dict(zip(expected_non_consecutive_labels, dummy_out))],
             ),
             (
                 [dummy_out],
                 dummy_non_consecutive_id_to_name_2,
                 1,
                 [rng.integers(0, 255, (3, 256, 256), dtype=np.uint8)],
-                [dict(zip(expected_non_consecutive_labels, dummy_out))],
             ),
         ],
         ids=[
@@ -104,11 +98,11 @@ class TestJATICImageClassifier:
     )
     def test_smoketest(
         self,
+        snapshot: SnapshotAssertion,
         classifier_output: ic.TargetType,
         id_to_name: dict[int, Hashable],
         img_batch_size: int,
         imgs: np.ndarray | Sequence[np.ndarray],
-        expected_return: Iterator[CLASSIFICATION_DICT_T],
     ) -> None:
         """Test that MAITE classifier output is transformed appropriately."""
         mock_classifier = MagicMock(spec=ic.Model, return_value=classifier_output)
@@ -120,19 +114,23 @@ class TestJATICImageClassifier:
         )
 
         res = list(inst.classify_images(imgs))
-        assert res == expected_return
+        assert res == snapshot
 
     @pytest.mark.parametrize(
-        ("id_to_name", "expected_labels"),
+        ("id_to_name"),
         [
-            (dummy_id_to_name_1, expected_labels),
-            (dummy_id_to_name_2, expected_labels),
-            (dummy_non_consecutive_id_to_name_1, expected_non_consecutive_labels),
-            (dummy_non_consecutive_id_to_name_2, expected_non_consecutive_labels),
+            (dummy_id_to_name_1),
+            (dummy_id_to_name_2),
+            (dummy_non_consecutive_id_to_name_1),
+            (dummy_non_consecutive_id_to_name_2),
         ],
     )
-    def test_labels(self, id_to_name: dict[int, Hashable], expected_labels: Sequence[Hashable]) -> None:
+    def test_labels(
+        self,
+        snapshot: SnapshotAssertion,
+        id_to_name: dict[int, Hashable],
+    ) -> None:
         """Test that get_labels() returns the correct labels."""
         inst = JATICImageClassifier(classifier=MagicMock(spec=ic.Model), ids=list(id_to_name.keys()))
 
-        assert inst.get_labels() == expected_labels
+        assert inst.get_labels() == snapshot
