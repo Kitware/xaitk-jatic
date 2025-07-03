@@ -8,7 +8,6 @@ import maite.protocols.object_detection as od
 import numpy as np
 import pytest
 from smqtk_core.configuration import configuration_test_helper
-from smqtk_image_io.bbox import AxisAlignedBoundingBox
 from syrupy.assertion import SnapshotAssertion
 
 from xaitk_jatic.interop.object_detection.model import JATICDetector
@@ -37,13 +36,6 @@ class TestJATICObjectDetector:
         labels=dummy_multiclass_labels,
         scores=dummy_multiclass_scores,
     )
-
-    dummy_expected = [
-        [
-            (AxisAlignedBoundingBox([1, 2], [3, 4]), {0: 0.25, 1: 0.0, 2: 0.75}),
-            (AxisAlignedBoundingBox([5, 6], [7, 8]), {0: 0.95, 1: 0.0, 2: 0.0}),
-        ],
-    ]
 
     @pytest.mark.parametrize(
         ("detector", "id_to_name", "img_batch_size", "expectation"),
