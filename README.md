@@ -9,8 +9,8 @@
 # XAITK JATIC Integrations
 
 "Bucket" to house various examples and resources related to
-[`xaitk-saliency`](https://github.com/xaitk/xaitk-saliency)
-integration and scaling for JATIC use as part of the JATIC program.
+[`xaitk-saliency`](https://github.com/xaitk/xaitk-saliency) integration and
+scaling for JATIC use as part of the JATIC program.
 
 <!-- :auto installation: -->
 

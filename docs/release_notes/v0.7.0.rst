@@ -1,0 +1,10 @@
+0.7.0
+=====
+
+* Convert data comparisons in test_model.py to syrupy.
+
+* Add Colab links to CI notebooks and fix issues that prevent execution.
+
+* Upgraded to MAITE v0.8.1
+
+* Changed release notes to use a directory.

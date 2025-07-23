@@ -97,9 +97,13 @@ class JATICDetector(DetectImageObjects):
             """
             dets_dict: dict[AxisAlignedBoundingBox, dict[Hashable, float]] = dict()
             for box, label, prob in zip(bboxes, labels, probs):
-                if box not in dets_dict:
-                    dets_dict[box] = dict.fromkeys(self._ids, 0.0)
-                dets_dict[box][label] = prob
+                if probs.ndim > 1:  # Scores per classes
+                    dets_dict[box] = dict(zip(self._ids, prob))
+                else:  # Single score per box
+                    if box not in dets_dict:
+                        dets_dict[box] = dict.fromkeys(self._ids, 0.0)
+
+                    dets_dict[box][label] = prob
 
             return list(dets_dict.items())
 
