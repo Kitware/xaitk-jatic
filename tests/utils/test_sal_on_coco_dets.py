@@ -127,7 +127,7 @@ class TestSalOnCocoDets:
 
         assert result.exit_code == 0
         assert sorted(output_dir_path.listdir()) == sorted(img_dir_paths)
-        for img_dir, det_ids in zip(img_dir_paths, img_dets):
+        for img_dir, det_ids in zip(img_dir_paths, img_dets, strict=False):
             map_files = [img_dir.join(Path(f"det_{det_id}.jpeg")) for det_id in det_ids]
             assert sorted(img_dir.listdir()) == sorted(map_files)
 

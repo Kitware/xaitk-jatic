@@ -96,9 +96,9 @@ class JATICDetector(DetectImageObjects):
                     - A dictionary of class label-to-confidence mappings.
             """
             dets_dict: dict[AxisAlignedBoundingBox, dict[Hashable, float]] = dict()
-            for box, label, prob in zip(bboxes, labels, probs):
+            for box, label, prob in zip(bboxes, labels, probs, strict=False):
                 if probs.ndim > 1:  # Scores per classes
-                    dets_dict[box] = dict(zip(self._ids, prob))
+                    dets_dict[box] = dict(zip(self._ids, prob, strict=False))
                 else:  # Single score per box
                     if box not in dets_dict:
                         dets_dict[box] = dict.fromkeys(self._ids, 0.0)

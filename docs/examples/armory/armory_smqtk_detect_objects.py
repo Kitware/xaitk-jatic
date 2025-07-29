@@ -265,7 +265,7 @@ class ResNetFRCNN(DetectImageObjects):
                 # del score_dict[COCO_INSTANCE_CATEGORY_NAMES_NA]
                 score_dicts.append(score_dict)
 
-            formatted_dets.append(list(zip(a_bboxes, score_dicts)))
+            formatted_dets.append(list(zip(a_bboxes, score_dicts, strict=False)))
 
         return formatted_dets
 
@@ -327,7 +327,7 @@ try:
         all_boxes = []
         all_scores = []
         all_labels = []
-        for boxes, scores, image_shape in zip(pred_boxes_list, pred_scores_list, image_shapes):
+        for boxes, scores, image_shape in zip(pred_boxes_list, pred_scores_list, image_shapes, strict=False):
             boxes = box_ops.clip_boxes_to_image(boxes, image_shape)
 
             # create labels for each prediction
