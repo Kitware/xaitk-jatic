@@ -21,6 +21,7 @@ classifiers = [
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
 ]
 # :auto package-meta:
 # package-specific meta, d-on't put this in "generated package-meta"
@@ -33,15 +34,13 @@ description = "Integration package to support interfacing, implementation and ex
 python = "^3.10"
 # :auto python-version:
 
-xaitk-saliency = ">=0.9.2"
-maite = "^0.8.1"
+xaitk-saliency = ">=0.14.1"
+maite = "^0.8.2"
 setuptools = ">=78.1.1"  # CVE-2025-47273
 scipy = ">=1.10.0"  # CVE-2023-25399
-# Python capped to <3.13 because of:
-# https://stackoverflow.com/questions/77431252/why-doesnt-poetry-select-the-good-version-of-my-dependency
 numpy = [
-    {version = ">=1.22,<2.0", python = "<3.12" }, # CVE-2021-34141
-    {version = "^1.26", python = ">=3.12,<3.13" } # numpy==1.26 is the first release supporting python 3.12
+    {version = "^1.25", python = "<3.12" }, # CVE-2021-34141
+    {version = ">=2.1", python = ">=3.13" } # numpy==2.1 is the first release supporting python 3.13
 ]
 
 # Notebook extras support (duplicated in dev group for "always on")
