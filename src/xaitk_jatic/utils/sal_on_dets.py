@@ -62,7 +62,7 @@ def compute_sal_maps(
 
         scores = np.asarray(dets.scores)
         score_matrix = np.zeros((len(scores), num_classes))
-        for idx, (lbl, score) in enumerate(zip(np.asarray(dets.labels), scores)):
+        for idx, (lbl, score) in enumerate(zip(np.asarray(dets.labels), scores, strict=False)):
             score_matrix[idx][lbl] = score
 
         img_sal_maps.append(
