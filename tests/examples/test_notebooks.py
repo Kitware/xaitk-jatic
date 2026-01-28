@@ -1,5 +1,5 @@
 import pytest
-from maite.testing.pyright import list_error_messages, pyright_analyze
+from maite._internals.testing.pyright import list_error_messages, pyright_analyze
 
 from xaitk_jatic.interop.object_detection.dataset import is_usable
 
