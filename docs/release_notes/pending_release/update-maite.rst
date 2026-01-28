@@ -1,1 +1,1 @@
-* Update to MAITE v0.9.0
+* Update to MAITE v0.9.2
