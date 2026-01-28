@@ -1,4 +1,11 @@
 0.8.1
-=====
+======
+
+Updated to support MAITE v0.9.2.
+
+Updates / New Features
+----------------------
+
+Dependencies
 
 * Update to MAITE v0.9.2
